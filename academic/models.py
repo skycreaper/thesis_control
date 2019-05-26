@@ -1,14 +1,22 @@
 from django.db import models
 
-# Create your models here.
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
+
+class Thesis(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField(max_length=1024*2)
+    period = models.CharField(max_length=200)   # periodo
+    direct = models.CharField(max_length=200)   # relacion con usuario director
+    student = models.CharField(max_length=200)  # id estuddiante
+    advance = models.CharField(max_length=2)    # calculado auto
+    state = models.CharField(max_length=2)      # para workflow
     create_date = models.DateTimeField('date published')
 
 
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
-    #
+    thesis = models.ForeignKey(Thesis, on_delete=models.CASCADE)
+    description = models.TextField(max_length=1024*2)
+    observation = models.TextField(max_length=1024*2)
+    porcentage_proposed = models.CharField(max_length=200)
+    porcentage_execute = models.CharField(max_length=200)
+    state = models.CharField(max_length=2)                      # para workflow
     create_date = models.DateTimeField('date published')
