@@ -12,6 +12,8 @@ urlpatterns = [
     path('thesis/', ThesisList.as_view(), name='thesis_list'),
     path('thesis/<int:pk>/', ThesisDetail.as_view(), name='thesis_detail'),
     path('thesis/new/', ThesisCreation.as_view(), name='thesis_new'),
+    path('thesis/update/<int:pk>/', ThesisUpdate.as_view(), name='thesis_update'),
+    path('thesis/delete/<int:pk>/', ThesisDelete.as_view(), name='thesis_delete'),
 ]
 
 # urlpatterns = [

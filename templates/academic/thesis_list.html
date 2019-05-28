@@ -10,8 +10,8 @@
             <p>{{ thesis.name }}</p>
             <p>
                 <a href="{% url 'thesis_detail' thesis.id %}">Ver</a> | 
-                <a href="{% url 'thesis_detail' thesis.id  %}">Edit</a>
-                <a href="{% url 'thesis_detail' thesis.id  %}">Eliminar</a>
+                <a href="{% url 'thesis_update' thesis.id  %}">Edit</a>
+                <a href="{% url 'thesis_delete' thesis.id  %}">Eliminar</a>
             </p>
         </li>
     {% endfor %}

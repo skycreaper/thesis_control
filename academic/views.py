@@ -4,6 +4,8 @@ from django.utils import timezone
 
 
 from django.urls import reverse
+from django.urls import reverse_lazy
+
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
@@ -12,7 +14,7 @@ from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 def index(request):
     return HttpResponse("Academica index.")
 
-# Thesis
+#### Thesis ####
 class ThesisList(ListView):
     model = Thesis
 
@@ -21,19 +23,19 @@ class ThesisDetail(DetailView):
 
 class ThesisCreation(CreateView):
     model = Thesis
-    # success_url = reverse('thesis:list')
+    fields = ['name', 'description', 'period', 'direct', 'student', 'porcentage', 'state', 'create_date']
+    success_url = reverse_lazy('thesis_list')
+
+class ThesisUpdate(UpdateView):
+    model = Thesis
     fields = ['name', 'description', 'period', 'direct', 'student', 'porcentage', 'state']
+    success_url = reverse_lazy('thesis_list')
 
-# class ThesisUpdate(UpdateView):
-#     model = Thesis
-#     success_url = reverse_lazy('thesis:list')
-#     fields = ['name', 'description', 'period', 'direct', 'student', 'porcentage', 'state']
+class ThesisDelete(DeleteView):
+    model = Thesis
+    success_url = reverse_lazy('thesis_list')
 
-# class ThesisDelete(DeleteView):
-#     model = Thesis
-#     success_url = reverse_lazy('thesis:list')
-
-# Advance
+### Advance ###
 # class AdvanceList(ListView):
 #     model = Advance
 
