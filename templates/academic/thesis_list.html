@@ -1,0 +1,18 @@
+<h1>Tesis</h1>
+
+<p>
+    <a href="{% url "thesis_new" %}">Agregar Thesis</a>
+</p>
+
+<ul>
+    {% for thesis in object_list %}
+        <li>
+            <p>{{ thesis.name }}</p>
+            <p>
+                <a href="{% url 'thesis_detail' thesis.id %}">Ver</a> | 
+                <a href="{% url 'thesis_detail' thesis.id  %}">Edit</a>
+                <a href="{% url 'thesis_detail' thesis.id  %}">Eliminar</a>
+            </p>
+        </li>
+    {% endfor %}
+</ul>
