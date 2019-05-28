@@ -19,6 +19,21 @@ thesis_change = Permission.objects.create(codename='can_change_thesis',
 thesis_view = Permission.objects.create(codename='can_view_thesis',
                                    name='Can view thesis',
                                    content_type=thesis)
+# Choice
+choice_add = Permission.objects.create(codename='can_add_choice',
+                                   name='Can add choice',
+                                   content_type=choice)
+choice_change = Permission.objects.create(codename='can_change_choice',
+                                   name='Can change choice',
+                                   content_type=choice)
+choice_view = Permission.objects.create(codename='can_view_choice',
+                                   name='Can view choice',
+                                   content_type=choice)
+
 new_group.permissions.add(thesis_add)
 new_group.permissions.add(thesis_change)
 new_group.permissions.add(thesis_view)
+
+new_group.permissions.add(choice_add)
+new_group.permissions.add(choice_change)
+new_group.permissions.add(choice_view)
