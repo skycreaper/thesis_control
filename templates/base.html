@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
+    {% load static %}
+
+    <!-- Stylesheets -->
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'unal/global/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'unal/global/css/bootstrap-extend.min.css' %}">
+    <link rel="stylesheet" href="{% static 'unal/assets/css/site.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+
+  <meta charset="utf-8%}"
   <title>{% block title %}Control Tesis{% endblock %}</title>
 </head>
 <body>
