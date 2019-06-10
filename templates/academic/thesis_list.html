@@ -90,7 +90,6 @@
 {% include "menu.html" %}
 
 <!-- Page -->
-
 <div class="page bg-white">
 
   <!-- Contacts Content -->
@@ -211,8 +210,17 @@
 
   </div>
 </div>
-
 <!-- End Page -->
+
+
+<!-- Site Action -->
+<div class="site-action" data-plugin="actionBtn">
+  <button type="button" class="site-action-toggle btn-raised btn btn-success btn-floating"
+    onclick="location.href='{% url "thesis_new" %}'">
+    <i class="front-icon wb-plus animation-scale-up" aria-hidden="true"></i>
+  </button>
+</div>
+<!-- End Site Action -->
 
 
 <!-- Footer -->
