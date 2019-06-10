@@ -11,11 +11,11 @@
 
 <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
 
-  <?php include("components/header.tpl.php"); ?>
+  {% include "header.html" %}
 
   <div class="navbar-container container-fluid">
     <!-- Navbar Collapse -->
-    <?php  include("components/navbar.tpl.php"); ?>
+    {% include "navbar.html" %}
     <!-- End Navbar Collapse -->
 
     <!-- Site Navbar Seach -->
@@ -34,7 +34,7 @@
     <!-- End Site Navbar Seach -->
   </div>
 </nav>
-<?php print include("components/menu.tpl.php"); ?>
+{% include "menu.html" %}
 <!-- Page -->
 <div class="page">
   <div class="page-content container-fluid">

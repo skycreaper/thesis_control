@@ -1,0 +1,123 @@
+{% load static %}
+<div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
+  <!-- Navbar Toolbar -->
+  <ul class="nav navbar-toolbar">
+    <li class="nav-item hidden-float" id="toggleMenubar">
+      <a class="nav-link" data-toggle="menubar" href="#" role="button">
+        <i class="icon hamburger hamburger-arrow-left">
+          <span class="sr-only">Toggle menubar</span>
+          <span class="hamburger-bar"></span>
+        </i>
+      </a>
+    </li>
+    <li class="nav-item hidden-sm-down" id="toggleFullscreen">
+      <a class="nav-link icon icon-fullscreen" data-toggle="fullscreen" href="#" role="button">
+        <span class="sr-only">Toggle fullscreen</span>
+      </a>
+    </li>
+    <li class="nav-item hidden-float">
+      <a class="nav-link icon wb-search" data-toggle="collapse" href="#" data-target="#site-navbar-search"
+        role="button">
+        <span class="sr-only">Toggle Search</span>
+      </a>
+    </li>
+
+  </ul>
+  <!-- End Navbar Toolbar -->
+
+  <!-- Navbar Toolbar Right -->
+  <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
+
+    <li class="nav-item dropdown">
+      <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="scale-up"
+        role="button">
+        <span class="avatar avatar-online">
+          <img src="{% static 'unal/global/portraits/5.jpg' %}" alt="...">
+          <i></i>
+        </span>
+      </a>
+      <div class="dropdown-menu" role="menu">
+        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-user"
+            aria-hidden="true"></i>Perfil</a>
+        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-settings"
+            aria-hidden="true"></i> Opciones</a>
+        <div class="dropdown-divider" role="presentation"></div>
+        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-power"
+            aria-hidden="true"></i> Cerrar Sesión</a>
+      </div>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" title="Notifications" aria-expanded="false"
+        data-animation="scale-up" role="button">
+        <i class="icon wb-bell" aria-hidden="true"></i>
+        <span class="badge badge-pill badge-danger up">3</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right dropdown-menu-media" role="menu">
+        <div class="dropdown-menu-header">
+          <h5>NOTIFICATIONS</h5>
+          <span class="badge badge-round badge-danger">3 nuevas</span>
+        </div>
+
+        <div class="list-group">
+          <div data-role="container">
+            <div data-role="content">
+              <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                <div class="media">
+                  <div class="pr-10">
+                    <i class="icon wb-order bg-red-600 white icon-circle" aria-hidden="true"></i>
+                  </div>
+                  <div class="media-body">
+                    <h6 class="media-heading">Fué registrado un avance de tesis del 10% - </h6>
+                    <time class="media-meta" datetime="2018-06-12T20:50:48+08:00">Hace 5
+                      horas</time>
+                  </div>
+                </div>
+              </a>
+              <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                <div class="media">
+                  <div class="pr-10">
+                    <i class="icon wb-user bg-green-600 white icon-circle" aria-hidden="true"></i>
+                  </div>
+                  <div class="media-body">
+                    <h6 class="media-heading">Se ha detectado un problema con el estudiante Pedro
+                      Garcí</h6>
+                    <time class="media-meta" datetime="2018-06-11T18:29:20+08:00">Hace 2 días</time>
+                  </div>
+                </div>
+              </a>
+
+              <a class="list-group-item dropdown-item" href="javascript:void(0)" role="menuitem">
+                <div class="media">
+                  <div class="pr-10">
+                    <i class="icon wb-calendar bg-blue-600 white icon-circle" aria-hidden="true"></i>
+                  </div>
+                  <div class="media-body">
+                    <h6 class="media-heading">Se registro un avance en el plan de trabajo</h6>
+                    <time class="media-meta" datetime="2018-06-10T13:50:18+08:00">3 de mayo del
+                      2019</time>
+                  </div>
+                </div>
+              </a>
+
+            </div>
+          </div>
+        </div>
+        <div class="dropdown-menu-footer">
+          <a class="dropdown-menu-footer-btn" href="javascript:void(0)" role="button">
+            <i class="icon wb-settings" aria-hidden="true"></i>
+          </a>
+          <a class="dropdown-item" href="javascript:void(0)" role="menuitem">
+            Todas las notificaciones
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" data-toggle="site-sidebar" href="javascript:void(0)" title="Chat" data-url="site-sidebar.tpl">
+        <i class="icon " aria-hidden="false"></i>
+      </a>
+    </li>
+  </ul>
+  <!-- End Navbar Toolbar Right -->
+</div>
