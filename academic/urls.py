@@ -14,4 +14,11 @@ urlpatterns = [
     path('thesis/new/', ThesisCreation.as_view(), name='thesis_new'),
     path('thesis/update/<int:pk>/', ThesisUpdate.as_view(), name='thesis_update'),
     path('thesis/delete/<int:pk>/', ThesisDelete.as_view(), name='thesis_delete'),
+    # Advance
+    path('advance/', AdvanceList.as_view(), name='advance_list'),
+    #Student
+    path('student/', StudentList.as_view(), name='student_list'),
+    #Teacher
+    path('teacher/', TeacherList.as_view(), name='teacher_list'),
+
 ]

@@ -1,0 +1,425 @@
+{% extends 'base_home.html' %}
+
+{% block title %}Listar Estudiantes{% endblock %}
+
+{% load static %}
+
+{% block extra_head %}
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="bootstrap admin template">
+<meta name="author" content="">
+
+<link rel="apple-touch-icon" href="{% static 'unal/assets/images/apple-touch-icon.png' %}">
+<link rel="shortcut icon" href="{% static 'unal/assets/images/favicon.ico' %}">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="{% static 'unal/global/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/css/bootstrap-extend.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/css/site.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/css/styles.css' %}">
+<!--new in thesis list-->
+
+
+<!-- Plugins -->
+<link rel="stylesheet" href="{% static 'unal/global/vendor/animsition/animsition.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/asscrollable/asScrollable.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/switchery/switchery.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/intro-js/introjs.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/slidepanel/slidePanel.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/flag-icon-css/flag-icon.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/examples/css/apps/contacts.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/tablesaw/tablesaw.css' %}">
+
+
+<!-- Fonts -->
+<link rel="stylesheet" href="{% static 'unal/global/fonts/web-icons/web-icons.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/fonts/brand-icons/brand-icons.min.css' %}">
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+<!--[if lt IE 9]>
+  <script src="{% static 'unal/global/vendor/html5shiv/html5shiv.min.js' %}"></script>
+  <![endif]-->
+
+<!--[if lt IE 10]>
+  <script src="{% static 'unal/global/vendor/media-match/media.match.min.js' %}"></script>
+  <script src="{% static 'unal/global/vendor/respond/respond.min.js' %}"></script>
+  <![endif]-->
+
+<!-- Scripts -->
+<script src="{% static 'unal/global/vendor/breakpoints/breakpoints.js' %}"></script>
+<script>
+  Breakpoints();
+</script>
+{% endblock %}
+
+{% block class_doby %}class="animsition app-contacts page-aside-left"{% endblock %}
+
+{% block content %}
+
+<!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
+
+  {% include "header.html" %}
+
+  <div class="navbar-container container-fluid">
+    <!-- Navbar Collapse -->
+    {% include "navbar.html" %}
+    <!-- End Navbar Collapse -->
+
+    <!-- Site Navbar Seach -->
+    <div class="collapse navbar-search-overlap" id="site-navbar-search">
+      <form role="search">
+        <div class="form-group">
+          <div class="input-search">
+            <i class="input-search-icon wb-search" aria-hidden="true"></i>
+            <input type="text" class="form-control" name="site-search" placeholder="Search...">
+            <button type="button" class="input-search-close icon wb-close" data-target="#site-navbar-search"
+              data-toggle="collapse" aria-label="Close"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Site Navbar Seach -->
+  </div>
+</nav>
+{% include "menu.html" %}
+
+<!-- Page -->
+
+<div class="page bg-white">
+
+  <!-- Contacts Content -->
+  <div class="page-main">
+
+    <!-- Contacts Content Header -->
+    <div class="page-header">
+      <h1 class="page-title">Estudiantes</h1>
+      <div class="page-header-actions">
+        <form>
+          <div class="input-search input-search-dark">
+            <i class="input-search-icon wb-search" aria-hidden="true"></i>
+            <input type="text" class="form-control" name="" placeholder="Buscar...">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Contacts Content -->
+    <div id="contactsContent" class="page-content page-content-table" data-plugin="selectable">
+
+
+
+      <button style="float:right;margin-right:2.5em;margin-top:2em;" type="button" class="btn btn-primary">Exportar a
+        excel</button>
+
+      <!-- Contacts -->
+      <table class="table is-indent" data-plugin="animateList" data-animate="fade" data-child="tr"
+        data-selectable="selectable">
+        <thead>
+          <tr>
+            <th class="pre-cell"></th>
+            <th class="cell-30" scope="col">
+              <span class="checkbox-custom checkbox-primary checkbox-lg contacts-select-all">
+                <input type="checkbox" class="contacts-checkbox selectable-all" id="select_all" />
+                <label for="select_all"></label>
+              </span>
+            </th>
+            <th class="cell-300" scope="col">Nombre</th>
+            <th class="cell-300" scope="col">Teléfono</th>
+            <th scope="col">Correo electrónico</th>
+            <th class="suf-cell"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel">
+            <td class="pre-cell"></td>
+            <td class="cell-30">
+              <span class="checkbox-custom checkbox-primary checkbox-lg">
+                <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_1" />
+                <label for="contacts_1"></label>
+              </span>
+            </td>
+            <td class="cell-300">
+              <a class="avatar" href="javascript:void(0)">
+                <img class="img-fluid" src="{% static 'unal/global/portraits/1.jpg' %}" alt="...">
+              </a>
+              Herman Beck
+            </td>
+            <td class="cell-300">(119)-298-8025</td>
+            <td>julio.williamson73@gmail.com</td>
+            <td class="suf-cell"></td>
+          </tr>
+          <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel">
+            <td class="pre-cell"></td>
+            <td class="cell-30">
+              <span class="checkbox-custom checkbox-primary checkbox-lg">
+                <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_2" />
+                <label for="contacts_2"></label>
+              </span>
+            </td>
+            <td class="cell-300">
+              <a class="avatar" href="javascript:void(0)">
+                <img class="img-fluid" src="{% static 'unal/global/portraits/2.jpg' %}" alt="...">
+              </a>
+              Mary Adams
+            </td>
+            <td class="cell-300">(838)-780-5116</td>
+            <td>heidi.morrison77@hotmail.com</td>
+            <td class="suf-cell"></td>
+          </tr>
+          <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel">
+            <td class="pre-cell"></td>
+            <td class="cell-30">
+              <span class="checkbox-custom checkbox-primary checkbox-lg">
+                <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_3" />
+                <label for="contacts_3"></label>
+              </span>
+            </td>
+            <td class="cell-300">
+              <a class="avatar" href="javascript:void(0)">
+                <img class="img-fluid" src="{% static 'unal/global/portraits/3.jpg' %}" alt="...">
+              </a>
+              Caleb Richards
+            </td>
+            <td class="cell-300">(861)-579-6099</td>
+            <td>raymond.byrd19@aol.com</td>
+            <td class="suf-cell"></td>
+          </tr>
+          <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel">
+            <td class="pre-cell"></td>
+            <td class="cell-30">
+              <span class="checkbox-custom checkbox-primary checkbox-lg">
+                <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_4" />
+                <label for="contacts_4"></label>
+              </span>
+            </td>
+            <td class="cell-300">
+              <a class="avatar" href="javascript:void(0)">
+                <img class="img-fluid" src="{% static 'unal/global/portraits/4.jpg' %}" alt="...">
+              </a>
+              June Lane
+            </td>
+            <td class="cell-300">(210)-727-1136</td>
+            <td>eileen.gordon24@yahoo.com</td>
+            <td class="suf-cell"></td>
+          </tr>
+          <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel">
+            <td class="pre-cell"></td>
+            <td class="cell-30">
+              <span class="checkbox-custom checkbox-primary checkbox-lg">
+                <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_5" />
+                <label for="contacts_5"></label>
+              </span>
+            </td>
+            <td class="cell-300">
+              <a class="avatar" href="javascript:void(0)">
+                <img class="img-fluid" src="{% static 'unal/global/portraits/5.jpg' %}" alt="...">
+              </a>
+              Edward Fletcher
+            </td>
+            <td class="cell-300">(729)-682-8842</td>
+            <td>jim.hunter32@gmail.com</td>
+            <td class="suf-cell"></td>
+          </tr>
+          <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel">
+            <td class="pre-cell"></td>
+            <td class="cell-30">
+              <span class="checkbox-custom checkbox-primary checkbox-lg">
+                <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_6" />
+                <label for="contacts_6"></label>
+              </span>
+            </td>
+            <td class="cell-300">
+              <a class="avatar" href="javascript:void(0)">
+                <img class="img-fluid" src="{% static 'unal/global/portraits/6.jpg' %}" alt="...">
+              </a>
+              Crystal Bates
+            </td>
+            <td class="cell-300">(916)-801-4120</td>
+            <td>zoe.perez69@yahoo.com</td>
+            <td class="suf-cell"></td>
+          </tr>
+          <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel">
+            <td class="pre-cell"></td>
+            <td class="cell-30">
+              <span class="checkbox-custom checkbox-primary checkbox-lg">
+                <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_7" />
+                <label for="contacts_7"></label>
+              </span>
+            </td>
+            <td class="cell-300">
+              <a class="avatar" href="javascript:void(0)">
+                <img class="img-fluid" src="{% static 'unal/global/portraits/7.jpg' %}" alt="...">
+              </a>
+              Nathan Watts
+            </td>
+            <td class="cell-300">(320)-725-3333</td>
+            <td>esther.kelly84@hotmail.com</td>
+            <td class="suf-cell"></td>
+          </tr>
+          <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel">
+            <td class="pre-cell"></td>
+            <td class="cell-30">
+              <span class="checkbox-custom checkbox-primary checkbox-lg">
+                <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_8" />
+                <label for="contacts_8"></label>
+              </span>
+            </td>
+            <td class="cell-300">
+              <a class="avatar" href="javascript:void(0)">
+                <img class="img-fluid" src="{% static 'unal/global/portraits/8.jpg' %}" alt="...">
+              </a>
+              Heather Harper
+            </td>
+            <td class="cell-300">(386)-653-1983</td>
+            <td>jacob.morgan95@gmail.com</td>
+            <td class="suf-cell"></td>
+          </tr>
+          <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel">
+            <td class="pre-cell"></td>
+            <td class="cell-30">
+              <span class="checkbox-custom checkbox-primary checkbox-lg">
+                <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_9" />
+                <label for="contacts_9"></label>
+              </span>
+            </td>
+            <td class="cell-300">
+              <a class="avatar" href="javascript:void(0)">
+                <img class="img-fluid" src="{% static 'unal/global/portraits/9.jpg' %}" alt="...">
+              </a>
+              Willard Wood
+            </td>
+            <td class="cell-300">(130)-591-7236</td>
+            <td>jacob.morgan95@gmail.com</td>
+            <td class="suf-cell"></td>
+          </tr>
+          <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel">
+            <td class="pre-cell"></td>
+            <td class="cell-30">
+              <span class="checkbox-custom checkbox-primary checkbox-lg">
+                <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_10" />
+                <label for="contacts_10"></label>
+              </span>
+            </td>
+            <td class="cell-300">
+              <a class="avatar" href="javascript:void(0)">
+                <img class="img-fluid" src="{% static 'unal/global/portraits/10.jpg' %}" alt="...">
+              </a>
+              Ronnie Ellis
+            </td>
+            <td class="cell-300">(769)-963-2966</td>
+            <td>erin.miller29@yahoo.com</td>
+            <td class="suf-cell"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <ul data-plugin="paginator" data-total="50" data-skin="pagination-gap"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- End Page -->
+
+
+<!-- Site Action -->
+<div class="site-action" data-plugin="actionBtn">
+  <button type="button" class="site-action-toggle btn-raised btn btn-success btn-floating">
+    <i class="front-icon wb-plus animation-scale-up" aria-hidden="true"></i>
+    <i class="back-icon wb-close animation-scale-up" aria-hidden="true"></i>
+  </button>
+  <div class="site-action-buttons">
+    <button type="button" data-action="trash" class="btn-raised btn btn-success btn-floating animation-slide-bottom">
+      <i class="icon wb-trash" aria-hidden="true"></i>
+    </button>
+    <button type="button" data-action="folder" class="btn-raised btn btn-success btn-floating animation-slide-bottom">
+      <i class="icon wb-folder" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
+<!-- End Site Action -->
+
+<!-- Footer -->
+{% include "footer.html" %}
+
+<!-- Core  -->
+<script src="{% static 'unal/global/vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
+<script src="{% static 'unal/global/vendor/jquery/jquery.js' %}"></script>
+<script src="{% static 'unal/global/vendor/popper-js/umd/popper.min.js' %}"></script>
+<script src="{% static 'unal/global/vendor/bootstrap/bootstrap.js' %}"></script>
+<script src="{% static 'unal/global/vendor/animsition/animsition.js' %}"></script>
+<script src="{% static 'unal/global/vendor/mousewheel/jquery.mousewheel.js' %}"></script>
+<script src="{% static 'unal/global/vendor/asscrollbar/jquery-asScrollbar.js' %}"></script>
+<script src="{% static 'unal/global/vendor/asscrollable/jquery-asScrollable.js' %}"></script>
+<script src="{% static 'unal/global/vendor/ashoverscroll/jquery-asHoverScroll.js' %}"></script>
+
+<!-- Plugins -->
+<script src="{% static 'unal/global/vendor/switchery/switchery.js' %}"></script>
+<script src="{% static 'unal/global/vendor/intro-js/intro.js' %}"></script>
+<script src="{% static 'unal/global/vendor/screenfull/screenfull.js' %}"></script>
+<script src="{% static 'unal/global/vendor/slidepanel/jquery-slidePanel.js' %}"></script>
+<script src="{% static 'unal/global/vendor/aspaginator/jquery-asPaginator.min.js' %}"></script>
+<script src="{% static 'unal/global/vendor/jquery-placeholder/jquery.placeholder.js' %}"></script>
+<script src="{% static 'unal/global/vendor/bootbox/bootbox.js' %}"></script>
+
+
+<!-- Scripts -->
+<script src="{% static 'unal/global/js/Component.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin.js' %}"></script>
+<script src="{% static 'unal/global/js/Base.js' %}"></script>
+<script src="{% static 'unal/global/js/Config.js' %}"></script>
+
+<script src="{% static 'unal/assets/js/Section/Menubar.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/GridMenu.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/Sidebar.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/PageAside.js' %}"></script>
+<script src="{% static 'unal/assets/js/Plugin/menu.js' %}"></script>
+
+<script src="{% static 'unal/global/js/config/colors.js' %}"></script>
+<script src="{% static 'unal/assets/js/config/tour.js' %}"></script>
+<script>Config.set('assets', "{% static 'unal/assets' %}");</script>
+
+<!-- Page -->
+<script src="{% static 'unal/assets/js/Site.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/asscrollable.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/slidepanel.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/switchery.js' %}"></script>
+
+<script src="{% static 'unal/global/js/Plugin/sticky-header.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/action-btn.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/asselectable.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/editlist.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/aspaginator.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/animate-list.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/jquery-placeholder.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/material.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/selectable.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/bootbox.js' %}"></script>
+<script src="{% static 'unal/assets/js/BaseApp.js' %}"></script>
+<script src="{% static 'unal/assets/js/App/Contacts.js' %}"></script>
+
+<script src="{% static 'unal/assets/examples/js/apps/contacts.js' %}"></script>
+
+{% endblock %}
+
+<!-- <h1>Tesis</h1>
+<p>
+  <a href="{% url "thesis_new" %}">Agregar Thesis</a>
+</p>
+<ul>
+  {% for thesis in object_list %}
+  <li>
+    <p>{{ thesis.name }}</p>
+    <p>
+      <a href="{% url 'thesis_detail' thesis.id %}">Ver</a> |
+      <a href="{% url 'thesis_update' thesis.id  %}">Edit</a>
+      <a href="{% url 'thesis_delete' thesis.id  %}">Eliminar</a>
+    </p>
+  </li>
+  {% endfor %}
+</ul> -->
