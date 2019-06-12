@@ -69,4 +69,4 @@ class StudentList(ListView):
 
 
 class TeacherList(ListView):
-    pmodel = Teacher
+    model = Teacher
