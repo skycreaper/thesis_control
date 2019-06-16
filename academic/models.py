@@ -1,27 +1,30 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
-# class User(AbstractUser):
-#     is_student = models.BooleanField(default=False)
-#     is_teacher = models.BooleanField(default=False)
+class User(AbstractUser):
+    is_student = models.BooleanField(default=False)
+    is_teacher = models.BooleanField(default=False)
+    movile = models.CharField(max_length=10)
+    address = models.CharField(max_length=200)
+    birth_date = models.DateField()
+    cvlac = models.CharField(max_length=200)
 
 
 class Student(models.Model):
-    #user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    host_field = models.CharField(max_length=500)   
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
 
 class Teacher(models.Model):
-    #user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    guest_field = models.BooleanField(null=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
 
 class Thesis(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(max_length=1024*2)
     period = models.CharField(max_length=200)             # periodo
-    direct = models.CharField(max_length=200)             # relacion con usuario director
+    # relacion con usuario director
+    direct = models.CharField(max_length=200)
     student = models.CharField(max_length=200)            # id estuddiante
     porcentage = models.CharField(max_length=2)           # calculado auto
     state = models.CharField(max_length=2)                # para workflow
