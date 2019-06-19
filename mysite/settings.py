@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig', # part2
     # apps personal
     'academic.apps.AcademicConfig',
+    'users.apps.UsersConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -76,22 +77,23 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase',
-    }
-}
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'thesis_control',
-#         'USER': 'postgres',
-#         'PASSWORD': 'mypassword',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'mydatabase',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'thesis_control',
+        'USER': 'postgres',
+        'PASSWORD': 'mypassword',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
 
 
 # Password validation
@@ -152,4 +154,4 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
 
 
 # exterder clase user
-AUTH_USER_MODEL = 'academic.User'
+AUTH_USER_MODEL = 'users.CustomUser'
