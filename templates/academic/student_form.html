@@ -326,10 +326,19 @@
 
 <!-- End Page -->
 
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Submit" />
+</form>
+
+
+
+
 
 <!-- Site Action -->
 <div class="site-action" data-plugin="actionBtn">
-  <button type="button" class="site-action-toggle btn-raised btn btn-success btn-floating" onclick="location.href='{% url "student_new" %}'">
+  <button type="button" class="site-action-toggle btn-raised btn btn-success btn-floating">
     <i class="front-icon wb-plus animation-scale-up" aria-hidden="true"></i>
     <i class="back-icon wb-close animation-scale-up" aria-hidden="true"></i>
   </button>
