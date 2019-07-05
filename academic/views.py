@@ -67,8 +67,7 @@ class StudentList(ListView):
 
 class StudentCreation(CreateView):
     model = Student
-    fields = ['username', 'first_name', 'last_name', 'email',
-              'movile', 'address', 'birth_date', 'cvlac']
+    fields = ['cvlacStudent']
     success_url = reverse_lazy('student_list')
 
 ###### Teacher ######

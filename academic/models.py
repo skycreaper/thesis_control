@@ -4,10 +4,11 @@ from django.db import models
 
 class Student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-
+    cvlacStudent = models.CharField(max_length=200) # campo de prueba
 
 class Teacher(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
+    cvlacTeacher = models.CharField(max_length=200) # campo de prueba
 
 
 class Thesis(models.Model):
