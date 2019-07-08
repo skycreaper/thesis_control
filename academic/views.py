@@ -73,18 +73,20 @@ class StudentList(ListView):
 class StudentCreation(FormView):
     template_name = 'student_form.html'
     form_class = StudentCreationForm
+    success_url = reverse_lazy('student_list')
 
     def form_valid(self, form):
         data = form.cleaned_data
-        user = CustomUser.objects.create_user(password=data['password'],
-                                        first_name=data['first_name'],
-                                        last_name=data['last_name'],
-                                        email=data['email'],
-                                        movile=data['movile'],
-                                        address=data['address'],
-                                        birth_date=data['birth_date'],
-                                        cvlac=data['cvlac']
-                                        )
+        user = CustomUser.objects.create_user(
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            email=data['email'],
+            movile=data['movile'],
+            address=data['address'],
+            birth_date=data['birth_date'],
+            cvlac=data['cvlac'],
+            password=data['password']
+        )
         user.student.cvlacStudent = data['cvlacStudent']
         user.save()
 
