@@ -13,6 +13,7 @@ from django.views.generic import DetailView, FormView
 from django.shortcuts import render
 from .forms import StudentCreationForm
 from users.models import CustomUser
+from django.shortcuts import redirect
 
 
 
@@ -73,7 +74,6 @@ class StudentList(ListView):
 class StudentCreation(FormView):
     template_name = 'student_form.html'
     form_class = StudentCreationForm
-    success_url = reverse_lazy('student_list')
 
     def form_valid(self, form):
         data = form.cleaned_data
@@ -89,8 +89,7 @@ class StudentCreation(FormView):
         )
         user.student.cvlacStudent = data['cvlacStudent']
         user.save()
-
-        return HttpResponse('ok')
+        return redirect('student_list')
 
 ###### Teacher ######
 
