@@ -1,14 +1,29 @@
 from users.models import CustomUser
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class Student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     cvlacStudent = models.CharField(max_length=200) # campo de prueba
+    objects=models.Manager()
+
+@receiver(post_save, sender=CustomUser)
+def student_for_new_user(sender, instance , created, **kwargs):
+    if created:
+        Student.objects.create(user=instance).save()
+
 
 class Teacher(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     cvlacTeacher = models.CharField(max_length=200) # campo de prueba
+    objects=models.Manager()
+
+@receiver(post_save, sender=CustomUser)
+def teacher_for_new_user(sender, instance , created, **kwargs):
+    if created:
+        Teacher.objects.create(user=instance).save()
 
 
 class Thesis(models.Model):

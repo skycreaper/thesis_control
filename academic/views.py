@@ -7,8 +7,13 @@ from django.urls import reverse
 from django.urls import reverse_lazy
 
 from django.views.generic import ListView
-from django.views.generic.detail import DetailView
 from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
+from django.views.generic import DetailView, FormView
+
+from django.shortcuts import render
+from .forms import StudentCreationForm
+from users.models import CustomUser
+
 
 
 def index(request):
@@ -65,10 +70,25 @@ class StudentList(ListView):
     model = Student
 
 
-class StudentCreation(CreateView):
-    model = Student
-    fields = ['cvlacStudent']
-    success_url = reverse_lazy('student_list')
+class StudentCreation(FormView):
+    template_name = 'student_form.html'
+    form_class = StudentCreationForm
+
+    def form_valid(self, form):
+        data = form.cleaned_data
+        user = CustomUser.objects.create_user(password=data['password'],
+                                        first_name=data['first_name'],
+                                        last_name=data['last_name'],
+                                        email=data['email'],
+                                        movile=data['movile'],
+                                        address=data['address'],
+                                        birth_date=data['birth_date'],
+                                        cvlac=data['cvlac']
+                                        )
+        user.student.cvlacStudent = data['cvlacStudent']
+        user.save()
+
+        return HttpResponse('ok')
 
 ###### Teacher ######
 
