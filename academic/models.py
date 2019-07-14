@@ -12,7 +12,6 @@ class Student(models.Model):
 @receiver(post_save, sender=CustomUser)
 def student_for_new_user(sender, instance , created, **kwargs):
     if created:
-        Student.is_student = True # si resultado
         Student.objects.create(user=instance).save()
 
 

@@ -21,5 +21,6 @@ urlpatterns = [
     path('student/new/', StudentCreation.as_view(), name='student_new'),
     #Teacher
     path('teacher/', TeacherList.as_view(), name='teacher_list'),
+    path('teacher/new/', TeacherCreation.as_view(), name='teacher_new'),
 
 ]
