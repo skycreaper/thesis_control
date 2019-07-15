@@ -14,6 +14,9 @@ def student_for_new_user(sender, instance , created, **kwargs):
     if created:
         Student.objects.create(user=instance).save()
 
+#udate
+
+#delete
 
 class Teacher(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)

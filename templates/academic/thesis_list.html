@@ -116,6 +116,25 @@
           <!-- Panel Kitchen Sink -->
           <div class="panel">
             <div class="panel-body" style="overflow:auto">
+
+
+              <!-- <h1>Tesis</h1>
+              <p>
+                <a href="{% url "thesis_new" %}">Agregar Thesis</a>
+              </p>
+              <ul>
+                {% for thesis in object_list %}
+                <li>
+                  <p>{{ thesis.name }}</p>
+                  <p>
+                    <a href="{% url 'thesis_detail' thesis.id %}">Ver</a> |
+                    <a href="{% url 'thesis_update' thesis.id  %}">Edit</a>
+                    <a href="{% url 'thesis_delete' thesis.id  %}">Eliminar</a>
+                  </p>
+                </li>
+                {% endfor %}
+              </ul> -->
+
               <table
                 class="programas tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe"
                 data-tablesaw-mode="swipe" data-tablesaw-sortable="" data-tablesaw-sortable-switch=""
@@ -286,19 +305,3 @@
 
 {% endblock %}
 
-<!-- <h1>Tesis</h1>
-<p>
-  <a href="{% url "thesis_new" %}">Agregar Thesis</a>
-</p>
-<ul>
-  {% for thesis in object_list %}
-  <li>
-    <p>{{ thesis.name }}</p>
-    <p>
-      <a href="{% url 'thesis_detail' thesis.id %}">Ver</a> |
-      <a href="{% url 'thesis_update' thesis.id  %}">Edit</a>
-      <a href="{% url 'thesis_delete' thesis.id  %}">Eliminar</a>
-    </p>
-  </li>
-  {% endfor %}
-</ul> -->
