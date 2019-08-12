@@ -1,5 +1,6 @@
 from django.shortcuts import HttpResponse
 from .models import Thesis, Advance, Student, Teacher
+from users.models import CustomUser
 from django.utils import timezone
 
 from django.urls import reverse
@@ -72,7 +73,10 @@ class AdvanceList(ListView):
 
 
 class StudentList(ListView):
-    model = Student
+    template_name = "student_list.html"
+
+    def get_queryset(self):
+        return Student.objects.select_related('user')
 
 
 class StudentCreation(FormView):
@@ -84,7 +88,7 @@ class StudentCreation(FormView):
         user = CustomUser.objects.create_user(first_name=data['first_name'],
                                               last_name=data['last_name'],
                                               email=data['email'],
-                                              movile=data['movile'],
+                                              mobile=data['mobile'],
                                               address=data['address'],
                                               birth_date=data['birth_date'],
                                               cvlac=data['cvlac'],
@@ -111,7 +115,7 @@ class TeacherCreation(FormView):
         user = CustomUser.objects.create_user(first_name=data['first_name'],
                                               last_name=data['last_name'],
                                               email=data['email'],
-                                              movile=data['movile'],
+                                              mobile=data['mobile'],
                                               address=data['address'],
                                               birth_date=data['birth_date'],
                                               cvlac=data['cvlac'],
