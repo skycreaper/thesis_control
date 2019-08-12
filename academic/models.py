@@ -18,6 +18,7 @@ def student_for_new_user(sender, instance , created, **kwargs):
 
 #delete
 
+# Teacher model
 class Teacher(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     cvlacTeacher = models.CharField(max_length=200) # campo de prueba
