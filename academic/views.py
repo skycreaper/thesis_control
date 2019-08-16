@@ -1,6 +1,5 @@
 from django.shortcuts import HttpResponse
 from .models import Thesis, Advance, Student, Teacher
-from users.models import CustomUser
 from django.utils import timezone
 
 from django.urls import reverse
@@ -10,7 +9,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 from django.views.generic import DetailView, FormView
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .forms import StudentCreationForm, TeacherCreationForm
 from users.models import CustomUser
 from django.shortcuts import redirect
@@ -82,7 +81,6 @@ class StudentList(ListView):
 class StudentCreation(FormView):
     template_name = 'student_form.html'
     form_class = StudentCreationForm
-
     def form_valid(self, form):
         data = form.cleaned_data
         user = CustomUser.objects.create_user(first_name=data['first_name'],
@@ -95,9 +93,31 @@ class StudentCreation(FormView):
                                               password=data['password'])
         user.student.cvlacStudent = data['cvlacStudent']
         user.is_student = True
+        print("user: ", user)
         user.save()
         return redirect('student_list')
 
+class StudentEdit():
+    def edit(request, user):
+        print("edit............")
+        student = get_object_or_404(Student, user=user)
+        # print("something like that: ", user)
+        # cUser = CustomUser.objects.get(pk=user)
+        # print("cUSer: ", cUser)
+        # student = Student(user=cUser)
+        print("student: ", student.user.first_name)
+        if request.method == "POST":
+            form = StudentCreationForm(request.POST, instance=student)
+            # print("student: ", student)
+            if form.is_valid():
+                student = form.save(commit=False)
+                student.user = request.user
+                student.save()
+                return redirect('student_list')
+        else:
+            form = StudentCreationForm(instance=student)
+
+        return render(request, 'edit/student_update_form.html', {'form':form})
 
 ###### Teacher ######
 
