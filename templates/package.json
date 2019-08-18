@@ -1,0 +1,26 @@
+{
+  "name": "thesis_control",
+  "version": "1.0.0",
+  "description": "thesis_control app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skycreaper/thesis_control.git"
+  },
+  "keywords": [
+    "thesis",
+    "control"
+  ],
+  "author": "Juan Camilo Sarmiento Reyes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skycreaper/thesis_control/issues"
+  },
+  "homepage": "https://github.com/skycreaper/thesis_control#readme",
+  "dependencies": {
+    "sweetalert2": "^8.16.2"
+  }
+}
