@@ -93,35 +93,47 @@ class StudentCreation(FormView):
                                               password=data['password'])
         user.student.cvlacStudent = data['cvlacStudent']
         user.is_student = True
-        print("user: ", user)
         user.save()
         return redirect('student_list')
 
 class StudentEdit():
     def edit(request, user):
-        print("edit............")
+        template = 'edit/student_update_form.html'
         student = get_object_or_404(Student, user=user)
-        # print("something like that: ", user)
-        # cUser = CustomUser.objects.get(pk=user)
-        # print("cUSer: ", cUser)
-        # student = Student(user=cUser)
-        print("student: ", student.user.first_name)
         if request.method == "POST":
             form = StudentCreationForm(request.POST, instance=student)
-            # print("student: ", student)
-            if form.is_valid():
-                student = form.save(commit=False)
-                student.user = request.user
-                student.save()
-                return redirect('student_list')
+
+            try: 
+                if form.is_valid():
+                    data = form.cleaned_data
+                    custom_user = CustomUser.objects.get(pk=user)
+                    custom_user.first_name = data["first_name"]
+                    custom_user.last_name = data["last_name"]
+                    custom_user.mobile = data["mobile"]
+                    custom_user.email = data["email"]
+                    custom_user.address = data["address"]
+                    custom_user.birth_date = data["birth_date"]
+                    custom_user.cvlac = data["cvlac"]
+                    custom_user.password = data["password"]
+                    student.user = custom_user
+                    
+                    student = form.save(commit=False)
+                    student.save()
+                    custom_user.save()
+                    
+                    return redirect('student_list')
+            except Exception as e:
+                print("error in StudentEdit(): {}".format(e))
         else:
             form = StudentCreationForm(instance=student)
 
-        return render(request, 'edit/student_update_form.html', {'form':form})
+        context = {
+            'form': form,
+            'student': student
+        }
+        return render(request, template, context)
 
 ###### Teacher ######
-
-
 class TeacherList(ListView):
     model = Teacher
 

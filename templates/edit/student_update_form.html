@@ -109,64 +109,74 @@
       <form method="post">
         {% csrf_token %}
         <div class="form-group ">
-        <label for="id_password" class="col-sm-2 col-form-label">Editar: </label>
+        <label for="id_first_name" class="col-sm-4 col-form-label">Nombes Completos: </label>
           <div class="col-sm-7">
             <input type="text" class="form-control" name="first_name" maxlength="30" id="id_first_name"
-              placeholder="Nombres" value="{{ student.user.first_name }} {{ student.user.last_name }}">
+              placeholder="Nombres" value="{{ student.user.first_name }}">
           </div>
         </div>
         <div class="form-group ">
+          <label for="id_last_name" class="col-sm-4 col-form-label">Apellidos Completos: </label>
           <div class="col-sm-7">
             <input type="text" class="form-control" name="last_name" maxlength="150" id="id_last_name"
-              placeholder="Apellidos">
+              placeholder="Apellidos" value="{{ student.user.last_name }}">
           </div>
         </div>
         <div class="form-group ">
+        <label for="id_mobile" class="col-sm-2 col-form-label">Teléfono: </label>
           <div class="col-sm-7">
-            <input type="text" class="form-control" name="mobile" maxlength="10" required="" id="id_movile"
-              placeholder="Teléfono">
+            <input type="text" class="form-control" name="mobile" maxlength="10" required="" id="id_mobile"
+              placeholder="Teléfono" value="{{ student.user.mobile }}">
           </div>
         </div>
         <div class="form-group ">
+        <label for="id_email" class="col-sm-6 col-form-label">Correo Electrónico Institucional: </label>
           <div class="col-sm-7">
             <input type="email" class="form-control" name="email" maxlength="254" required="" id="id_email"
-              placeholder="Email">
+              placeholder="Email" value="{{ student.user.email }}">
           </div>
         </div>
         <div class="form-group ">
+          <label for="id_address" class="col-sm-2 col-form-label">Dirección: </label>
           <div class="col-sm-7">
             <input type="text" class="form-control" name="address" maxlength="200" required="" id="id_address"
-              placeholder="Dirección">
+              placeholder="Dirección" value="{{ student.user.address }}">
           </div>
         </div>
         <div class="form-group ">
+          <label for="id_birth_date" class="col-sm-6 col-form-label">Fecha de nacimiento: </label>
           <div class="col-sm-7">
             <input type="text" class="form-control" name="birth_date" id="id_birth_date"
-              placeholder="Fecha de Nacimiento">
+              placeholder="Fecha de Nacimiento" value="{{ student.user.birth_date }}">
           </div>
         </div>
         <div class="form-group ">
           <div class="col-sm-7">
+            <label for="id_cvlac" class="col-sm-6 col-form-label">CvLAC: </label>
             <input type="text" class="form-control" name="cvlac" maxlength="200" required="" id="id_cvlac"
-              placeholder="CVLAC">
+              placeholder="CVLAC" value="{{ student.user.cvlac }}">
           </div>
         </div>
 
         <div class="form-group ">
           <label for="id_password" class="col-sm-2 col-form-label">Contraseña</label>
           <div class="col-sm-7">
-            <input type="text" class="form-control" name="password" maxlength="128" required="" id="id_password">
+            <input type="text" class="form-control" name="password" maxlength="128" required="" id="id_password" 
+              value="{{ student.user.cvlac }}">
           </div>
         </div>
-        <div class="form-group ">
+        {% comment %} <div class="form-group ">
           <label for="id_cvlacStudent" class="col-sm-2 col-form-label">cvlacStudent</label>
           <div class="col-sm-7">
-            <input type="text" class="form-control" name="cvlacStudent" required="" id="id_cvlacStudent">
+            <input type="text" class="form-control" name="cvlacStudent" required="" id="id_cvlacStudent" 
+              value="{{ student.cvlacStudent }}">
           </div>
-        </div>
+        </div> {% endcomment %}
         <div class="form-group ">
           <div class="col-sm-7">
-            <input type="submit" class="btn btn-primary" value="Guardar" />
+            <input type="submit" class="btn btn-primary" value="Actualizar" />
+            <p>{{ form.errors }}
+{{ form.non_field_errors }}<p>
           </div>
         </div>
       </form>

@@ -12,14 +12,15 @@
           </li>
           <li class="site-menu-category">Seguimiento</li>
           <li class="site-menu-item has-sub">
-            <a href="{% url 'student_list' %}">
+            {% comment %} <a href="{% url 'student_list' %}"> {% endcomment %}
+            <a href="#">
               <i class="site-menu-icon wb-users" aria-hidden="true"></i>
               <span class="site-menu-title">Estudiantes</span>
               <span class="site-menu-arrow"></span>
             </a>
             <ul class="site-menu-sub">
               <li class="site-menu-item">
-                <a class="animsition-link" href="uikit/cards.html">
+                <a class="animsition-link" href="{% url 'student_list' %}">>
                   <span class="site-menu-title">Listar</span>
                 </a>
               </li>
