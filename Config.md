@@ -1,4 +1,4 @@
-## virtualevn
+## virtualenv
     pip install virtualenv
     virtualenv env3 --python=python3
     cd env3
