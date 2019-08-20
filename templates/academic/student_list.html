@@ -287,13 +287,16 @@ $('.btn-disable').click(function() {
       $.ajax({
         url: "{% url 'student_disable' %}",
         type: 'post',
-        user: student_id,
+        data: {
+          user: student_id
+        },
         headers: {
           'X-CSRFToken': csrftoken
         },
         success: function(data) {
-          console.log(data)
-          Swal.fire('correct', 'correct', 'success')
+          Swal.fire('correct', 'correct', 'success').then(function() {
+            window.location.reload();
+          });
         }
       });
     }

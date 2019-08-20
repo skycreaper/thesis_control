@@ -79,9 +79,7 @@ class StudentDisable():
     def disabledStudent(request):
         if request.method == "POST":
             customUser = get_object_or_404(CustomUser, pk=request.POST.get("user"))
-            print(customUser.is_active)
             customUser.is_active = False
-            print(customUser.is_active)
             customUser.save()
             return HttpResponse("ok",content_type='text/plain')
         return redirect('student_list')
