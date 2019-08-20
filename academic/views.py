@@ -1,18 +1,14 @@
-from django.shortcuts import HttpResponse
 from .models import Thesis, Advance, Student, Teacher
-from django.utils import timezone
-
-from django.urls import reverse
-from django.urls import reverse_lazy
-
-from django.views.generic import ListView
-from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
-from django.views.generic import DetailView, FormView
-
-from django.shortcuts import render, get_object_or_404
 from .forms import StudentCreationForm, TeacherCreationForm
+
 from users.models import CustomUser
-from django.shortcuts import redirect
+
+from django.shortcuts import HttpResponse, render, get_object_or_404, redirect
+from django.utils import timezone
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, FormView
+from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
+from django.views.decorators.csrf import csrf_protect
 
 
 def index(request):
@@ -76,6 +72,19 @@ class StudentList(ListView):
 
     def get_queryset(self):
         return Student.objects.select_related('user')
+    
+
+class StudentDisable():
+    @csrf_protect
+    def disabledStudent(request, user):
+        print("disable student....")
+        print(user)
+        customUser = get_object_or_404(CustomUser, pk=user)
+        if request.method == "POST":
+            if request.is_ajax():
+                print("solicitud")
+            return HttpResponse("disabled correct",mimetype='text/plain')
+        return redirect('student_list')
 
 
 class StudentCreation(FormView):
@@ -162,7 +171,7 @@ class TeacherEdit():
         template = 'edit/teacher_update_form.html'
         teacher = get_object_or_404(Teacher, user=user)
         if request.method == "POST":
-            form = StudentCreationForm(request.POST, instance=teacher)
+            form = TeacherCreationForm(request.POST, instance=teacher)
 
             try: 
                 if form.is_valid():

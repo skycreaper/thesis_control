@@ -16,7 +16,7 @@ class StudentCreationForm(forms.ModelForm):
 
 
 class TeacherCreationForm(forms.ModelForm):
-    cvlacTeacher = forms.CharField()
+    cvlacTeacher = forms.CharField(required=False)
 
     class Meta:
         model = CustomUser
