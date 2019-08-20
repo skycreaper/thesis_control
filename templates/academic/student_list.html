@@ -135,6 +135,7 @@
         </thead>
         <tbody>
          {% for student in object_list %}
+            {% if student.user.is_student and student.user.is_active %}
           {% comment %} <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel"> {% endcomment %}
           <tr>
             <td class="pre-cell"></td>
@@ -154,11 +155,12 @@
             <td class="cell-300"> {{ student.user}} </td>
             <td class="cell-300">
                 <a class="btn btn-warning" href="{% url 'student_edit' user=student.user.id %}">Editar</a>
-                <button class="btn btn-danger" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button>
+                <button class="btn btn-danger btn-disable" value="{{ student.user.id }}" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button>
             </td>
             <td class="suf-cell"></td>
           </tr>
-            {% endfor %}
+            {% endif %}
+          {% endfor %}
         </tbody>
       </table>
 
@@ -171,21 +173,23 @@
 
 
 <!-- Site Action -->
-<div class="site-action" data-plugin="actionBtn">
-  <button type="button" class="site-action-toggle btn-raised btn btn-success btn-floating"
-    onclick="location.href='{% url "student_new" %}'">
-    <i class="front-icon wb-plus animation-scale-up" aria-hidden="true"></i>
-    <i class="back-icon wb-close animation-scale-up" aria-hidden="true"></i>
-  </button>
-  <div class="site-action-buttons">
-    <button type="button" data-action="trash" class="btn-raised btn btn-success btn-floating animation-slide-bottom">
-      <i class="icon wb-trash" aria-hidden="true"></i>
+<form>{% csrf_token %}
+  <div class="site-action" data-plugin="actionBtn">
+    <button type="button" class="site-action-toggle btn-raised btn btn-success btn-floating"
+      onclick="location.href='{% url "student_new" %}'">
+      <i class="front-icon wb-plus animation-scale-up" aria-hidden="true"></i>
+      <i class="back-icon wb-close animation-scale-up" aria-hidden="true"></i>
     </button>
-    <button type="button" data-action="folder" class="btn-raised btn btn-success btn-floating animation-slide-bottom">
-      <i class="icon wb-folder" aria-hidden="true"></i>
-    </button>
+    <div class="site-action-buttons">
+      <button type="button" data-action="trash" class="btn-raised btn btn-success btn-floating animation-slide-bottom">
+        <i class="icon wb-trash" aria-hidden="true"></i>
+      </button>
+      <button type="button" data-action="folder" class="btn-raised btn btn-success btn-floating animation-slide-bottom">
+        <i class="icon wb-folder" aria-hidden="true"></i>
+      </button>
+    </div>
   </div>
-</div>
+</form>
 <!-- End Site Action -->
 
 <!-- Footer -->
@@ -250,17 +254,51 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 <script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
-$('#btn-disable').click(function() {
-  // alert("disalbe button")
+$('.btn-disable').click(function() {
+  var student_id = $(this).val()
+  var csrftoken = getCookie('csrftoken');
   Swal.fire({
-  title: 'Error!',
-  text: 'Do you want to continue',
-  type: 'error',
-  confirmButtonText: 'Cool'
+    title: '¿Continuar?',
+    text: "You won't be able to revert this!",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Deshabilitar'
+  }).then(function(result) {
+    if(result.value) {
+
+      $.ajax({
+        url: "{% url 'student_disable' %}",
+        type: 'post',
+        user: student_id,
+        headers: {
+          'X-CSRFToken': csrftoken
+        },
+        success: function(data) {
+          console.log(data)
+          Swal.fire('correct', 'correct', 'success')
+        }
+      });
+    }
   })
 });
-
 </script>
 
 {% endblock %}

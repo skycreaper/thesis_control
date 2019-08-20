@@ -76,14 +76,14 @@ class StudentList(ListView):
 
 class StudentDisable():
     @csrf_protect
-    def disabledStudent(request, user):
-        print("disable student....")
-        print(user)
-        customUser = get_object_or_404(CustomUser, pk=user)
+    def disabledStudent(request):
         if request.method == "POST":
-            if request.is_ajax():
-                print("solicitud")
-            return HttpResponse("disabled correct",mimetype='text/plain')
+            customUser = get_object_or_404(CustomUser, pk=request.POST.get("user"))
+            print(customUser.is_active)
+            customUser.is_active = False
+            print(customUser.is_active)
+            customUser.save()
+            return HttpResponse("ok",content_type='text/plain')
         return redirect('student_list')
 
 
