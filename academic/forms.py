@@ -9,7 +9,7 @@ from django import forms
 class StudentCreationForm(forms.ModelForm):
     attrs = {"class": "form-control"}
     
-    cvlacStudent = forms.CharField()
+    cvlacStudent = forms.CharField(required=False)
     class Meta:
         model = CustomUser
         fields = ('first_name','last_name', 'mobile', 'email', 'address', 'birth_date', 'cvlac' ,'password')
