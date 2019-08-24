@@ -8,11 +8,13 @@ from django import forms
 
 class StudentCreationForm(forms.ModelForm):
     attrs = {"class": "form-control"}
-    
+
     cvlacStudent = forms.CharField(required=False)
+
     class Meta:
         model = CustomUser
-        fields = ('first_name','last_name', 'mobile', 'email', 'address', 'birth_date', 'cvlac' ,'password')
+        fields = ('first_name', 'last_name', 'mobile', 'email',
+                  'address', 'birth_date', 'cvlac', 'password')
 
 
 class TeacherCreationForm(forms.ModelForm):
@@ -20,4 +22,5 @@ class TeacherCreationForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ('first_name','last_name', 'mobile', 'email', 'address', 'birth_date', 'cvlac' ,'password')
+        fields = ('first_name', 'last_name', 'mobile', 'email',
+                  'address', 'birth_date', 'cvlac', 'password')
