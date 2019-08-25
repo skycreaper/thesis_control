@@ -200,3 +200,13 @@ class TeacherEdit():
             'teacher': teacher
         }
         return render(request, template, context)
+
+class TeacherDisable():
+    @csrf_protect
+    def disabledTeacher(request):
+        if request.method == "POST":
+            customUser = get_object_or_404(CustomUser, pk=request.POST.get("user"))
+            customUser.is_active = False
+            customUser.save()
+            return HttpResponse("ok",content_type='text/plain')
+        return redirect('teacher_list')
