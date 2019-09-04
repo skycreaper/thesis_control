@@ -1,14 +1,17 @@
-from .models import Thesis, Advance, Student, Teacher
-from .forms import StudentCreationForm, TeacherCreationForm
-
-from users.models import CustomUser
-
 from django.shortcuts import HttpResponse, render, get_object_or_404, redirect
 from django.utils import timezone
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 from django.views.decorators.csrf import csrf_protect
+
+from rolepermissions.decorators import has_role_decorator
+
+from .models import Thesis, Advance, Student, Teacher
+from .forms import StudentCreationForm, TeacherCreationForm
+
+from users.models import CustomUser
+
 
 
 def index(request):
@@ -65,7 +68,6 @@ class AdvanceList(ListView):
 #     fields = ['name', 'start_date', 'end_date', 'picture']
 
 ###### Student ######
-
 
 class StudentList(ListView):
     template_name = "student_list.html"

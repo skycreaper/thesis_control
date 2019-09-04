@@ -2,7 +2,7 @@ from users.models import CustomUser
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-
+from rolepermissions.roles import assign_role
 
 class Student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)

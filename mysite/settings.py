@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # apps personal
     'academic.apps.AcademicConfig',
+    'home.apps.HomeConfig',
     #'users.apps.UsersConfig',
     'users',
-
+    'rolepermissions'
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mysite.urls'
+ROLEPERMISSIONS_MODULE = 'mysite.roles'
+ROLEPERMISSIONS_REDIRECT_TO_LOGIN = True
 
 TEMPLATES = [
     {
@@ -145,8 +148,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "allstaticfiles")
 
 
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/login'
+LOGOUT_REDIRECT_URL = '/login'
 
 
 # Email para entornos de desarrollo.

@@ -31,6 +31,7 @@
     <li class="nav-item dropdown">
       <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="scale-up"
         role="button">
+        {{request.user}}
         <span class="avatar avatar-online">
           <img src="{% static 'unal/global/portraits/5.jpg' %}" alt="...">
           <i></i>
@@ -42,7 +43,7 @@
         <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-settings"
             aria-hidden="true"></i> Opciones</a>
         <div class="dropdown-divider" role="presentation"></div>
-        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-power"
+        <a class="dropdown-item" href="{% url 'logout' %}" role="menuitem"><i class="icon wb-power"
             aria-hidden="true"></i> Cerrar Sesión</a>
       </div>
     </li>
