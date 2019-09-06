@@ -143,7 +143,7 @@ class StudentEdit():
 ###### Teacher ######
 class TeacherList(ListView):
     model = Teacher
-    paginate_by = 3
+    paginate_by = 10
 
 
 class TeacherCreation(FormView):
