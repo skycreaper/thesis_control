@@ -4,6 +4,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
 
 from rolepermissions.decorators import has_role_decorator
 
@@ -68,16 +69,16 @@ class AdvanceList(ListView):
 #     fields = ['name', 'start_date', 'end_date', 'picture']
 
 ###### Student ######
-
 class StudentList(ListView):
     template_name = "student_list.html"
-
+    
     def get_queryset(self):
         return Student.objects.select_related('user')
     
 
 class StudentDisable():
     @csrf_protect
+    @login_required
     def disabledStudent(request):
         if request.method == "POST":
             customUser = get_object_or_404(CustomUser, pk=request.POST.get("user"))
@@ -90,6 +91,8 @@ class StudentDisable():
 class StudentCreation(FormView):
     template_name = 'student_form.html'
     form_class = StudentCreationForm
+    @csrf_protect
+    @login_required
     def form_valid(self, form):
         data = form.cleaned_data
         user = CustomUser.objects.create_user(first_name=data['first_name'],
@@ -106,6 +109,8 @@ class StudentCreation(FormView):
         return redirect('student_list')
 
 class StudentEdit():
+    @csrf_protect
+    @login_required
     def edit(request, user):
         template = 'edit/student_update_form.html'
         student = get_object_or_404(Student, user=user)
@@ -150,7 +155,8 @@ class TeacherList(ListView):
 class TeacherCreation(FormView):
     template_name = 'teacher_form.html'
     form_class = TeacherCreationForm
-
+    @csrf_protect
+    @login_required
     def form_valid(self, form):
         data = form.cleaned_data
         user = CustomUser.objects.create_user(first_name=data['first_name'],
@@ -167,6 +173,8 @@ class TeacherCreation(FormView):
         return redirect('teacher_list')
 
 class TeacherEdit():
+    @csrf_protect
+    @login_required
     def edit(request, user):
         template = 'edit/teacher_update_form.html'
         teacher = get_object_or_404(Teacher, user=user)

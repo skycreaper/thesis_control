@@ -9,8 +9,11 @@
 </head>
 
 <body  {% block class_doby %}{% endblock %} >
-  {% block content %}
-  {% endblock %}
+  {% if  request.user.is_authenticated%}
+    {% block content %}{% endblock %}
+  {% else %}
+    {% url 'login' %}
+  {% endif %}
 </body>
 
 
