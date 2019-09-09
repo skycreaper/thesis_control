@@ -290,9 +290,9 @@ $('.btn-disable').click(function() {
         data: {
           user: student_id
         },
-        headers: {
+        /*headers: {
           'X-CSRFToken': csrftoken
-        },
+        },*/
         success: function(data) {
           Swal.fire('correct', 'correct', 'success').then(function() {
             window.location.reload();

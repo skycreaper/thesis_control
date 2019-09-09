@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from rolepermissions.decorators import has_role_decorator
 
@@ -12,7 +13,6 @@ from .models import Thesis, Advance, Student, Teacher
 from .forms import StudentCreationForm, TeacherCreationForm
 
 from users.models import CustomUser
-
 
 
 def index(request):
@@ -69,44 +69,48 @@ class AdvanceList(ListView):
 #     fields = ['name', 'start_date', 'end_date', 'picture']
 
 ###### Student ######
-class StudentList(ListView):
+class StudentList(LoginRequiredMixin, ListView):
     template_name = "student_list.html"
-    
+
     def get_queryset(self):
         return Student.objects.select_related('user')
-    
+
 
 class StudentDisable():
     @csrf_protect
     @login_required
     def disabledStudent(request):
         if request.method == "POST":
-            customUser = get_object_or_404(CustomUser, pk=request.POST.get("user"))
+            customUser = get_object_or_404(
+                CustomUser, pk=request.POST.get("user"))
             customUser.is_active = False
             customUser.save()
-            return HttpResponse("ok",content_type='text/plain')
+            return HttpResponse("ok", content_type='text/plain')
         return redirect('student_list')
 
 
-class StudentCreation(FormView):
+class StudentCreation(LoginRequiredMixin, FormView):
     template_name = 'student_form.html'
     form_class = StudentCreationForm
-    @csrf_protect
-    @login_required
+    
     def form_valid(self, form):
-        data = form.cleaned_data
-        user = CustomUser.objects.create_user(first_name=data['first_name'],
-                                              last_name=data['last_name'],
-                                              email=data['email'],
-                                              mobile=data['mobile'],
-                                              address=data['address'],
-                                              birth_date=data['birth_date'],
-                                              cvlac=data['cvlac'],
-                                              password=data['password'])
-        user.student.cvlacStudent = data['cvlacStudent']
-        user.is_student = True
-        user.save()
-        return redirect('student_list')
+        try:
+            data = form.cleaned_data
+            user = CustomUser.objects.create_user(first_name=data['first_name'],
+                                                    last_name=data['last_name'],
+                                                    email=data['email'],
+                                                    mobile=data['mobile'],
+                                                    address=data['address'],
+                                                    birth_date=data['birth_date'],
+                                                    cvlac=data['cvlac'],
+                                                    password=data['password'])
+            user.student.cvlacStudent = data['cvlacStudent']
+            user.is_student = True
+            user.save()
+            return redirect('student_list')
+        except Exception as e:
+            print("error en StudentCreation(): {}".format(e))
+        
 
 class StudentEdit():
     @csrf_protect
@@ -148,15 +152,14 @@ class StudentEdit():
         return render(request, template, context)
 
 ###### Teacher ######
-class TeacherList(ListView):
+class TeacherList(LoginRequiredMixin, ListView):
     model = Teacher
 
 
-class TeacherCreation(FormView):
+class TeacherCreation(LoginRequiredMixin, FormView):
     template_name = 'teacher_form.html'
     form_class = TeacherCreationForm
-    @csrf_protect
-    @login_required
+
     def form_valid(self, form):
         data = form.cleaned_data
         user = CustomUser.objects.create_user(first_name=data['first_name'],
