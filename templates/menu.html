@@ -14,7 +14,7 @@
           <li class="site-menu-category">Seguimiento</li>
           <li class="site-menu-item has-sub">
             {% comment %} <a href="{% url 'student_list' %}"> {% endcomment %}
-            {% if user|has_role:'teacher' %}
+            {% if user|has_role:'teacher,admin' %}
             <a href="#">
               <i class="site-menu-icon wb-users" aria-hidden="true"></i>
               <span class="site-menu-title">Estudiantes</span>
@@ -34,6 +34,7 @@
             </ul>
           </li>
             {% endif %}
+            {% if user|has_role:'student,admin' %}
           <li class="site-menu-item has-sub">
             <a href="#">
               <i class="site-menu-icon  wb-user-circle" aria-hidden="true"></i>
@@ -46,32 +47,37 @@
                   <span class="site-menu-title">Listar</span>
                 </a>
               </li>
+              {% if user|has_role:'admin' %}
               <li class="site-menu-item">
                 <a class="animsition-link" href="{% url 'teacher_new' %}">
                   <span class="site-menu-title">Agregar</span>
                 </a>
               </li>
+              {% endif %}
             </ul>
           </li>
-          <li class="site-menu-item has-sub">
-            <a href="javascript:void(0)">
-              <i class="site-menu-icon   wb-book" aria-hidden="true"></i>
-              <span class="site-menu-title">Control Tesis</span>
-              <span class="site-menu-arrow"></span>
-            </a>
-            <ul class="site-menu-sub">
-              <li class="site-menu-item">
-                <a class="animsition-link" href="{% url 'thesis_list' %}">
-                  <span class="site-menu-title">Listar Tesis</span>
-                </a>
-              </li>
-              <li class="site-menu-item">
-                <a class="animsition-link" href="{% url 'advance_list' %}">
-                  <span class="site-menu-title">Listar Avance</span>
-                </a>
-              </li>
-            </ul>
-          </li>
+          {% endif %}
+          {% if user|has_role:'teacher,student,admin' %}
+            <li class="site-menu-item has-sub">
+              <a href="javascript:void(0)">
+                <i class="site-menu-icon   wb-book" aria-hidden="true"></i>
+                <span class="site-menu-title">Control Tesis</span>
+                <span class="site-menu-arrow"></span>
+              </a>
+              <ul class="site-menu-sub">
+                <li class="site-menu-item">
+                  <a class="animsition-link" href="{% url 'thesis_list' %}">
+                    <span class="site-menu-title">Listar Tesis</span>
+                  </a>
+                </li>
+                <li class="site-menu-item">
+                  <a class="animsition-link" href="{% url 'advance_list' %}">
+                    <span class="site-menu-title">Listar Avance</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          {% endif %}
 
           <li class="site-menu-category">Planes de mejoramiento</li>
           <li class="site-menu-item has-sub">
@@ -99,14 +105,16 @@
               </li>
             </ul>
           </li>
-          <li class="site-menu-category">General</li>
-          <li class="site-menu-item has-sub">
-            <a href="configuracion.php">
-              <i class="site-menu-icon wb-settings" aria-hidden="true"></i>
-              <span class="site-menu-title">Configuración</span>
-              <span class="site-menu-arrow"></span>
-            </a>
-          </li>
+          {% if user|has_role:'admin' %}
+            <li class="site-menu-category">General</li>
+            <li class="site-menu-item has-sub">
+              <a href="configuracion.php">
+                <i class="site-menu-icon wb-settings" aria-hidden="true"></i>
+                <span class="site-menu-title">Configuración</span>
+                <span class="site-menu-arrow"></span>
+              </a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </div>
