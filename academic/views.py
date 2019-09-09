@@ -8,12 +8,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from rolepermissions.decorators import has_role_decorator
+from rolepermissions.roles import get_user_roles, assign_role
 
 from .models import Thesis, Advance, Student, Teacher
 from .forms import StudentCreationForm, TeacherCreationForm
 
 from users.models import CustomUser
 
+student_rol = 'student'
+teacher_rol = 'teacher'
 
 def index(request):
     return HttpResponse("Academica index.")
@@ -75,7 +78,6 @@ class StudentList(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Student.objects.select_related('user')
 
-
 class StudentDisable():
     @csrf_protect
     @login_required
@@ -87,7 +89,6 @@ class StudentDisable():
             customUser.save()
             return HttpResponse("ok", content_type='text/plain')
         return redirect('student_list')
-
 
 class StudentCreation(LoginRequiredMixin, FormView):
     template_name = 'student_form.html'
@@ -107,11 +108,11 @@ class StudentCreation(LoginRequiredMixin, FormView):
             user.student.cvlacStudent = data['cvlacStudent']
             user.is_student = True
             user.save()
+            assign_role(user, student_rol)
             return redirect('student_list')
         except Exception as e:
             print("error en StudentCreation(): {}".format(e))
         
-
 class StudentEdit():
     @csrf_protect
     @login_required
@@ -174,6 +175,7 @@ class TeacherCreation(LoginRequiredMixin, FormView):
         user.teacher.cvlacTeacher = data['cvlacTeacher']
         user.is_teacher = True
         user.save()
+        assign_role(user, teacher_rol)
         return redirect('teacher_list')
 
 class TeacherEdit():

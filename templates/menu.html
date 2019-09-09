@@ -1,3 +1,4 @@
+{% load permission_tags %}
 <div class="site-menubar">
   <div class="site-menubar-body">
     <div>
@@ -13,6 +14,7 @@
           <li class="site-menu-category">Seguimiento</li>
           <li class="site-menu-item has-sub">
             {% comment %} <a href="{% url 'student_list' %}"> {% endcomment %}
+            {% if user|has_role:'teacher' %}
             <a href="#">
               <i class="site-menu-icon wb-users" aria-hidden="true"></i>
               <span class="site-menu-title">Estudiantes</span>
@@ -31,6 +33,7 @@
               </li>
             </ul>
           </li>
+            {% endif %}
           <li class="site-menu-item has-sub">
             <a href="#">
               <i class="site-menu-icon  wb-user-circle" aria-hidden="true"></i>
