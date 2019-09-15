@@ -24,7 +24,7 @@ class HealthInformation(models.Model):
 
 class Rol(models.Model):
     name = models.CharField(max_length=50)
-    descripcion = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
 
 class PersonalInformation(models.Model):
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
