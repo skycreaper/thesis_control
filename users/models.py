@@ -6,24 +6,22 @@ from .managers import CustomUserManager
 
 
 class CustomUser(AbstractUser):
-    username = None
-    email = models.EmailField(_('email address'), unique=True)
+    username = models.CharField(max_length=50, default="default_username", unique=True)
+    # email = models.EmailField(_('email address'), unique=True)
     # fiels module
-    is_student = models.BooleanField(default=False)
-    is_teacher = models.BooleanField(default=False)
-    mobile = models.CharField(max_length=10)
-    address = models.CharField(max_length=200)
-    birth_date = models.DateField(null=True, blank=True)
-    cvlac = models.CharField(max_length=200)
+    # is_student = models.BooleanField(default=False)
+    # is_teacher = models.BooleanField(default=False)
+    
+    # cvlac = models.CharField(max_length=200)
     # fiels module
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = [username]
 
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return self.username
 
 
 

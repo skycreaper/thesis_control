@@ -4,9 +4,47 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from rolepermissions.roles import assign_role
 
+class CivilState(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+
+class Gender(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+
+class Nationality(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+    origin_country = models.CharField(max_length=50)
+
+class HealthInformation(models.Model):
+    grupo_sanguineo = models.CharField(max_length=3)
+    rh = models.CharField(max_length=1)
+    eps = models.CharField(max_length=30)
+
+class Rol(models.Model):
+    name = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=100)
+
+class PersonalInformation(models.Model):
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
+    birth_date = models.DateField(null=True, blank=True)
+    civil_state = models.ForeignKey(CivilState, on_delete=models.CASCADE)
+    nationality = models.ForeignKey(Nationality, on_delete=models.CASCADE)
+    # address = models.CharField(max_length=200)
+    mobile = models.CharField(max_length=10)
+    # address = models.CharField(max_length=100)
+    health_information = models.ForeignKey(HealthInformation, on_delete=models.CASCADE)
+
+class InstitutionalInformation(models.Model):
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
+    cvlac = models.CharField(max_length=200)
+    institutional_email = models.EmailField('institutional email', null=False, blank=False, unique=True, default="default_email@unal.edu.co")
+
 class Student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
-    cvlacStudent = models.CharField(max_length=200) # campo de prueba
+    personal_information = models.OneToOneField(PersonalInformation, null=False, on_delete=models.CASCADE, default=-1)
+    institutional_information = models.ForeignKey(InstitutionalInformation, null=False, on_delete=models.CASCADE, default=-1)
     objects=models.Manager()
 
 @receiver(post_save, sender=CustomUser)
