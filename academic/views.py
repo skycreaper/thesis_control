@@ -10,8 +10,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
 
-from .models import Thesis, Advance, Student, Teacher
+from .models import Thesis, Advance, Student, Teacher, Rol
 from .forms import StudentCreationForm, TeacherCreationForm
+from .transactions import RegisterStudentTransaction
 
 from users.models import CustomUser
 
@@ -89,6 +90,18 @@ class StudentDisable():
             customUser.save()
             return HttpResponse("ok", content_type='text/plain')
         return redirect('student_list')
+
+class Student(LoginRequiredMixin):
+    def register(request):
+        template_name = 'student_form.html'
+        form = StudentCreationForm(request.POST or None)
+        if form.is_valid():
+            data = form.cleaned_data
+            if RegisterStudentTransaction(form.data):
+                redirect('student_list')
+        context = {'form': form}
+        return render(request, template_name, context)
+
 
 class StudentCreation(LoginRequiredMixin, FormView):
     template_name = 'student_form.html'
