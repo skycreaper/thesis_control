@@ -73,13 +73,22 @@ class AdvanceList(ListView):
 #     fields = ['name', 'start_date', 'end_date', 'picture']
 
 ###### Student ######
-class StudentList(LoginRequiredMixin, ListView):
+class Student(LoginRequiredMixin, ListView):
     template_name = "student_list.html"
+    queryset = Student.objects.select_related('personal_information')
 
-    def get_queryset(self):
-        return Student.objects.select_related('user')
+    # Student register
+    def register(request):
+        template_name = 'student_form.html'
+        form = StudentCreationForm(request.POST or None)
+        if form.is_valid():
+            data = form.cleaned_data
+            if RegisterStudentTransaction(form.data):
+                return redirect('student_list')
+        context = {'form': form}
+        return render(request, template_name, context)
 
-class StudentDisable():
+    #s Student disable
     @csrf_protect
     @login_required
     def disabledStudent(request):
@@ -90,42 +99,6 @@ class StudentDisable():
             customUser.save()
             return HttpResponse("ok", content_type='text/plain')
         return redirect('student_list')
-
-class Student(LoginRequiredMixin):
-    def register(request):
-        template_name = 'student_form.html'
-        form = StudentCreationForm(request.POST or None)
-        if form.is_valid():
-            data = form.cleaned_data
-            if RegisterStudentTransaction(form.data):
-                redirect('student_list')
-        context = {'form': form}
-        return render(request, template_name, context)
-
-
-class StudentCreation(LoginRequiredMixin, FormView):
-    template_name = 'student_form.html'
-    form_class = StudentCreationForm
-    
-    def form_valid(self, form):
-        try:
-            data = form.cleaned_data
-            user = CustomUser.objects.create_user(first_name=data['first_name'],
-                                                    last_name=data['last_name'],
-                                                    email=data['email'],
-                                                    mobile=data['mobile'],
-                                                    address=data['address'],
-                                                    birth_date=data['birth_date'],
-                                                    cvlac=data['cvlac'],
-                                                    password=data['password'])
-            user.student.cvlacStudent = data['cvlacStudent']
-            user.is_student = True
-            user.save()
-            assign_role(user, student_rol)
-            return redirect('student_list')
-        except Exception as e:
-            print("error en StudentCreation(): {}".format(e))
-        
 class StudentEdit():
     @csrf_protect
     @login_required

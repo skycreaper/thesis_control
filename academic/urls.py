@@ -17,11 +17,10 @@ urlpatterns = [
     # Advance
     path('advance/', AdvanceList.as_view(), name='advance_list'),
     #Student
-    path('student/', StudentList.as_view(), name='student_list'),
-    # path('student/new/', StudentCreation.as_view(), name='student_new'),
+    path('student/', Student.as_view(), name='student_list'),
     path('student/new/', Student.register, name='student_new'),
     path('student/edit/<int:user>/', StudentEdit.edit, name='student_edit'),
-    path('student/disable/', StudentDisable.disabledStudent, name='student_disable'),
+    path('student/disable/', Student.disabledStudent, name='student_disable'),
     #Teacher
     path('teacher/', TeacherList.as_view(), name='teacher_list'),
     path('teacher/new/', TeacherCreation.as_view(), name='teacher_new'),
