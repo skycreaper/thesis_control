@@ -42,7 +42,7 @@ class PersonalInformation(models.Model):
     birth_date = models.DateField(null=True, blank=True)
     civil_state = models.ForeignKey(CivilState, on_delete=models.CASCADE)
     nationality = models.ForeignKey(Nationality, on_delete=models.CASCADE)
-    # address = models.CharField(max_length=200)
+    address = models.CharField(max_length=200, null=True, blank=True)
     mobile = models.CharField(max_length=10)
     health_information = models.OneToOneField(HealthInformation, on_delete=models.CASCADE)
 
@@ -61,10 +61,6 @@ class Student(models.Model):
 # def student_for_new_user(sender, instance , created, **kwargs):
 #     if created:
 #         Student.objects.create(user=instance).save()
-
-#udate
-
-#delete
 
 # Teacher model
 class Teacher(models.Model):

@@ -122,11 +122,32 @@
               placeholder="Apellidos" value="{{ student.user.last_name }}">
           </div>
         </div>
-        {% comment %} <div class="form-group ">
+        <!-- Genero -->
+        <label for="id_gender" class="col-sm-2 col-form-label">Genero</label>
+        <div class="form-group ">
+          <div class="col-sm-7">
+            {{ form.gender }}
+          </div>
+        </div>
+        <!-- Estado civil -->
+        <label for="id_civilState" class="col-sm-2 col-form-label">Estado civil</label>
+        <div class="form-group ">
+          <div class="col-sm-7">
+            {{ form.civil_state }}
+          </div>
+        </div>
+        <!-- Estado civil -->
+        <label for="id_nationality" class="col-sm-2 col-form-label">Nacionalidad</label>
+        <div class="form-group ">
+          <div class="col-sm-7">
+            {{ form.nationality }}
+          </div>
+        </div>
+        <div class="form-group ">
         <label for="id_mobile" class="col-sm-2 col-form-label">Teléfono: </label>
           <div class="col-sm-7">
-            <input type="text" class="form-control" name="mobile" maxlength="10" required="" id="id_mobile"
-              placeholder="Teléfono" value="{{ student.user.mobile }}">
+            <input type="text" class="form-control" name="mobile" maxlength="10" id="id_mobile"
+              placeholder="Teléfono" value="{{ student.personal_information.mobile }}">
           </div>
         </div>
         <div class="form-group ">
@@ -140,21 +161,21 @@
           <label for="id_address" class="col-sm-2 col-form-label">Dirección: </label>
           <div class="col-sm-7">
             <input type="text" class="form-control" name="address" maxlength="200" required="" id="id_address"
-              placeholder="Dirección" value="{{ student.user.address }}">
+              placeholder="Dirección" value="{{ student.personal_information.address }}">
           </div>
         </div>
         <div class="form-group ">
           <label for="id_birth_date" class="col-sm-6 col-form-label">Fecha de nacimiento: </label>
           <div class="col-sm-7">
             <input type="date" class="form-control" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="birth_date" id="id_birth_date"
-              placeholder="Fecha de Nacimiento" value="{{ student.user.birth_date }}">
+              placeholder="Fecha de Nacimiento" value="{{ student.personal_information.birth_date }}">
           </div>
         </div>
         <div class="form-group ">
           <div class="col-sm-7">
             <label for="id_cvlac" class="col-sm-6 col-form-label">CvLAC: </label>
             <input type="text" class="form-control" name="cvlac" maxlength="200" required="" id="id_cvlac"
-              placeholder="CVLAC" value="{{ student.user.cvlac }}">
+              placeholder="CVLAC" value="{{ student.institutional_information.cvlac }}">
           </div>
         </div>
 
@@ -164,14 +185,7 @@
             <input type="password" class="form-control" name="password" maxlength="128" required="" id="id_password" 
               value="{{ student.user.cvlac }}">
           </div>
-        </div> {% endcomment %}
-        {% comment %} <div class="form-group ">
-          <label for="id_cvlacStudent" class="col-sm-2 col-form-label">cvlacStudent</label>
-          <div class="col-sm-7">
-            <input type="text" class="form-control" name="cvlacStudent" required="" id="id_cvlacStudent" 
-              value="{{ student.cvlacStudent }}">
-          </div>
-        </div> {% endcomment %}
+        </div> 
         <div class="form-group ">
           <div class="col-sm-7">
             <input type="submit" class="btn btn-primary" value="Actualizar" />

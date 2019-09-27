@@ -10,9 +10,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
 
-from .models import Thesis, Advance, Student, Teacher, Rol
+from .models import Thesis, Advance, Student as StudentModel, Teacher, Rol
+from .models import Student
 from .forms import StudentCreationForm, TeacherCreationForm
-from .transactions import RegisterStudentTransaction
+from .transactions import RegisterStudentTransaction, UpdateStudent
 
 from users.models import CustomUser
 
@@ -88,7 +89,7 @@ class Student(LoginRequiredMixin, ListView):
         context = {'form': form}
         return render(request, template_name, context)
 
-    #s Student disable
+    #Student disable
     @csrf_protect
     @login_required
     def disabledStudent(request):
@@ -99,46 +100,35 @@ class Student(LoginRequiredMixin, ListView):
             customUser.save()
             return HttpResponse("ok", content_type='text/plain')
         return redirect('student_list')
-class StudentEdit():
+
+    #Student edit
     @csrf_protect
     @login_required
     def edit(request, user):
         template = 'edit/student_update_form.html'
-        student = get_object_or_404(Student, user=user)
-        # if request.method == "POST":
-        #     # form = StudentCreationForm(request.POST, instance=student)
-        #     print("came here....")
-        #     try: 
-        #         print("inside try...")
-        #         # if form.is_valid():
-        #             # data = form.cleaned_data
-        #             # custom_user = CustomUser.objects.get(pk=user)
-        #             # custom_user.first_name = data["first_name"]
-        #             # custom_user.last_name = data["last_name"]
-        #             # custom_user.mobile = data["mobile"]
-        #             # custom_user.email = data["email"]
-        #             # custom_user.address = data["address"]
-        #             # custom_user.birth_date = data["birth_date"]
-        #             # custom_user.cvlac = data["cvlac"]
-        #             # custom_user.password = data["password"]
-        #             # student.user = custom_user
-                    
-        #             # student = form.save(commit=False)
-        #             # student.save()
-        #             # custom_user.save()
-                    
-        #             # return redirect('student_list')
-        #     except Exception as e:
-        #         print("error in StudentEdit(): {}".format(e))
-        # else:
-        # form = StudentCreationForm(instance=student)
-        form = StudentCreationForm()
+        student = get_object_or_404(StudentModel, user=user)
+
+        if request.method == "POST":
+            form = StudentCreationForm(request.POST, instance=student)
+            try: 
+                if form.is_valid():
+                    student = UpdateStudent(user, form.data)
+                    if  student is not None:    
+                        student = form.save(commit=False)
+                        student.save()
+                        return redirect('student_list')
+            except Exception as e:
+                print("error in StudentEdit(): {}".format(e))
+        else:
+            form = StudentCreationForm(instance=student)
 
         context = {
             'form': form,
-            # 'student': student
+            'student': student
         }
         return render(request, template, context)
+
+    
 
 ###### Teacher ######
 class TeacherList(LoginRequiredMixin, ListView):
