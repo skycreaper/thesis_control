@@ -30,12 +30,12 @@ class HealthInformation(models.Model):
     rh = models.CharField(max_length=1)
     eps = models.CharField(max_length=30)
 
-# class Rol(models.Model):
-#     name = models.CharField(max_length=50)
-#     description = models.CharField(max_length=100)
+class Rol(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
 
-#     def __str__(self):
-#         return self.name
+    def __str__(self):
+        return self.name
 
 class PersonalInformation(models.Model):
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
@@ -47,7 +47,7 @@ class PersonalInformation(models.Model):
     health_information = models.OneToOneField(HealthInformation, on_delete=models.CASCADE)
 
 class InstitutionalInformation(models.Model):
-    # rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
     cvlac = models.CharField(max_length=200)
     institutional_email = models.EmailField('institutional email', null=False, blank=False, unique=True, default="default_email@unal.edu.co")
 
