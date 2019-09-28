@@ -10,7 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
 
-from .models import Thesis, Advance, Student as StudentModel, Teacher#, Rol
+from .models import Thesis, Advance, Student as StudentModel, Teacher, Rol
 from .models import Student
 from .forms import StudentCreationForm, TeacherCreationForm
 from .transactions import RegisterStudentTransaction, UpdateStudent
