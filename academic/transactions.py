@@ -1,6 +1,6 @@
 from django.db import transaction
 
-from .models import Advance, Student, Teacher, Rol, PersonalInformation, HealthInformation, InstitutionalInformation, Gender, CivilState, Nationality
+from .models import Advance, Student, Teacher, PersonalInformation, HealthInformation, InstitutionalInformation, Gender, CivilState, Nationality#, Rol 
 from users.models import CustomUser
 
 from rolepermissions.decorators import has_role_decorator

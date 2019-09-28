@@ -32,13 +32,13 @@ class Migration(migrations.Migration):
             Nationality(name= "Reino Unido", description="Británico/a", origin_country="Reino Unido"),
         ])
 
-    def populate_rol(apps, schema_editor):
-        Rol = apps.get_model('academic', 'Rol')
-        Rol.objects.bulk_create([
-            Rol(name= "Profesor", description="Profesor a tiempo completo"),
-            Rol(name= "Estudiante", description="Estudiante de pregrado"),
-            Rol(name= "Administrador", description="Administrador del sistema"),
-        ])
+    # def populate_rol(apps, schema_editor):
+    #     Rol = apps.get_model('academic', 'Rol')
+    #     Rol.objects.bulk_create([
+    #         Rol(name= "Profesor", description="Profesor a tiempo completo"),
+    #         Rol(name= "Estudiante", description="Estudiante de pregrado"),
+    #         Rol(name= "Administrador", description="Administrador del sistema"),
+    #     ])
     
 
     dependencies = [
@@ -49,5 +49,5 @@ class Migration(migrations.Migration):
         migrations.RunPython(pupulate_gender),
         migrations.RunPython(pupulate_civil_state),
         migrations.RunPython(populate_nationality),
-        migrations.RunPython(populate_rol),
+        # migrations.RunPython(populate_rol),
     ]
