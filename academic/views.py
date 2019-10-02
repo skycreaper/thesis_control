@@ -10,8 +10,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
 
-from .models import Thesis, Advance, Student, Teacher
+from .models import Thesis, Advance, Student as StudentModel, Teacher, Rol
+from .models import Student
 from .forms import StudentCreationForm, TeacherCreationForm
+from .transactions import RegisterStudentTransaction, UpdateStudent
 
 from users.models import CustomUser
 
@@ -72,13 +74,22 @@ class AdvanceList(ListView):
 #     fields = ['name', 'start_date', 'end_date', 'picture']
 
 ###### Student ######
-class StudentList(LoginRequiredMixin, ListView):
+class Student(LoginRequiredMixin, ListView):
     template_name = "student_list.html"
+    queryset = Student.objects.select_related('personal_information')
 
-    def get_queryset(self):
-        return Student.objects.select_related('user')
+    # Student register
+    def register(request):
+        template_name = 'student_form.html'
+        form = StudentCreationForm(request.POST or None)
+        if form.is_valid():
+            data = form.cleaned_data
+            if RegisterStudentTransaction(form.data):
+                return redirect('student_list')
+        context = {'form': form}
+        return render(request, template_name, context)
 
-class StudentDisable():
+    #Student disable
     @csrf_protect
     @login_required
     def disabledStudent(request):
@@ -90,57 +101,22 @@ class StudentDisable():
             return HttpResponse("ok", content_type='text/plain')
         return redirect('student_list')
 
-class StudentCreation(LoginRequiredMixin, FormView):
-    template_name = 'student_form.html'
-    form_class = StudentCreationForm
-    
-    def form_valid(self, form):
-        try:
-            data = form.cleaned_data
-            user = CustomUser.objects.create_user(first_name=data['first_name'],
-                                                    last_name=data['last_name'],
-                                                    email=data['email'],
-                                                    mobile=data['mobile'],
-                                                    address=data['address'],
-                                                    birth_date=data['birth_date'],
-                                                    cvlac=data['cvlac'],
-                                                    password=data['password'])
-            user.student.cvlacStudent = data['cvlacStudent']
-            user.is_student = True
-            user.save()
-            assign_role(user, student_rol)
-            return redirect('student_list')
-        except Exception as e:
-            print("error en StudentCreation(): {}".format(e))
-        
-class StudentEdit():
+    #Student edit
     @csrf_protect
     @login_required
     def edit(request, user):
         template = 'edit/student_update_form.html'
-        student = get_object_or_404(Student, user=user)
+        student = get_object_or_404(StudentModel, user=user)
+
         if request.method == "POST":
             form = StudentCreationForm(request.POST, instance=student)
-
             try: 
                 if form.is_valid():
-                    data = form.cleaned_data
-                    custom_user = CustomUser.objects.get(pk=user)
-                    custom_user.first_name = data["first_name"]
-                    custom_user.last_name = data["last_name"]
-                    custom_user.mobile = data["mobile"]
-                    custom_user.email = data["email"]
-                    custom_user.address = data["address"]
-                    custom_user.birth_date = data["birth_date"]
-                    custom_user.cvlac = data["cvlac"]
-                    custom_user.password = data["password"]
-                    student.user = custom_user
-                    
-                    student = form.save(commit=False)
-                    student.save()
-                    custom_user.save()
-                    
-                    return redirect('student_list')
+                    student = UpdateStudent(user, form.data)
+                    if  student is not None:    
+                        student = form.save(commit=False)
+                        student.save()
+                        return redirect('student_list')
             except Exception as e:
                 print("error in StudentEdit(): {}".format(e))
         else:
@@ -151,6 +127,8 @@ class StudentEdit():
             'student': student
         }
         return render(request, template, context)
+
+    
 
 ###### Teacher ######
 class TeacherList(LoginRequiredMixin, ListView):

@@ -135,7 +135,7 @@
         </thead>
         <tbody>
          {% for student in object_list %}
-            {% if student.user.is_student and student.user.is_active %}
+            {% if student.user.is_active %}
           {% comment %} <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel"> {% endcomment %}
           <tr>
             <td class="pre-cell"></td>
@@ -275,7 +275,7 @@ $('.btn-disable').click(function() {
   var csrftoken = getCookie('csrftoken');
   Swal.fire({
     title: '¿Continuar?',
-    text: "You won't be able to revert this!",
+    text: "No podras revertir esto",
     type: 'warning',
     showCancelButton: true,
     confirmButtonColor: '#3085d6',
@@ -290,11 +290,11 @@ $('.btn-disable').click(function() {
         data: {
           user: student_id
         },
-        /*headers: {
+        headers: {
           'X-CSRFToken': csrftoken
-        },*/
+        },
         success: function(data) {
-          Swal.fire('correct', 'correct', 'success').then(function() {
+          Swal.fire('Correcto', 'Estudiante deshabilitado correctamente', 'success').then(function() {
             window.location.reload();
           });
         }
