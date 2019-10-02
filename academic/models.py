@@ -57,44 +57,49 @@ class Student(models.Model):
     institutional_information = models.ForeignKey(InstitutionalInformation, null=False, on_delete=models.CASCADE, default=-1)
     objects=models.Manager()
 
-# @receiver(post_save, sender=CustomUser)
-# def student_for_new_user(sender, instance , created, **kwargs):
-#     if created:
-#         Student.objects.create(user=instance).save()
-
 # Teacher model
 class Teacher(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True, primary_key=True)
     personal_information = models.OneToOneField(PersonalInformation, null=False, on_delete=models.CASCADE, default=-1)
     institutional_information = models.ForeignKey(InstitutionalInformation, null=False, on_delete=models.CASCADE, default=-1)
     objects=models.Manager()
-    # user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, unique=True)
-    # cvlacTeacher = models.CharField(max_length=200) # campo de prueba
-    # objects=models.Manager()
 
-# @receiver(post_save, sender=CustomUser)
-# def teacher_for_new_user(sender, instance , created, **kwargs):
-#     if created:
-#         Teacher.objects.create(user=instance).save()
+class InvestigationLine(models.Model):
+    name = models.CharField("name", max_length=50)
+    description = models.CharField("description", max_length=250)
 
+class ComentsThread(models.Model):
+    comment = models.CharField("comment", max_length=200)
+    author = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+
+class Document(models.Model):
+    document_file = models.FileField("file", upload_to=None, max_length=100)
+    title = models.CharField("title", max_length=50)
+    description = models.CharField("description", max_length=250)
+
+class ThesisState(models.Model):
+    name = models.CharField("name", max_length=50)
+    description = models.CharField("description", max_length=250)
 
 class Thesis(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(max_length=1024*2)
-    period = models.CharField(max_length=200)             # periodo
-    # relacion con usuario director
-    direct = models.CharField(max_length=200)
-    student = models.CharField(max_length=200)            # id estuddiante
-    porcentage = models.CharField(max_length=2)           # calculado auto
+    director = models.ForeignKey(Teacher, related_name='teacher_director',on_delete=models.CASCADE, null=False)
+    co_director = models.ForeignKey(Teacher, related_name='teacher_co_director', on_delete=models.CASCADE, null=False)
+    investigation_line = models.ForeignKey(InvestigationLine, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=False)
     state = models.CharField(max_length=2)                # para workflow
-    create_date = models.DateTimeField('date published')
+    create_date = models.DateTimeField('date published', auto_now_add=True)
 
 
 class Advance(models.Model):
     thesis = models.ForeignKey(Thesis, on_delete=models.CASCADE)
+    period = models.CharField(max_length=200)             # periodo
     description = models.TextField(max_length=1024*2)
     observation = models.TextField(max_length=1024*2)
-    porcentage_proposed = models.CharField(max_length=200)
-    porcentage_execute = models.CharField(max_length=200)
-    state = models.CharField(max_length=2)                   # para workflow
-    create_date = models.DateTimeField('date published')
+    porcentage = models.CharField(max_length=2)           # calculado auto
+    # Porcentajes por revisar
+    # porcentage_proposed = models.CharField(max_length=200)
+    # porcentage_execute = models.CharField(max_length=200)
+    # state = models.CharField(max_length=2)                   # para workflow
+    create_date = models.DateTimeField('date published', auto_now_add=True)
