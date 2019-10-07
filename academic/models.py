@@ -57,6 +57,8 @@ class Student(models.Model):
     institutional_information = models.ForeignKey(InstitutionalInformation, null=False, on_delete=models.CASCADE, default=-1)
     objects=models.Manager()
 
+    def __str__(self):
+        return self.user.first_name+" "+self.user.last_name
 # Teacher model
 class Teacher(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True, primary_key=True)
@@ -64,9 +66,15 @@ class Teacher(models.Model):
     institutional_information = models.ForeignKey(InstitutionalInformation, null=False, on_delete=models.CASCADE, default=-1)
     objects=models.Manager()
 
+    def __str__(self):
+        return self.user.first_name+" "+self.user.last_name
+
 class InvestigationLine(models.Model):
     name = models.CharField("name", max_length=50)
     description = models.CharField("description", max_length=250)
+
+    def __str__(self):
+        return self.name
 
 class ComentsThread(models.Model):
     comment = models.CharField("comment", max_length=200)
@@ -89,7 +97,7 @@ class Thesis(models.Model):
     investigation_line = models.ForeignKey(InvestigationLine, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, null=False)
     state = models.CharField(max_length=2)                # para workflow
-    create_date = models.DateTimeField('date published', auto_now_add=True)
+    publication_date = models.DateTimeField('date publicated')
 
 
 class Advance(models.Model):

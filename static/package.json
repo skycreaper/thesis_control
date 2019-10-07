@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/skycreaper/thesis_control#readme",
   "dependencies": {
+    "chosen": "0.0.2",
     "sweetalert2": "^8.16.3"
   }
 }

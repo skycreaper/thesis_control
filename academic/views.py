@@ -12,7 +12,7 @@ from rolepermissions.roles import get_user_roles, assign_role
 
 from .models import Thesis, Advance, Student as StudentModel, Teacher, Rol
 from .models import Student
-from .forms import StudentCreationForm, TeacherCreationForm
+from .forms import StudentCreationForm, TeacherCreationForm, ThesisCreationForm
 from .transactions import RegisterStudentTransaction, UpdateStudent
 
 from users.models import CustomUser
@@ -27,9 +27,17 @@ def index(request):
 ###### Thesis ######
 
 
-class ThesisList(ListView):
+class Thesis(ListView):
     model = Thesis
-
+    
+    @login_required
+    def register(request):
+        template_name = 'academic/thesis_form.html'
+        form = ThesisCreationForm(request.POST or None)
+        if form.is_valid():            
+            return redirect('thesis_list')
+        context = {'form': form}
+        return render(request, template_name, context)
 
 class ThesisDetail(DetailView):
     model = Thesis
