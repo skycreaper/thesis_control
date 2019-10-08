@@ -31,7 +31,8 @@
     <li class="nav-item dropdown">
       <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="scale-up"
         role="button">
-        {{request.user.first_name}} {{request.user.last_name}}
+        {% comment %} {{request.user.first_name}} {{request.user.last_name}} {% endcomment %}
+        {{request.user.email}}
         <span class="avatar avatar-online">
           <img src="{% static 'unal/global/portraits/5.jpg' %}" alt="...">
           <i></i>

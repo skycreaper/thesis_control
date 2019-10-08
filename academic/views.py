@@ -10,10 +10,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
 
-from .models import Thesis, Advance, Student as StudentModel, Teacher, Rol
+from .models import Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel, Teacher, Rol
 from .models import Student
-from .forms import StudentCreationForm, TeacherCreationForm
-from .transactions import RegisterStudentTransaction, UpdateStudent
+from .forms import StudentCreationForm, TeacherCreationForm, ThesisCreationForm, AdvanceCreationForm
+from .transactions import RegisterStudentTransaction, UpdateStudent, RegisterAdvance
 
 from users.models import CustomUser
 
@@ -27,16 +27,26 @@ def index(request):
 ###### Thesis ######
 
 
-class ThesisList(ListView):
-    model = Thesis
+class Thesis(LoginRequiredMixin, ListView):
+    model = ThesisModel
+    template_name = "thesis_list.html"
 
+    @login_required
+    def register(request):
+        template_name = 'academic/thesis_form.html'
+        form = ThesisCreationForm(request.POST or None)
+        if form.is_valid(): 
+            if form.save(commit=True):           
+                return redirect('thesis_list')
+        context = {'form': form}
+        return render(request, template_name, context)
 
 class ThesisDetail(DetailView):
-    model = Thesis
+    model = ThesisModel
 
 
 class ThesisCreation(CreateView):
-    model = Thesis
+    model = ThesisModel
     fields = [
         'name', 'description', 'period', 'direct', 'student', 'porcentage',
         'state', 'create_date'
@@ -45,7 +55,7 @@ class ThesisCreation(CreateView):
 
 
 class ThesisUpdate(UpdateView):
-    model = Thesis
+    model = ThesisModel
     fields = [
         'name', 'description', 'period', 'direct', 'student', 'porcentage',
         'state'
@@ -62,9 +72,31 @@ class ThesisDelete(DeleteView):
 
 
 class AdvanceList(ListView):
-    model = Advance
+    model = AdvanceModel
+    queryset = AdvanceModel.objects.select_related('thesis')
+    
+class Advance(LoginRequiredMixin, ListView):
+    model = AdvanceModel 
 
+    @login_required
+    def register_modal(request, thesis):
+        template_name="academic/advance_form.html"
+        thesis = get_object_or_404(ThesisModel, pk=thesis)
+        form = AdvanceCreationForm(request.POST)
+        
+        context = {'form': form, "thesis": thesis}
+        return render(request, template_name, context)
 
+    @csrf_protect
+    @login_required
+    def register(request):
+        if RegisterAdvance(request.POST):
+            return redirect("thesis_list")
+        return redirect("thesis_list")
+
+    def advance_by_thesis(request, thesis):
+        template_name = "student_list.html"
+        
 # class AdvanceDetail(DetailView):
 #     model = Advance
 

@@ -109,16 +109,7 @@
     </div>
     <!-- Contacts Content -->
 
-
-    <div class="page-content container-fluid">
-      <div class="row">
-        <div class="col-xl-12">
-          <!-- Panel Kitchen Sink -->
-          <div class="panel">
-            <div class="panel-body" style="overflow:auto">
-
-
-              <!-- <h1>Tesis</h1>
+   <!-- <h1>Tesis</h1> 
               <p>
                 <a href="{% url "thesis_new" %}">Agregar Thesis</a>
               </p>
@@ -135,95 +126,50 @@
                 {% endfor %}
               </ul> -->
 
-              <table
-                class="programas tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe"
-                data-tablesaw-mode="swipe" data-tablesaw-sortable="" data-tablesaw-sortable-switch=""
-                data-tablesaw-minimap="" data-tablesaw-mode-switch="" id="tablesaw-4128" style="">
+
+    <div class="page-content container-fluid">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="panel">
+            <div class="panel-body" style="overflow:auto">
+              
+              <table class="programas tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe">
                 <thead>
                   <tr>
-                    <th data-tablesaw-sortable-col="" data-tablesaw-sortable-default-col=""
-                      data-tablesaw-priority="persist"
-                      class="tablesaw-sortable-head tablesaw-sortable-ascending tablesaw-swipe-cellpersist"
-                      data-tablesaw-sortable-numeric="false"><button class="tablesaw-sortable-btn">Nombre de la
-                        Tesis<span class="tablesaw-sortable-arrow"></span></button></th>
-                    <th data-tablesaw-sortable-col="" data-tablesaw-priority="3" class="tablesaw-sortable-head"
-                      data-tablesaw-sortable-numeric=""><button class="tablesaw-sortable-btn">Descripción<span
-                          class="tablesaw-sortable-arrow"></span></button></th>
-                    <th data-tablesaw-sortable-col="" data-tablesaw-priority="2" class="tablesaw-sortable-head"
-                      data-tablesaw-sortable-numeric=""><button class="tablesaw-sortable-btn">Director<span
-                          class="tablesaw-sortable-arrow"></span></button></th>
-                    <th data-tablesaw-sortable-col="" data-tablesaw-priority="1" class="tablesaw-sortable-head"
-                      data-tablesaw-sortable-numeric=""><button class="tablesaw-sortable-btn">
-                        <abbr title="Rotten Tomato Rating">Estudiante</abbr>
-                        <span class="tablesaw-sortable-arrow"></span></button></th>
-                    <th data-tablesaw-sortable-col="" data-tablesaw-priority="4" class="tablesaw-sortable-head"
-                      data-tablesaw-sortable-numeric=""><button class="tablesaw-sortable-btn">Porcentaje<span
-                          class="tablesaw-sortable-arrow"></span></button></th>
+                    <th>Nombre de la Tesis</th>
+                    <th>Descripción</th>
+                    <th>Director</th>
+                    <th>Estudiante</th>
+                    <th>Porcentaje</th>
+                    <th>Opciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td class="tablesaw-swipe-cellpersist">Determinando los efectos del cambio climatico y del cambio en
-                      sus del suelo en la MCMC, utilizando el modelo MESH</td>
-                    <td>Determinando los efectos del cambio climatico y del cambio en sus del suelo en la MCMC,
-                      utilizando el modelo MESH</td>
-                    <td>Erasmo Rodriguez</td>
-                    <td>Pedro Felipe Arboleda Obando</td>
-
-                    <td>10%</td>
-
-
-                  </tr>
-                  <tr>
-                    <td class="tablesaw-swipe-cellpersist">Determinando los efectos del cambio climatico y del cambio en
-                      sus del suelo en la MCMC, utilizando el modelo MESH</td>
-                    <td>Determinando los efectos del cambio climatico y del cambio en sus del suelo en la MCMC,
-                      utilizando el modelo MESH</td>
-                    <td>Erasmo Rodriguez</td>
-                    <td>Pedro Felipe Arboleda Obando</td>
-
-                    <td>10%</td>
-
-
-                  </tr>
-                  <tr>
-                    <td class="tablesaw-swipe-cellpersist">Determinando los efectos del cambio climatico y del cambio en
-                      sus del suelo en la MCMC, utilizando el modelo MESH</td>
-                    <td>Determinando los efectos del cambio climatico y del cambio en sus del suelo en la MCMC,
-                      utilizando el modelo MESH</td>
-                    <td>Erasmo Rodriguez</td>
-                    <td>Pedro Felipe Arboleda Obando</td>
-
-                    <td>10%</td>
-
-
-                  </tr>
-                  <tr>
-                    <td class="tablesaw-swipe-cellpersist">Determinando los efectos del cambio climatico y del cambio en
-                      sus del suelo en la MCMC, utilizando el modelo MESH</td>
-                    <td>Determinando los efectos del cambio climatico y del cambio en sus del suelo en la MCMC,
-                      utilizando el modelo MESH</td>
-                    <td>Erasmo Rodriguez</td>
-                    <td>Pedro Felipe Arboleda Obando</td>
-
-                    <td>10%</td>
-
-
-                  </tr>
+                  {% for thesis in object_list %}
+                    <tr>
+                      <td>{{ thesis.name }}</td>
+                      <td>{{ thesis.description }}</td>
+                      <td>{{ thesis.director }}</td>
+                      <td>{{ thesis.student }}</td>
+                      <td>-</td>
+                      <td>
+                        <div class="col-md-12">
+                          <button class="btn btn-outline-success btn-block"
+                            onclick="return abrir_modal('{% url 'advance_modal' thesis=thesis.pk %}')">Agregar avance</button>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                          <button class="btn btn-outline-primary btn-block" type="button">Ver detalle</button>
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
                 </tbody>
               </table>
+
             </div>
           </div>
-          <!-- End Panel Kitchen Sink -->
-
-          <!-- Panel Exclude Columntoggle -->
-
-          <!-- End Panel Exclude Columntoggle -->
-
-          <!-- Panel Column Toggle -->
-
         </div>
-
       </div>
     </div>
 
@@ -231,6 +177,9 @@
 </div>
 <!-- End Page -->
 
+<!-- Modal -->
+<div id="popup" class="modal fade" role="dialog">
+</div>
 
 <!-- Site Action -->
 <div class="site-action" data-plugin="actionBtn">
@@ -303,5 +252,29 @@
 
 <script src="{% static 'unal/assets/examples/js/apps/contacts.js' %}"></script>
 
+<script>
+function abrir_modal(url) {
+  console.log("abre la modal....")
+  $('#popup').load(url, function()
+  {
+          $(this).modal('show');
+  });
+  return false;
+}
+
+function cerrar_modal() {
+  $('#popup').modal('hide');
+  return false;
+}
+
+{% comment %} $(document).ready(function()
+{
+    var table = $('#tabla').dataTable( {
+        "language": {
+                url: "/static/localizacion/es_ES.json"
+        }
+    } );
+}); {% endcomment %}
+</script>
 {% endblock %}
 
