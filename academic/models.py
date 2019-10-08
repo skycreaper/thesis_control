@@ -102,12 +102,12 @@ class Thesis(models.Model):
 
 class Advance(models.Model):
     thesis = models.ForeignKey(Thesis, on_delete=models.CASCADE)
-    period = models.CharField(max_length=200)             # periodo
     description = models.TextField(max_length=1024*2)
+    percentage = models.CharField(max_length=2)           # calculado auto
+    period = models.CharField(max_length=200)             # periodo
     observation = models.TextField(max_length=1024*2)
-    porcentage = models.CharField(max_length=2)           # calculado auto
     # Porcentajes por revisar
     # porcentage_proposed = models.CharField(max_length=200)
     # porcentage_execute = models.CharField(max_length=200)
     # state = models.CharField(max_length=2)                   # para workflow
-    create_date = models.DateTimeField('date published', auto_now_add=True)
+    creation_date = models.DateTimeField("creation date", auto_now_add=True)

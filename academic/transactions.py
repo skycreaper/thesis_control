@@ -1,6 +1,6 @@
 from django.db import transaction
 
-from .models import Advance, Student, Teacher, PersonalInformation, HealthInformation, InstitutionalInformation, Gender, CivilState, Nationality, Rol 
+from .models import Advance, Student, Teacher, PersonalInformation, HealthInformation, InstitutionalInformation, Gender, CivilState, Nationality, Rol, Advance, Thesis
 from users.models import CustomUser
 
 from rolepermissions.decorators import has_role_decorator
@@ -77,3 +77,16 @@ def UpdateStudent(pk, data):
         return student
     
     return None
+
+def RegisterAdvance(data):
+    thesis = Thesis.objects.get(pk=data["thesis"])
+    advance = Advance(
+        thesis=thesis,
+        description=data["description"],
+        percentage=data["percentage"],
+        period=data["period"],
+        observation=data["observation"]
+    )
+    if advance.save():
+        return True
+    return False

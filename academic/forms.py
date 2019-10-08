@@ -1,7 +1,7 @@
 from users.models import CustomUser
 from django.db import transaction
 from django import forms
-from .models import Student, Gender, Nationality, CivilState, Rol, Thesis, Teacher, InvestigationLine, ThesisState
+from .models import Student, Gender, Nationality, CivilState, Rol, Thesis, Teacher, InvestigationLine, ThesisState, Advance
 
 class StudentCreationForm(forms.ModelForm):
     gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial={'field1': Gender.pk},
@@ -46,3 +46,12 @@ class ThesisCreationForm(forms.ModelForm):
     class Meta:
         model = Thesis
         fields = ('name', 'description', "director", "co_director", "investigation_line", "student", "state", "publication_date")
+
+class AdvanceCreationForm(forms.ModelForm):
+
+    class Meta:
+        model = Advance
+        fields = ("thesis","description", "percentage", "period", "observation")
+    
+    def __init__(self, *args, **kwargs):
+        super(AdvanceCreationForm, self).__init__(*args, **kwargs)

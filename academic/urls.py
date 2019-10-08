@@ -11,12 +11,16 @@ urlpatterns = [
     # Thesis
     path('thesis/', Thesis.as_view(), name='thesis_list'),
     path('thesis/new/', Thesis.register, name='thesis_new'),
+
     path('thesis/<int:pk>/', ThesisDetail.as_view(), name='thesis_detail'),
     path('thesis/update/<int:pk>/', ThesisUpdate.as_view(), name='thesis_update'),
     path('thesis/delete/<int:pk>/', ThesisDelete.as_view(), name='thesis_delete'),
 
     # Advance
     path('advance/', AdvanceList.as_view(), name='advance_list'),
+    path('advance/modal/<int:thesis>', Advance.register_modal, name='advance_modal'),
+    path('advance/new/', Advance.register, name='advance_new'),
+    path('advance/thesis/<int:thesis>', Advance.advance_by_thesis, name='advances_list'),
 
     #Student
     path('student/', Student.as_view(), name='student_list'),
