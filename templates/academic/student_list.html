@@ -151,8 +151,8 @@
               </a>
               {{ student.user.first_name }} {{ student.user.last_name }}
             </td>
-            <td class="cell-300"> {{ student.user.mobile}} </td>
-            <td class="cell-300"> {{ student.user}} </td>
+            <td class="cell-300"> {{ student.personal_information.mobile}} </td>
+            <td class="cell-300"> {{ student.user.email}} </td>
             <td class="cell-300">
                 <a class="btn btn-warning" href="{% url 'student_edit' user=student.user.id %}">Editar</a>
                 <button class="btn btn-danger btn-disable" value="{{ student.user.id }}" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button>
@@ -274,7 +274,7 @@ $('.btn-disable').click(function() {
   var student_id = $(this).val()
   var csrftoken = getCookie('csrftoken');
   Swal.fire({
-    title: '¿Continuar?',
+    title: '¿Deshabilitar al estudiante?',
     text: "No podras revertir esto",
     type: 'warning',
     showCancelButton: true,
@@ -283,7 +283,6 @@ $('.btn-disable').click(function() {
     confirmButtonText: 'Deshabilitar'
   }).then(function(result) {
     if(result.value) {
-
       $.ajax({
         url: "{% url 'student_disable' %}",
         type: 'post',
