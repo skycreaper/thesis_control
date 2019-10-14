@@ -1,6 +1,6 @@
 from django.db import transaction
 
-from .models import Advance, Student, Teacher, PersonalInformation, HealthInformation, InstitutionalInformation, Gender, CivilState, Nationality, Rol, Advance, Thesis
+from .models import Advance, Student, Teacher, PersonalInformation, HealthInformation, InstitutionalInformation, Gender, CivilState, Nationality, Advance, Thesis
 from users.models import CustomUser
 
 from rolepermissions.decorators import has_role_decorator
@@ -38,7 +38,6 @@ def RegisterStudentTransaction(data):
     personal_information.save()
 
     institutional_information = InstitutionalInformation(
-        rol=Rol.objects.get(pk=data['rol']),
         cvlac=data['cvlac'],
         institutional_email=data['email']
     )
