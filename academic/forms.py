@@ -1,7 +1,7 @@
 from users.models import CustomUser
 from django.db import transaction
 from django import forms
-from .models import Student, Gender, Nationality, CivilState, Thesis, Teacher, InvestigationLine, Advance #, ThesisState
+from .models import Student, Gender, Nationality, CivilState, Thesis, Teacher, InvestigationLine, Advance
 
 class StudentCreationForm(forms.ModelForm):
     gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial={'field1': Gender.pk},
@@ -42,10 +42,9 @@ class ThesisCreationForm(forms.ModelForm):
     investigation_line = forms.ModelChoiceField(queryset=InvestigationLine.objects.all(), initial={'field1': InvestigationLine.pk},
                         widget=forms.Select(attrs={'class':'form-control selector', 'id':'id_investigation_line'})
                     ) 
-    # state = forms.CharField(widget=forms.HiddenInput(), initial=ThesisState.objects.get(name="Activo").id, required=False)
     class Meta:
         model = Thesis
-        fields = ('name', 'description', "director", "co_director", "investigation_line", "student", "state", "publication_date")
+        fields = ('name', 'description', "director", "co_director", "investigation_line", "student", "publication_date")
 
 class AdvanceCreationForm(forms.ModelForm):
 

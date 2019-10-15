@@ -10,8 +10,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
 
-from .models import Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel, Teacher
-from .models import Student
+from .models import Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel, Teacher, ThesisState
+
 from .forms import StudentCreationForm, TeacherCreationForm, ThesisCreationForm, AdvanceCreationForm
 from .transactions import RegisterStudentTransaction, UpdateStudent, RegisterAdvance
 
@@ -35,9 +35,11 @@ class Thesis(LoginRequiredMixin, ListView):
     def register(request):
         template_name = 'academic/thesis_form.html'
         form = ThesisCreationForm(request.POST or None)
-        if form.is_valid(): 
-            if form.save(commit=True):           
-                return redirect('thesis_list')
+        if form.is_valid():
+            thesis = form.save(commit=False)
+            thesis.state = ThesisState.objects.get(name="Activo")
+            thesis.save()
+            return redirect('thesis_list')
         context = {'form': form}
         return render(request, template_name, context)
 
@@ -108,7 +110,7 @@ class Advance(LoginRequiredMixin, ListView):
 ###### Student ######
 class Student(LoginRequiredMixin, ListView):
     template_name = "student_list.html"
-    queryset = Student.objects.select_related('personal_information')
+    queryset = StudentModel.objects.select_related('personal_information')
 
     # Student register
     def register(request):
