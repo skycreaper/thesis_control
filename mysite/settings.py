@@ -95,6 +95,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'thesis_control',
+        'OPTIONS': {
+            'options': '-c search_path=django,public'
+        },
         'USER': 'thesis_dev',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
