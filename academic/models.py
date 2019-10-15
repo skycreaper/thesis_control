@@ -52,7 +52,7 @@ class InstitutionalInformation(models.Model):
     institutional_email = models.EmailField('institutional email', null=False, blank=False, unique=True, default="default_email@unal.edu.co")
 
 class Student(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True, primary_key=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True)
     personal_information = models.OneToOneField(PersonalInformation, null=False, on_delete=models.CASCADE, default=-1)
     institutional_information = models.ForeignKey(InstitutionalInformation, null=False, on_delete=models.CASCADE, default=-1)
     objects=models.Manager()
@@ -61,7 +61,7 @@ class Student(models.Model):
         return self.user.first_name+" "+self.user.last_name
 # Teacher model
 class Teacher(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True, primary_key=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, unique=True)
     personal_information = models.OneToOneField(PersonalInformation, null=False, on_delete=models.CASCADE)
     institutional_information = models.ForeignKey(InstitutionalInformation, null=False, on_delete=models.CASCADE)
     objects=models.Manager()
