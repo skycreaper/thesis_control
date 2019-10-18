@@ -13,7 +13,7 @@ from rolepermissions.roles import get_user_roles, assign_role
 from .models import Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel, Teacher, ThesisState
 
 from .forms import StudentCreationForm, TeacherCreationForm, ThesisCreationForm, AdvanceCreationForm
-from .transactions import RegisterStudentTransaction, UpdateStudent, RegisterAdvance
+from .transactions import RegisterStudentTransaction, UpdateStudent, RegisterAdvance, RegisterTeacherTransaction
 
 from users.models import CustomUser
 
@@ -166,13 +166,22 @@ class Student(LoginRequiredMixin, ListView):
         }
         return render(request, template, context)
 
-    
-
 ###### Teacher ######
-class TeacherList(LoginRequiredMixin, ListView):
-    model = Teacher
+class TeacherView(LoginRequiredMixin, ListView):
+    template_name = "teacher_list.html"
+    queryset = Teacher.objects.select_related('personal_information')
     paginate_by = 10
 
+     # Student register
+    @login_required
+    def register(request):
+        template_name = 'teacher_form.html'
+        form = TeacherCreationForm(request.POST or None)
+        if form.is_valid():
+            if RegisterTeacherTransaction(form.data):
+                return redirect('teacher_list')
+        context = {'form': form}
+        return render(request, template_name, context)
 
 class TeacherCreation(LoginRequiredMixin, FormView):
     template_name = 'teacher_form.html'

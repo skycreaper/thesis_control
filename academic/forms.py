@@ -21,12 +21,21 @@ class StudentCreationForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state')
 
 class TeacherCreationForm(forms.ModelForm):
-    cvlacTeacher = forms.CharField(required=False)
+    gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial={'field1': Gender.pk},
+                       widget=forms.Select(attrs={'class':'form-control', 'id':'id_gender'})
+                    )
 
-    # class Meta:
-    #     model = CustomUser
-    #     fields = ('first_name', 'last_name', 'mobile', 'email',
-    #               'address', 'birth_date', 'cvlac', 'password')
+    nationality = forms.ModelChoiceField(queryset=Nationality.objects.all(), initial={'field1': Nationality.pk},
+                       widget=forms.Select(attrs={'class':'form-control', 'id':'id_nationality'})
+                    )
+    
+    civil_state = forms.ModelChoiceField(queryset=CivilState.objects.all(), initial={'field1': CivilState.pk},
+                       widget=forms.Select(attrs={'class':'form-control', 'id':'id_civilState'})
+                    )
+
+    class Meta:
+        model = CustomUser
+        fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state')
 
 class ThesisCreationForm(forms.ModelForm):
     director = forms.ModelChoiceField(queryset=Teacher.objects.all(), initial={'field1': Teacher.pk},

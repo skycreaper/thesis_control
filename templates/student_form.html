@@ -109,7 +109,6 @@
       <form method="post">
         {% csrf_token %}
         {{ form.errors }}
-        {{ form.rol }}
         <label for="id_first_name" class="col-sm-2 col-form-label">Nombres</label>
         <div class="form-group ">
           <div class="col-sm-7">
@@ -188,12 +187,6 @@
             <input type="password" class="form-control" name="password" maxlength="128" required="" id="id_password">
           </div>
         </div>
-        {% comment %} <div class="form-group ">
-          <label for="id_cvlacStudent" class="col-sm-2 col-form-label">cvlacStudent</label>
-          <div class="col-sm-7">
-            <input type="text" class="form-control" name="cvlacStudent" required="" id="id_cvlacStudent">
-          </div>
-        </div> {% endcomment %}
         <div class="form-group ">
           <div class="col-sm-7">
             <input type="submit" class="btn btn-primary" value="Guardar" />

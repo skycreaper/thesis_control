@@ -57,7 +57,6 @@ def RegisterStudentTransaction(data):
 
 @transaction.atomic
 def UpdateStudent(user_id, data):
-    print("data...",data)
     student = Student.objects.get(user=user_id)
     if student is not None:
         student.user.first_name = data["first_name"]
@@ -77,6 +76,55 @@ def UpdateStudent(user_id, data):
         return True
     
     return None
+
+# Recibe toda la información capturada en el formulario
+@transaction.atomic
+def RegisterTeacherTransaction(data):
+    teacher_rol = 'teacher'
+    
+    user = CustomUser.objects.create_user(
+        username=data['email'].split("@")[0], # username
+        email=data['email'], #email
+        password=data['password'], #password
+        first_name=data['first_name'],
+        last_name=data['last_name']
+    )
+    user.save()
+
+    health_information = HealthInformation(
+        grupo_sanguineo="A",
+        rh="+",
+        eps="famisanar"
+    )
+    health_information.save()
+
+    personal_information = PersonalInformation(
+        gender=Gender.objects.get(pk=data['gender']),
+        birth_date=data['birth_date'],
+        civil_state=CivilState.objects.get(pk=data['civil_state']),
+        nationality=Nationality.objects.get(pk=data['nationality']),
+        mobile=data['mobile'],
+        address=data['address'],
+        health_information=health_information
+    )
+    personal_information.save()
+
+    institutional_information = InstitutionalInformation(
+        cvlac=data['cvlac'],
+        institutional_email=data['email']
+    )
+    institutional_information.save()
+    
+    teacher = Teacher(
+        user = user,
+        personal_information = personal_information,
+        institutional_information = institutional_information
+    )
+    teacher.save()
+
+    assign_role(user, teacher_rol)
+
+    return True
 
 def RegisterAdvance(data):
     thesis = Thesis.objects.get(pk=data["thesis"])

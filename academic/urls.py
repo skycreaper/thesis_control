@@ -29,8 +29,8 @@ urlpatterns = [
     path('student/disable/', Student.disabledStudent, name='student_disable'),
 
     #Teacher
-    path('teacher/', TeacherList.as_view(), name='teacher_list'),
-    path('teacher/new/', TeacherCreation.as_view(), name='teacher_new'),
+    path('teacher/', TeacherView.as_view(), name='teacher_list'),
+    path('teacher/new/', TeacherView.register, name='teacher_new'),
     path('teacher/edit/<int:user>/', TeacherEdit.edit, name='teacher_edit'),
     path('teacher/disable/', TeacherDisable.disabledTeacher, name='teacher_disable'),
 
