@@ -143,6 +143,7 @@
             {{ form.nationality }}
           </div>
         </div>
+        <!--Teléfono-->
         <div class="form-group ">
         <label for="id_mobile" class="col-sm-2 col-form-label">Teléfono: </label>
           <div class="col-sm-7">
@@ -150,6 +151,7 @@
               placeholder="Teléfono" value="{{ student.personal_information.mobile }}">
           </div>
         </div>
+        <!--Email-->
         <div class="form-group ">
         <label for="id_email" class="col-sm-6 col-form-label">Correo Electrónico Institucional: </label>
           <div class="col-sm-7">
@@ -157,6 +159,7 @@
               placeholder="Email" value="{{ student.user.email }}">
           </div>
         </div>
+        <!--Dirección-->
         <div class="form-group ">
           <label for="id_address" class="col-sm-2 col-form-label">Dirección: </label>
           <div class="col-sm-7">
@@ -164,13 +167,15 @@
               placeholder="Dirección" value="{{ student.personal_information.address }}">
           </div>
         </div>
+        <!--Fecha de nacimiento-->
         <div class="form-group ">
           <label for="id_birth_date" class="col-sm-6 col-form-label">Fecha de nacimiento: </label>
           <div class="col-sm-7">
             <input type="date" class="form-control" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="birth_date" id="id_birth_date"
-              placeholder="Fecha de Nacimiento" value="{{ student.personal_information.birth_date }}">
+              placeholder="Fecha de Nacimiento" value="{{ student.personal_information.birth_date|date:"Y-m-d"}}">
           </div>
         </div>
+        <!--CvLAC-->
         <div class="form-group ">
           <div class="col-sm-7">
             <label for="id_cvlac" class="col-sm-6 col-form-label">CvLAC: </label>
@@ -178,14 +183,6 @@
               placeholder="CVLAC" value="{{ student.institutional_information.cvlac }}">
           </div>
         </div>
-
-        <div class="form-group ">
-          <label for="id_password" class="col-sm-2 col-form-label">Contraseña</label>
-          <div class="col-sm-7">
-            <input type="password" class="form-control" name="password" maxlength="128" required="" id="id_password" 
-              value="{{ student.user.cvlac }}">
-          </div>
-        </div> 
         <div class="form-group ">
           <div class="col-sm-7">
             <input type="submit" class="btn btn-primary" value="Actualizar" />

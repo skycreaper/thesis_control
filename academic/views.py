@@ -25,8 +25,6 @@ def index(request):
 
 
 ###### Thesis ######
-
-
 class Thesis(LoginRequiredMixin, ListView):
     model = ThesisModel
     template_name = "thesis_list.html"
@@ -43,6 +41,16 @@ class Thesis(LoginRequiredMixin, ListView):
         context = {'form': form}
         return render(request, template_name, context)
 
+
+class ComentThesis(LoginRequiredMixin, ListView):
+    login_url = '/login/'
+    
+    @login_required
+    def register(request, thesis):
+        template_name="academic/thesis_commentary.html"
+        thesis = get_object_or_404(ThesisModel, pk=thesis)
+        form = AdvanceCreationForm(request.POST)
+    
 class ThesisDetail(DetailView):
     model = ThesisModel
 
@@ -71,8 +79,6 @@ class ThesisDelete(DeleteView):
 
 
 ###### Advance ######
-
-
 class AdvanceList(ListView):
     model = AdvanceModel
     queryset = AdvanceModel.objects.select_related('thesis')
@@ -113,6 +119,7 @@ class Student(LoginRequiredMixin, ListView):
     queryset = StudentModel.objects.select_related('personal_information')
 
     # Student register
+    @login_required
     def register(request):
         template_name = 'student_form.html'
         form = StudentCreationForm(request.POST or None)
@@ -141,15 +148,12 @@ class Student(LoginRequiredMixin, ListView):
     def edit(request, user):
         template = 'edit/student_update_form.html'
         student = get_object_or_404(StudentModel, user=user)
-
         if request.method == "POST":
             form = StudentCreationForm(request.POST, instance=student)
             try: 
                 if form.is_valid():
-                    student = UpdateStudent(user, form.data)
-                    if  student is not None:    
-                        student = form.save(commit=False)
-                        student.save()
+                    result = UpdateStudent(user, form.data)
+                    if  result:    
                         return redirect('student_list')
             except Exception as e:
                 print("error in StudentEdit(): {}".format(e))

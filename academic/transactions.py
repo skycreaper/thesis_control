@@ -33,6 +33,7 @@ def RegisterStudentTransaction(data):
         civil_state=CivilState.objects.get(pk=data['civil_state']),
         nationality=Nationality.objects.get(pk=data['nationality']),
         mobile=data['mobile'],
+        address=data['address'],
         health_information=health_information
     )
     personal_information.save()
@@ -54,26 +55,26 @@ def RegisterStudentTransaction(data):
 
     return True
 
-
-def UpdateStudent(pk, data):
-    print(data)
-    student = Student.objects.get(pk=pk)
+@transaction.atomic
+def UpdateStudent(user_id, data):
+    print("data...",data)
+    student = Student.objects.get(user=user_id)
     if student is not None:
-        print(student)
-        persona_information = PersonalInformation.objects.get(pk=student.personal_information)
-        institutional_information = InstitutionalInformation.objects.get(pk=student.personal_information)
         student.user.first_name = data["first_name"]
         student.user.last_name = data["last_name"]
-        student.personal_information.mobile = data["mobile"]
         student.user.email = data["email"]
-        student.personal_information.address = data["address"]
+        student.personal_information.gender = Gender.objects.get(pk=data["gender"])
         student.personal_information.birth_date = data["birth_date"]
+        student.personal_information.civil_state = CivilState.objects.get(pk=data["civil_state"])
+        student.personal_information.nationality = Nationality.objects.get(pk=data["nationality"])
+        student.personal_information.address = data["address"]
+        student.personal_information.mobile = data["mobile"]
         student.institutional_information.cvlac = data["cvlac"]
-        student.user.password = data["password"]
-        
-        # student.save()
-
-        return student
+        student.personal_information.save()
+        student.institutional_information.save()
+        student.user.save()
+        student.save()
+        return True
     
     return None
 
