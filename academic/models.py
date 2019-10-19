@@ -90,9 +90,9 @@ class Thesis(models.Model):
     state = models.ForeignKey(ThesisState, on_delete=models.CASCADE, null=False)                # para workflow
     publication_date = models.DateTimeField('date publicated')
 
-class ComentsThread(models.Model):
+class CommentsThread(models.Model):
     comment = models.CharField("comment", max_length=200)
-    author = models.IntegerField("author")
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False)
     thesis = models.ForeignKey(Thesis, on_delete=models.CASCADE, null=False)
 
 class Document(models.Model):
