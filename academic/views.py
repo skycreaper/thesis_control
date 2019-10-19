@@ -10,9 +10,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
 
-from .models import Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel, Teacher, ThesisState
+from .models import Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel, Teacher, ThesisState, CommentsThread
 
-from .forms import StudentCreationForm, TeacherCreationForm, ThesisCreationForm, AdvanceCreationForm
+from .forms import StudentCreationForm, TeacherCreationForm, ThesisCreationForm, AdvanceCreationForm, CommentaryThesisForm
 from .transactions import RegisterStudentTransaction, UpdateStudent, RegisterAdvance, RegisterTeacherTransaction
 
 from users.models import CustomUser
@@ -41,15 +41,24 @@ class Thesis(LoginRequiredMixin, ListView):
         context = {'form': form}
         return render(request, template_name, context)
 
-
+### CommentThesis ####
 class ComentThesis(LoginRequiredMixin, ListView):
     login_url = '/login/'
-    
+    template_name="academic/comments/list_comments.html"
+
     @login_required
-    def register(request, thesis):
+    def register(request, thesis_pk):
         template_name="academic/thesis_commentary.html"
-        thesis = get_object_or_404(ThesisModel, pk=thesis)
-        form = AdvanceCreationForm(request.POST)
+        thesis = get_object_or_404(ThesisModel, pk=thesis_pk)
+        form = CommentaryThesisForm(request.POST)
+        if request.method == "POST":
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.thesis = thesis
+                comment.author = CustomUser.objects.get(pk=request.user.pk)
+                comment.save()
+        context = {"form": form, "thesis": thesis, "comments": CommentsThread.objects.filter(thesis=thesis)}
+        return render(request, template_name, context)
     
 class ThesisDetail(DetailView):
     model = ThesisModel

@@ -1,7 +1,7 @@
 from users.models import CustomUser
 from django.db import transaction
 from django import forms
-from .models import Student, Gender, Nationality, CivilState, Thesis, Teacher, InvestigationLine, Advance, ComentsThread
+from .models import Student, Gender, Nationality, CivilState, Thesis, Teacher, InvestigationLine, Advance, CommentsThread
 
 class StudentCreationForm(forms.ModelForm):
     gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial={'field1': Gender.pk},
@@ -65,5 +65,5 @@ class AdvanceCreationForm(forms.ModelForm):
 
 class CommentaryThesisForm(forms.ModelForm):
     class Meta:
-        model = ComentsThread
+        model = CommentsThread
         fields = ("comment",)
