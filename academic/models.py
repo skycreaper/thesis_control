@@ -96,7 +96,7 @@ class CommentsThread(models.Model):
     thesis = models.ForeignKey(Thesis, on_delete=models.CASCADE, null=False)
 
 class Document(models.Model):
-    document_file = models.FileField("file", upload_to=None, max_length=100)
+    document_file = models.FileField("file", upload_to="thesis_documents", max_length=100)
     title = models.CharField("title", max_length=50)
     description = models.CharField("description", max_length=250)
     thesis = models.ForeignKey(Thesis, on_delete=models.CASCADE, null=False)
