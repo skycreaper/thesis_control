@@ -10,15 +10,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
 
-from .models import Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel, Teacher, ThesisState, CommentsThread
+from .models import Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel, Teacher, ThesisState, CommentsThread, Document
 
-from .forms import StudentCreationForm, TeacherCreationForm, ThesisCreationForm, AdvanceCreationForm, CommentaryThesisForm
+from .forms import StudentCreationForm, TeacherCreationForm, ThesisCreationForm, AdvanceCreationForm, CommentaryThesisForm, DocumentForm
 from .transactions import RegisterStudentTransaction, UpdateStudent, RegisterAdvance, RegisterTeacherTransaction
 
 from users.models import CustomUser
 
 student_rol = 'student'
 teacher_rol = 'teacher'
+LOGIN_URL = '/login'
 
 def index(request):
     return HttpResponse("Academica index.")
@@ -40,10 +41,23 @@ class Thesis(LoginRequiredMixin, ListView):
             return redirect('thesis_list')
         context = {'form': form}
         return render(request, template_name, context)
+    
+    @login_required(login_url=LOGIN_URL)
+    def upload_document(request, thesis_pk):
+        template_name="academic/document_thesis/upload.html"
+        thesis = get_object_or_404(ThesisModel, pk=thesis_pk)
+        form = DocumentForm(request.POST, request.FILES)
+        document_list = Document.objects.filter(thesis=thesis)
+        if request.method == "POST":
+            if form.is_valid():
+                document = form.save(commit=False)
+                document.thesis = thesis
+                document.save()
+        context = {"form": form, "document_list": document_list}
+        return render(request, template_name, context)
 
 ### CommentThesis ####
 class ComentThesis(LoginRequiredMixin, ListView):
-    login_url = '/login/'
     template_name="academic/comments/list_comments.html"
 
     @login_required

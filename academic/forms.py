@@ -1,7 +1,7 @@
 from users.models import CustomUser
 from django.db import transaction
 from django import forms
-from .models import Student, Gender, Nationality, CivilState, Thesis, Teacher, InvestigationLine, Advance, CommentsThread
+from .models import Student, Gender, Nationality, CivilState, Thesis, Teacher, InvestigationLine, Advance, CommentsThread, Document
 
 class StudentCreationForm(forms.ModelForm):
     gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial={'field1': Gender.pk},
@@ -67,3 +67,10 @@ class CommentaryThesisForm(forms.ModelForm):
     class Meta:
         model = CommentsThread
         fields = ("comment",)
+
+class DocumentForm(forms.ModelForm):
+    document_file = forms.FileField(required=True)
+    
+    class Meta:
+        model = Document
+        fields = ("document_file", "title", "description")

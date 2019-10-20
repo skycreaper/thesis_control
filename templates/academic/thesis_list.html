@@ -101,6 +101,7 @@
       <ul>
         <li><i class="icon wb-folder" aria-hidden="true"></i> --> Registrar Avance</li>
         <li><i class="icon wb-library" aria-hidden="true"></i> --> Ver Comentarios</li>
+        <li><i class="icon wb-upload" aria-hidden="true"></i> --> Subir documento de tesis </li>
       </ul>
       <div class="page-header-actions">
         <form>
@@ -166,6 +167,10 @@
                             <button title="Ver Comentarios" class="btn btn-outline-primary btn-sm" type="button"
                               onclick="location.href='{% url 'comment_thesis_new' thesis_pk=thesis.pk %}'">
                               <i class="icon wb-library" aria-hidden="true"></i>
+                            </button>
+                            <button title="Subir documento" class="btn btn-outline-primary btn-sm" type="button"
+                              onclick="location.href='{% url 'upload_thesis_document' thesis_pk=thesis.pk %}'">
+                              <i class="icon wb-upload" aria-hidden="true"></i>
                             </button>
                           </div>
                         </div>
