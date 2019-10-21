@@ -1,6 +1,6 @@
 {% extends 'base_home.html' %}
 
-{% block title %}Listar Tesis{% endblock %}
+{% block title %}Subir documento{% endblock %}
 
 {% load static %}
 
@@ -37,171 +37,100 @@
 <link rel="stylesheet" href="{% static 'unal/global/fonts/web-icons/web-icons.min.css' %}">
 <link rel="stylesheet" href="{% static 'unal/global/fonts/brand-icons/brand-icons.min.css' %}">
 <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
-
-<!--[if lt IE 9]>
-  <script src="{% static 'unal/global/vendor/html5shiv/html5shiv.min.js' %}"></script>
-  <![endif]-->
-
-<!--[if lt IE 10]>
-  <script src="{% static 'unal/global/vendor/media-match/media.match.min.js' %}"></script>
-  <script src="{% static 'unal/global/vendor/respond/respond.min.js' %}"></script>
-  <![endif]-->
-
 <!-- Scripts -->
 <script src="{% static 'unal/global/vendor/breakpoints/breakpoints.js' %}"></script>
 <script>
-  Breakpoints();
+    Breakpoints();
 </script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
+
 {% endblock %}
 
 {% block class_doby %}class="animsition app-contacts page-aside-left"{% endblock %}
 
 {% block content %}
 
-<!--[if lt IE 8]>
-        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-
 <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
 
-  {% include "header.html" %}
+    {% include "header.html" %}
 
-  <div class="navbar-container container-fluid">
-    <!-- Navbar Collapse -->
-    {% include "navbar.html" %}
-    <!-- End Navbar Collapse -->
+    <div class="navbar-container container-fluid">
+        <!-- Navbar Collapse -->
+        {% include "navbar.html" %}
+        <!-- End Navbar Collapse -->
 
-    <!-- Site Navbar Seach -->
-    <div class="collapse navbar-search-overlap" id="site-navbar-search">
-      <form role="search">
-        <div class="form-group">
-          <div class="input-search">
-            <i class="input-search-icon wb-search" aria-hidden="true"></i>
-            <input type="text" class="form-control" name="site-search" placeholder="Search...">
-            <button type="button" class="input-search-close icon wb-close" data-target="#site-navbar-search"
-              data-toggle="collapse" aria-label="Close"></button>
-          </div>
+        <!-- Site Navbar Seach -->
+        <div class="collapse navbar-search-overlap" id="site-navbar-search">
+            <form role="search">
+                <div class="form-group">
+                    <div class="input-search">
+                        <i class="input-search-icon wb-search" aria-hidden="true"></i>
+                        <input type="text" class="form-control" name="site-search" placeholder="Search...">
+                        <button type="button" class="input-search-close icon wb-close" data-target="#site-navbar-search"
+                            data-toggle="collapse" aria-label="Close"></button>
+                    </div>
+                </div>
+            </form>
         </div>
-      </form>
+        <!-- End Site Navbar Seach -->
     </div>
-    <!-- End Site Navbar Seach -->
-  </div>
 </nav>
 {% include "menu.html" %}
 
 <!-- Page -->
+
 <div class="page bg-white">
 
-  <!-- Contacts Content -->
-  <div class="page-main">
-
-    <!-- Contacts Content Header -->
-    <div class="page-header">
-      <h1 class="page-title">Tesis</h1>
-      <ul>
-        <li><i class="icon wb-folder" aria-hidden="true"></i> --> Registrar Avance</li>
-        <li><i class="icon wb-library" aria-hidden="true"></i> --> Ver Comentarios</li>
-        <li><i class="icon wb-upload" aria-hidden="true"></i> --> Subir documento de tesis </li>
-      </ul>
-      <div class="page-header-actions">
-        <form>
-          <div class="input-search input-search-dark">
-            <i class="input-search-icon wb-search" aria-hidden="true"></i>
-            <input type="text" class="form-control" name="" placeholder="Buscar...">
-          </div>
-        </form>
-      </div>
-    </div>
     <!-- Contacts Content -->
+    <div class="page-main">
 
-   <!-- <h1>Tesis</h1> 
-              <p>
-                <a href="{% url "thesis_new" %}">Agregar Thesis</a>
-              </p>
-              <ul>
-                {% for thesis in object_list %}
-                <li>
-                  <p>{{ thesis.name }}</p>
-                  <p>
-                    <a href="{% url 'thesis_detail' thesis.id %}">Ver</a> |
-                    <a href="{% url 'thesis_update' thesis.id  %}">Edit</a>
-                    <a href="{% url 'thesis_delete' thesis.id  %}">Eliminar</a>
-                  </p>
-                </li>
-                {% endfor %}
-              </ul> -->
-
-
-    <div class="page-content container-fluid">
-      <div class="row">
-        <div class="col-xl-12">
-          <div class="panel">
-            <div class="panel-body" style="overflow:auto">
-              
-              <table class="programas tablesaw table-striped table-bordered table-hover tablesaw-sortable tablesaw-swipe">
-                <thead>
-                  <tr>
-                    <th>Nombre de la Tesis</th>
-                    <th>Descripción</th>
-                    <th>Director</th>
-                    <th>Estudiante</th>
-                    <th>Porcentaje</th>
-                    <th>Opciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for thesis in object_list %}
-                    <tr>
-                      <td>{{ thesis.name }}</td>
-                      <td>{{ thesis.description }}</td>
-                      <td>{{ thesis.director }}</td>
-                      <td>{{ thesis.student }}</td>
-                      <td>-</td>
-                      <td>
-                        <div class="row">
-                          <div class="col-md-12">
-                            <button class="btn btn-outline-success btn-sm" title="Registrar avance"
-                              onclick="return abrir_modal('{% url 'advance_modal' thesis=thesis.pk %}')">
-                              <i class="icon wb-folder" aria-hidden="true"></i>
-                            </button>
-                            <button title="Ver Comentarios" class="btn btn-outline-primary btn-sm" type="button"
-                              onclick="location.href='{% url 'comment_thesis_new' thesis_pk=thesis.pk %}'">
-                              <i class="icon wb-library" aria-hidden="true"></i>
-                            </button>
-                            <button title="Subir documento" class="btn btn-outline-primary btn-sm" type="button"
-                              onclick="location.href='{% url 'thesis_documents_list' thesis_pk=thesis.pk %}'">
-                              <i class="icon wb-upload" aria-hidden="true"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-
+        <!-- Contacts Content Header -->
+        <div class="page-header">
+            <h1 class="page-title">Lista de Documentos</h1>
+            <div class="page-header-actions">
             </div>
-          </div>
         </div>
-      </div>
+
+        <!-- Contacts Content -->
+        <div class="col-12">
+            <div id="contactsContent" class="page-content page-content-table" data-plugin="selectable">
+                <button title="Subir documento" class="btn btn-outline-primary btn-block" type="button"
+                    onclick="location.href='{% url 'upload_thesis_document' thesis_pk=thesis.pk %}'">
+                <i class="icon wb-upload" aria-hidden="true"></i> Subir una nueva versión </button>
+            </div>
+        </div>
+        <hr>
+        <div class="col-12">            
+            <table class="table table-hover">
+                <tbody>
+                    {% for document in documents_list %}
+                        <tr>
+                        <th scope="row">
+                            <a href="{% url 'thesis_document_viewer' document_path=document.document_file.name %}" style="text-decoration:none;">
+                                <h5>{{ document.title }}</h5>
+                                <small class="mb-1">{{ document.description }}</small>
+                            </a>
+                        </th>
+                        </tr>
+                    {% endfor %}  
+                </tbody>
+            </table>  
+        </div>
     </div>
-
-  </div>
 </div>
+
+<script>
+    function router(file_path) {
+        //file_path="thesis_documents/parametros_redes1_wUe84W1.pdf";
+        splited_file_path = file_path.split('/')
+        folder_name=splited_file_path[0]
+        file_name=splited_file_path[1]
+        console.log(folder_name, file_name);
+    }
+</script>
+
 <!-- End Page -->
-
-<!-- Modal -->
-<div id="popup" class="modal fade" role="dialog">
-</div>
-
-<!-- Site Action -->
-<div class="site-action" data-plugin="actionBtn">
-  <button type="button" class="site-action-toggle btn-raised btn btn-success btn-floating"
-    onclick="location.href='{% url "thesis_new" %}'">
-    <i class="front-icon wb-plus animation-scale-up" aria-hidden="true"></i>
-  </button>
-</div>
-<!-- End Site Action -->
 
 
 <!-- Footer -->
@@ -226,7 +155,6 @@
 <script src="{% static 'unal/global/vendor/aspaginator/jquery-asPaginator.min.js' %}"></script>
 <script src="{% static 'unal/global/vendor/jquery-placeholder/jquery.placeholder.js' %}"></script>
 <script src="{% static 'unal/global/vendor/bootbox/bootbox.js' %}"></script>
-
 
 <!-- Scripts -->
 <script src="{% static 'unal/global/js/Component.js' %}"></script>
@@ -262,32 +190,12 @@
 <script src="{% static 'unal/global/js/Plugin/bootbox.js' %}"></script>
 <script src="{% static 'unal/assets/js/BaseApp.js' %}"></script>
 <script src="{% static 'unal/assets/js/App/Contacts.js' %}"></script>
-
 <script src="{% static 'unal/assets/examples/js/apps/contacts.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
 
 <script>
-function abrir_modal(url) {
-  console.log("abre la modal....")
-  $('#popup').load(url, function()
-  {
-          $(this).modal('show');
-  });
-  return false;
-}
-
-function cerrar_modal() {
-  $('#popup').modal('hide');
-  return false;
-}
-
-{% comment %} $(document).ready(function()
-{
-    var table = $('#tabla').dataTable( {
-        "language": {
-                url: "/static/localizacion/es_ES.json"
-        }
-    } );
-}); {% endcomment %}
+    $(document).ready(function() {
+        $('.selector').select2();
+    });
 </script>
 {% endblock %}
-

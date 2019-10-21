@@ -19,6 +19,8 @@ urlpatterns = [
     #path('thesis/list_comment/<int:thesis_pk>', ComentThesis.as_view(), name='comment_thesis_list'),
     path('thesis/add_comment/<int:thesis_pk>', ComentThesis.register, name='comment_thesis_new'),
     path('thesis/upload_document/<int:thesis_pk>', Thesis.upload_document, name='upload_thesis_document'),
+    path('thesis/documents_list/<int:thesis_pk>', Thesis.documents_list, name='thesis_documents_list'),
+    path('thesis/document_viewer/<path:document_path>', Thesis.document_viewer, name='thesis_document_viewer'),
     # Advance
     path('advance/', AdvanceList.as_view(), name='advance_list'),
     path('advance/modal/<int:thesis>', Advance.register_modal, name='advance_modal'),

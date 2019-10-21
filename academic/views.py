@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import HttpResponse, render, get_object_or_404, redirect
 from django.utils import timezone
 from django.urls import reverse, reverse_lazy
@@ -6,6 +7,7 @@ from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+import os
 
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
@@ -47,14 +49,34 @@ class Thesis(LoginRequiredMixin, ListView):
         template_name="academic/document_thesis/upload.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis_pk)
         form = DocumentForm(request.POST, request.FILES)
-        document_list = Document.objects.filter(thesis=thesis)
         if request.method == "POST":
             if form.is_valid():
                 document = form.save(commit=False)
                 document.thesis = thesis
                 document.save()
-        context = {"form": form, "document_list": document_list}
+                return redirect('thesis_documents_list', thesis_pk=thesis_pk)
+        context = {"form": form}
         return render(request, template_name, context)
+
+    @login_required(login_url=LOGIN_URL)
+    def documents_list(request, thesis_pk): 
+        template_name="academic/document_thesis/list_by_thesis.html"
+        thesis = get_object_or_404(ThesisModel, pk=thesis_pk)
+        documents_list = Document.objects.filter(thesis=thesis)
+        data = {"thesis":thesis, "documents_list": documents_list}
+        return render(request, template_name, data)
+
+    @login_required(login_url=LOGIN_URL)
+    def document_viewer(request, document_path):
+        filepath = os.path.join(settings.MEDIA_ROOT)
+        with open(filepath+'/'+document_path, 'rb') as pdf:
+            response = HttpResponse(pdf.read(),content_type='application/pdf')
+            response['Content-Disposition'] = 'filename=some_file.pdf'
+            return response
+        pdf.closed
+        
+        
+        
 
 ### CommentThesis ####
 class ComentThesis(LoginRequiredMixin, ListView):
