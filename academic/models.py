@@ -45,7 +45,7 @@ class PersonalInformation(models.Model):
     address = models.CharField(max_length=200, null=True, blank=True)
     mobile = models.CharField(max_length=10)
     health_information = models.OneToOneField(HealthInformation, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to="thesis_photos", height_field=128, width_field=128, max_length=100, null=True)
+    photo = models.ImageField(upload_to="thesis_photos", max_length=100, null=True)
 
 class InstitutionalInformation(models.Model):
     # rol = models.ForeignKey(Rol, on_delete=models.CASCADE)
