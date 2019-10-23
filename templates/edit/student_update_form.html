@@ -106,7 +106,7 @@
     <!-- Contacts Content -->
     <div id="contactsContent" class="page-content page-content-table" data-plugin="selectable">
 
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" runat="server">
         {% csrf_token %}
         <div class="form-group ">
         <label for="id_first_name" class="col-sm-4 col-form-label">Nombes Completos: </label>
@@ -186,7 +186,16 @@
         <div class="form-group">
           <label class="col-sm-2 col-form-label">Foto del estudiante</label>
           <div class="col-sm-7">
-            {{ form.photo }}
+            <div class="custom-file">
+              <input class="custom-file-input" type="file" name="photo" accept="image/*" required="" id="id_photo">
+              <label class="custom-file-label" for="id_photo">Sube una foto</label>
+            </div>
+            <br><br>
+            {% if student.personal_information.photo %}
+              <img id="student_photo" style="width:180px; height:200px;" class="img-fluid" src="{{ student.personal_information.photo.url }}" alt="Imagen de perfil" />
+            {% else %}
+              <img id="student_photo" style="width:180px; height:200px;" class="img-fluid" src="{% static 'unal/global/portraits/blank_user.png' %}" alt="Imagen de perfil" />
+            {% endif %}
           </div>
         </div>
         <div class="form-group ">
@@ -266,21 +275,22 @@
 
 <script src="{% static 'unal/assets/examples/js/apps/contacts.js' %}"></script>
 
-{% endblock %}
+<script>
+  function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    
+    reader.onload = function(e) {
+      $('#student_photo').attr('src', e.target.result);
+    }
+    
+    reader.readAsDataURL(input.files[0]);
+  }
+  }
 
-<!-- <h1>Tesis</h1>
-<p>
-  <a href="{% url "thesis_new" %}">Agregar Thesis</a>
-</p>
-<ul>
-  {% for thesis in object_list %}
-  <li>
-    <p>{{ thesis.name }}</p>
-    <p>
-      <a href="{% url 'thesis_detail' thesis.id %}">Ver</a> |
-      <a href="{% url 'thesis_update' thesis.id  %}">Edit</a>
-      <a href="{% url 'thesis_delete' thesis.id  %}">Eliminar</a>
-    </p>
-  </li>
-  {% endfor %}
-</ul> -->
+  $("#id_photo").change(function() {
+    readURL(this);
+  });
+</script>
+
+{% endblock %}

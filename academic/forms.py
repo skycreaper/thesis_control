@@ -16,7 +16,7 @@ class StudentCreationForm(forms.ModelForm):
                        widget=forms.Select(attrs={'class':'form-control', 'id':'id_civilState'})
                     )
 
-    photo = forms.ImageField()
+    photo = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
     
     class Meta:
         model = CustomUser
