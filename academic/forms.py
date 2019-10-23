@@ -15,10 +15,12 @@ class StudentCreationForm(forms.ModelForm):
     civil_state = forms.ModelChoiceField(queryset=CivilState.objects.all(), initial={'field1': CivilState.pk},
                        widget=forms.Select(attrs={'class':'form-control', 'id':'id_civilState'})
                     )
-    #rol = forms.CharField(widget=forms.HiddenInput(), initial=Rol.objects.get(name="Estudiante").id, required=False)
+
+    photo = forms.ImageField()
+    
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state')
+        fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state', 'photo')
 
 class TeacherCreationForm(forms.ModelForm):
     gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial={'field1': Gender.pk},

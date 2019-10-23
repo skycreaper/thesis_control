@@ -8,7 +8,7 @@ from rolepermissions.roles import get_user_roles, assign_role
 
 # Recibe toda la información capturada en el formulario
 @transaction.atomic
-def RegisterStudentTransaction(data):
+def RegisterStudentTransaction(data, photo):
     student_rol = 'student'
     
     user = CustomUser.objects.create_user(
@@ -34,7 +34,8 @@ def RegisterStudentTransaction(data):
         nationality=Nationality.objects.get(pk=data['nationality']),
         mobile=data['mobile'],
         address=data['address'],
-        health_information=health_information
+        health_information=health_information,
+        photo=photo
     )
     personal_information.save()
 
@@ -56,7 +57,7 @@ def RegisterStudentTransaction(data):
     return True
 
 @transaction.atomic
-def UpdateStudent(user_id, data):
+def UpdateStudent(user_id, data, photo):
     student = Student.objects.get(user=user_id)
     if student is not None:
         student.user.first_name = data["first_name"]
@@ -68,6 +69,7 @@ def UpdateStudent(user_id, data):
         student.personal_information.nationality = Nationality.objects.get(pk=data["nationality"])
         student.personal_information.address = data["address"]
         student.personal_information.mobile = data["mobile"]
+        student.personal_information.photo = photo
         student.institutional_information.cvlac = data["cvlac"]
         student.personal_information.save()
         student.institutional_information.save()

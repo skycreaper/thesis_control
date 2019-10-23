@@ -167,10 +167,9 @@ class Student(LoginRequiredMixin, ListView):
     @login_required
     def register(request):
         template_name = 'student_form.html'
-        form = StudentCreationForm(request.POST or None)
+        form = StudentCreationForm(request.POST or None, request.FILES)
         if form.is_valid():
-            data = form.cleaned_data
-            if RegisterStudentTransaction(form.data):
+            if RegisterStudentTransaction(form.data, request.FILES['photo']):
                 return redirect('student_list')
         context = {'form': form}
         return render(request, template_name, context)
@@ -194,10 +193,10 @@ class Student(LoginRequiredMixin, ListView):
         template = 'edit/student_update_form.html'
         student = get_object_or_404(StudentModel, user=user)
         if request.method == "POST":
-            form = StudentCreationForm(request.POST, instance=student)
+            form = StudentCreationForm(request.POST, request.FILES, instance=student)
             try: 
                 if form.is_valid():
-                    result = UpdateStudent(user, form.data)
+                    result = UpdateStudent(user, form.data, request.FILES['photo'])
                     if  result:    
                         return redirect('student_list')
             except Exception as e:
