@@ -147,12 +147,17 @@
             </td>
             <td class="cell-300">
               <a class="avatar" href="javascript:void(0)">
-                <img class="img-fluid" src="{% static 'unal/global/portraits/1.jpg' %}" alt="...">
+                {% if student.personal_information.photo %}
+                  <img class="img-fluid" src="{{ student.personal_information.photo.url }}" alt="...">
+                {% else %}
+                  <img class="img-fluid" src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
+                {% endif %}
               </a>
               {{ student.user.first_name }} {{ student.user.last_name }}
             </td>
             <td class="cell-300"> {{ student.personal_information.mobile}} </td>
-            <td class="cell-300"> {{ student.user.email}} </td>
+            
+              <td class="cell-300">{{ student.user.email }}</td>
             <td class="cell-300">
                 <a class="btn btn-warning" href="{% url 'student_edit' user=student.user.id %}">Editar</a>
                 <button class="btn btn-danger btn-disable" value="{{ student.user.id }}" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button>

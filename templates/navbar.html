@@ -31,12 +31,27 @@
     <li class="nav-item dropdown">
       <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="scale-up"
         role="button">
-        {% comment %} {{request.user.first_name}} {{request.user.last_name}} {% endcomment %}
-        {{request.user.email}}
-        <span class="avatar avatar-online">
-          <img src="{% static 'unal/global/portraits/5.jpg' %}" alt="...">
-          <i></i>
-        </span>
+        {{ request.user.first_name }} {{ request.user.last_name }} ({{ request.user.email }})
+        {% if request.user.student or request.user.teacher %}
+          {% if request.user.student %}
+            <span class="avatar avatar-online">
+              <img src="{{ request.user.student.personal_information.photo.url }}" alt="...">
+              <i></i>
+            </span>  
+          {% else %}
+            <span class="avatar avatar-online">
+              <img src="{{ request.user.teacher.personal_information.photo.url }}" alt="...">
+              <i></i>
+            </span>  
+          {% endif %}
+        {% else %}
+          <span class="avatar avatar-online">
+            <img src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
+            <i></i>
+          </span>
+        {% endif %}
+        {{ request.user }}
+        
       </a>
       <div class="dropdown-menu" role="menu">
         <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-user"
