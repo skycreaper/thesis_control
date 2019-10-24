@@ -35,12 +35,20 @@
         {% if request.user.student or request.user.teacher %}
           {% if request.user.student %}
             <span class="avatar avatar-online">
-              <img src="{{ request.user.student.personal_information.photo.url }}" alt="...">
+              {% if request.user.student.photo %}
+                <img src="{{ request.user.student.personal_information.photo.url }}" alt="...">
+              {% else %}
+                <img src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
+              {% endif %}
               <i></i>
             </span>  
-          {% else %}
+          {% else %}  
             <span class="avatar avatar-online">
-              <img src="{{ request.user.teacher.personal_information.photo.url }}" alt="...">
+              {% if request.user.teacher.photo %}
+                <img src="{{ request.user.teacher.personal_information.photo.url }}" alt="...">
+              {% else %}
+                <img src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
+              {% endif %}
               <i></i>
             </span>  
           {% endif %}
