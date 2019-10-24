@@ -250,66 +250,7 @@ class TeacherView(LoginRequiredMixin, ListView):
             'teacher': teacher
         }
         return render(request, template, context)
-
-class TeacherCreation(LoginRequiredMixin, FormView):
-    template_name = 'teacher_form.html'
-    form_class = TeacherCreationForm
-
-    def form_valid(self, form):
-        data = form.cleaned_data
-        user = CustomUser.objects.create_user(first_name=data['first_name'],
-                                              last_name=data['last_name'],
-                                              email=data['email'],
-                                              mobile=data['mobile'],
-                                              address=data['address'],
-                                              birth_date=data['birth_date'],
-                                              cvlac=data['cvlac'],
-                                              password=data['password'])
-        user.teacher.cvlacTeacher = data['cvlacTeacher']
-        user.is_teacher = True
-        user.save()
-        assign_role(user, teacher_rol)
-        return redirect('teacher_list')
-
-class TeacherEdit():
-    @csrf_protect
-    @login_required
-    def edit(request, user):
-        template = 'edit/teacher_update_form.html'
-        teacher = get_object_or_404(Teacher, user=user)
-        if request.method == "POST":
-            form = TeacherCreationForm(request.POST, instance=teacher)
-
-            try: 
-                if form.is_valid():
-                    data = form.cleaned_data
-                    custom_user = CustomUser.objects.get(pk=user)
-                    custom_user.first_name = data["first_name"]
-                    custom_user.last_name = data["last_name"]
-                    custom_user.mobile = data["mobile"]
-                    custom_user.email = data["email"]
-                    custom_user.address = data["address"]
-                    custom_user.birth_date = data["birth_date"]
-                    custom_user.cvlac = data["cvlac"]
-                    custom_user.password = data["password"]
-                    teacher.user = custom_user
-                    
-                    teacher = form.save(commit=False)
-                    teacher.save()
-                    custom_user.save()
-                    
-                    return redirect('teacher_list')
-            except Exception as e:
-                print("error in TeacherEdit(): {}".format(e))
-        else:
-            form = TeacherCreationForm(instance=teacher)
-
-        context = {
-            'form': form,
-            'teacher': teacher
-        }
-        return render(request, template, context)
-
+    
 class TeacherDisable():
     @csrf_protect
     def disabledTeacher(request):
