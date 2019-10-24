@@ -15,8 +15,8 @@ urlpatterns = [
     path('thesis/<int:pk>/', ThesisDetail.as_view(), name='thesis_detail'),
     path('thesis/update/<int:pk>/', ThesisUpdate.as_view(), name='thesis_update'),
     path('thesis/delete/<int:pk>/', ThesisDelete.as_view(), name='thesis_delete'),
+    
     ## Comments
-    #path('thesis/list_comment/<int:thesis_pk>', ComentThesis.as_view(), name='comment_thesis_list'),
     path('thesis/add_comment/<int:thesis_pk>', ComentThesis.register, name='comment_thesis_new'),
     path('thesis/upload_document/<int:thesis_pk>', Thesis.upload_document, name='upload_thesis_document'),
     path('thesis/documents_list/<int:thesis_pk>', Thesis.documents_list, name='thesis_documents_list'),
@@ -25,7 +25,7 @@ urlpatterns = [
     path('advance/', AdvanceList.as_view(), name='advance_list'),
     path('advance/modal/<int:thesis>', Advance.register_modal, name='advance_modal'),
     path('advance/new/', Advance.register, name='advance_new'),
-    path('advance/thesis/<int:thesis>', Advance.advance_by_thesis, name='advances_list'),
+    path('advance/thesis/<int:thesis>', Advance.advance_by_thesis, name='advance_list'),
 
     #Student
     path('student/', Student.as_view(), name='student_list'),

@@ -96,9 +96,14 @@ class ComentThesis(LoginRequiredMixin, ListView):
         context = {"form": form, "thesis": thesis, "comments": CommentsThread.objects.filter(thesis=thesis)}
         return render(request, template_name, context)
     
-class ThesisDetail(DetailView):
+class ThesisDetail(LoginRequiredMixin, DetailView):
     model = ThesisModel
+    template_name="academic/thesis/thesis_detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['advance_list'] = AdvanceModel.objects.filter(thesis=self.kwargs['pk'])
+        return context
 
 class ThesisCreation(CreateView):
     model = ThesisModel
@@ -148,10 +153,16 @@ class Advance(LoginRequiredMixin, ListView):
         return redirect("thesis_list")
 
     def advance_by_thesis(request, thesis):
-        template_name = "student_list.html"
+        template_name = "academic/thesis/advance/advance_by_thesis.html"
+        thesis = get_object_or_404(ThesisModel, pk=thesis)
+        advance_list = AdvanceModel.objects.filter(thesis=thesis)
+        print("petiton:", thesis)
+        context = {'advance_list': advance_list}
+        return render(request, template_name, context) 
         
 # class AdvanceDetail(DetailView):
 #     model = Advance
+#     queryset = StudentModel.objects.select_related('personal_information')
 
 # class AdvanceCreation(CreateView):
 #     model = Advance

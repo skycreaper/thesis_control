@@ -1,0 +1,30 @@
+{% load static %}
+
+<div class="col-12">
+    {% if advance_list|length > 0 %}
+        {% for advance in advance_list %}
+        <div class="card">
+            <div class="card-header">
+                <a class="avatar" href="javascript:void(0)">
+                    <img class="img-fluid" src="{% static 'unal/global/portraits/1.jpg' %}" alt="...">
+                </a>
+                <label class="font-weight-bold">{{ advance.description }} </label>
+            </div>
+            <div class="card-body">
+                <p class="card-text">
+                    <label class="font-weight-bold">Porcentaje de avance:</label> {{ advance.percentage }} %
+                </p>
+                <p class="card-text">
+                    <label class="font-weight-bold">Observaciones:</label> {{ advance.observation }}
+                </p>
+                <p class="card-text">
+                    <label class="font-weight-bold">Fecha del avance:</label> {{ advance.creation_date|date:'d-m-Y' }}
+                </p>
+            </div>
+        </div>
+        <hr>
+        {% endfor %} 
+    {% else %}
+        <h4>No hay avances registrados</h4>
+    {% endif %}
+</div>
