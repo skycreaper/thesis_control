@@ -36,7 +36,7 @@ urlpatterns = [
     #Teacher
     path('teacher/', TeacherView.as_view(), name='teacher_list'),
     path('teacher/new/', TeacherView.register, name='teacher_new'),
-    path('teacher/edit/<int:user>/', TeacherEdit.edit, name='teacher_edit'),
+    path('teacher/edit/<int:user>/', TeacherView.edit, name='teacher_edit'),
     path('teacher/disable/', TeacherDisable.disabledTeacher, name='teacher_disable'),
 
 ]

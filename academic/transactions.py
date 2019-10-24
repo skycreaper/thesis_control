@@ -129,6 +129,29 @@ def RegisterTeacherTransaction(data, photo):
 
     return True
 
+def UpdateTeacher(user_id, data, photo):
+    teacher = Teacher.objects.get(user=user_id)
+    if teacher is not None:
+        print(photo)
+        teacher.user.first_name = data["first_name"]
+        teacher.user.last_name = data["last_name"]
+        teacher.user.email = data["email"]
+        teacher.personal_information.gender = Gender.objects.get(pk=data["gender"])
+        teacher.personal_information.birth_date = data["birth_date"]
+        teacher.personal_information.civil_state = CivilState.objects.get(pk=data["civil_state"])
+        teacher.personal_information.nationality = Nationality.objects.get(pk=data["nationality"])
+        teacher.personal_information.address = data["address"]
+        teacher.personal_information.mobile = data["mobile"]
+        teacher.personal_information.photo = photo
+        teacher.institutional_information.cvlac = data["cvlac"]
+        teacher.personal_information.save()
+        teacher.institutional_information.save()
+        teacher.user.save()
+        teacher.save()
+        return True
+    
+    return None
+
 def RegisterAdvance(data):
     thesis = Thesis.objects.get(pk=data["thesis"])
     advance = Advance(

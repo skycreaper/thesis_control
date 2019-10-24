@@ -109,14 +109,14 @@
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.errors }}
-        <label for="id_first_name" class="col-sm-2 col-form-label">Nombres</label>
+        <label for="id_first_name" class="col-sm-2 col-form-label">Nombres Completos: </label>
         <div class="form-group ">
           <div class="col-sm-7">
             <input type="text" class="form-control" name="first_name" maxlength="30" id="id_first_name"
               placeholder="Nombres">
           </div>
         </div>
-        <label for="id_last_name" class="col-sm-2 col-form-label">Apellidos</label>
+        <label for="id_last_name" class="col-sm-2 col-form-label">Apellidos Completos: </label>
         <div class="form-group ">
           <div class="col-sm-7">
             <input type="text" class="form-control" name="last_name" maxlength="150" id="id_last_name"

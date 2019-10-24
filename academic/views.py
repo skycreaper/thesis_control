@@ -15,7 +15,7 @@ from rolepermissions.roles import get_user_roles, assign_role
 from .models import Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel, Teacher, ThesisState, CommentsThread, Document
 
 from .forms import StudentCreationForm, TeacherCreationForm, ThesisCreationForm, AdvanceCreationForm, CommentaryThesisForm, DocumentForm
-from .transactions import RegisterStudentTransaction, UpdateStudent, RegisterAdvance, RegisterTeacherTransaction
+from .transactions import RegisterStudentTransaction, UpdateStudent, RegisterAdvance, RegisterTeacherTransaction, UpdateTeacher
 
 from users.models import CustomUser
 
@@ -226,6 +226,30 @@ class TeacherView(LoginRequiredMixin, ListView):
                 return redirect('teacher_list')
         context = {'form': form}
         return render(request, template_name, context)
+
+    #Teacher edit
+    @csrf_protect
+    @login_required
+    def edit(request, user):
+        template = 'edit/teacher_update_form.html'
+        teacher = get_object_or_404(Teacher, user=user)
+        if request.method == "POST":
+            form = TeacherCreationForm(request.POST, request.FILES, instance=teacher)
+            try: 
+                if form.is_valid():
+                    result = UpdateTeacher(user, form.data, request.FILES['photo'])
+                    if  result:    
+                        return redirect('teacher_list')
+            except Exception as e:
+                print("error in TeacherEdit(): {}".format(e))
+        else:
+            form = TeacherCreationForm(instance=teacher)
+
+        context = {
+            'form': form,
+            'teacher': teacher
+        }
+        return render(request, template, context)
 
 class TeacherCreation(LoginRequiredMixin, FormView):
     template_name = 'teacher_form.html'
