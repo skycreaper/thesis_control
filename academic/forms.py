@@ -35,9 +35,11 @@ class TeacherCreationForm(forms.ModelForm):
                        widget=forms.Select(attrs={'class':'form-control', 'id':'id_civilState'})
                     )
 
+    photo = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
+
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state')
+        fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state', 'photo')
 
 class ThesisCreationForm(forms.ModelForm):
     director = forms.ModelChoiceField(queryset=Teacher.objects.all(), initial={'field1': Teacher.pk},

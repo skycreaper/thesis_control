@@ -81,7 +81,7 @@ def UpdateStudent(user_id, data, photo):
 
 # Recibe toda la información capturada en el formulario
 @transaction.atomic
-def RegisterTeacherTransaction(data):
+def RegisterTeacherTransaction(data, photo):
     teacher_rol = 'teacher'
     
     user = CustomUser.objects.create_user(
@@ -107,7 +107,8 @@ def RegisterTeacherTransaction(data):
         nationality=Nationality.objects.get(pk=data['nationality']),
         mobile=data['mobile'],
         address=data['address'],
-        health_information=health_information
+        health_information=health_information,
+        photo=photo
     )
     personal_information.save()
 

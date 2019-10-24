@@ -138,7 +138,6 @@
         <tbody>
           {% for teacher in object_list %}
           {% if teacher.user.is_active %}
-          {% comment %} <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel"> {% endcomment %}
           <tr>
             <td class="pre-cell"></td>
             <td class="cell-30">
@@ -149,12 +148,16 @@
             </td>
             <td class="cell-300">
               <a class="avatar" href="javascript:void(0)">
-                <img class="img-fluid" src="{% static 'unal/global/portraits/1.jpg' %}" alt="...">
+                {% if teacher.personal_information.photo %}
+                  <img class="img-fluid" src="{{ teacher.personal_information.photo.url }}" alt="...">
+                {% else %}
+                  <img class="img-fluid" src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
+                {% endif %}
               </a>
               {{ teacher.user.first_name }} {{ teacher.user.last_name }}
             </td>
-            <td class="cell-300"> {{ teacher.personal_information.mobile}} </td>
-            <td class="cell-300"> {{ teacher.user}} </td>
+            <td class="cell-300"> {{ teacher.personal_information.mobile }} </td>
+            <td class="cell-300"> {{ teacher.user.email }} </td>
             <td class="cell-300">
               <a class="btn btn-warning" href="{% url 'teacher_edit' user=teacher.user.id %}">Editar</a>
               <button class="btn btn-danger btn-disable" value="{{ teacher.user.id }}"

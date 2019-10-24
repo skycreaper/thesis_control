@@ -220,9 +220,9 @@ class TeacherView(LoginRequiredMixin, ListView):
     @login_required
     def register(request):
         template_name = 'teacher_form.html'
-        form = TeacherCreationForm(request.POST or None)
+        form = TeacherCreationForm(request.POST or None, request.FILES)
         if form.is_valid():
-            if RegisterTeacherTransaction(form.data):
+            if RegisterTeacherTransaction(form.data, request.FILES['photo']):
                 return redirect('teacher_list')
         context = {'form': form}
         return render(request, template_name, context)
