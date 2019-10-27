@@ -132,7 +132,6 @@ def RegisterTeacherTransaction(data, photo):
 def UpdateTeacher(user_id, data, photo):
     teacher = Teacher.objects.get(user=user_id)
     if teacher is not None:
-        print(photo)
         teacher.user.first_name = data["first_name"]
         teacher.user.last_name = data["last_name"]
         teacher.user.email = data["email"]
