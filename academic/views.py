@@ -146,8 +146,8 @@ class Advance(LoginRequiredMixin, ListView):
         template_name="academic/advance_form.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis)
         form = AdvanceCreationForm(request.POST)
-        
-        context = {'form': form, "thesis": thesis}
+        actual_advance = sum(advance.percentage for advance in AdvanceModel.objects.filter(thesis=thesis))
+        context = {'form': form, "thesis": thesis, 'actual_adavance': actual_advance}
         return render(request, template_name, context)
 
     @csrf_protect
@@ -160,7 +160,6 @@ class Advance(LoginRequiredMixin, ListView):
     def advance_by_thesis(request, thesis):
         template_name = "academic/thesis/advance/advance_by_thesis.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis)
-        advance_list = AdvanceModel.objects.filter(thesis=thesis)
         print("petiton:", thesis)
         context = {'advance_list': advance_list}
         return render(request, template_name, context) 

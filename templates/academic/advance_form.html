@@ -35,9 +35,18 @@
                 <div class="form-group row">
                     <label for="percentage" class="col-sm-2 col-form-label">Porcentaje del avance</label>
                     <div class="col-sm-10">
-                        <input type="number" class="form-control" name="percentage" id="percentage"
-                            placeholder="20%, 30%, etc." required=""></textarea>
+                        <div class="input-group mb-3">
+                            <input class="form-control" name="percentage" id="percentage" max="30"
+                                placeholder="Escribe el número correspondiente al porcentaje de avance: 10, 30, 70, etc." required="">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">%</span>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{ actual_adavance }}%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">{{ actual_adavance }}%</div>
+                    <div class="progress-bar progress-bar-striped bg-success" id="new_progress" role="progressbar" style="width: 0%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
                 <div class="form-group row">
                     <label for="period" class="col-sm-2 col-form-label">Periodo</label>
@@ -65,3 +74,36 @@
         </form>
     </div>
 </div>
+
+<script>
+// código de: https://jsfiddle.net/emkey08/tvx5e7q3, tomado de https://stackoverflow.com/questions/891696/jquery-what-is-the-best-way-to-restrict-number-only-input-for-textboxes-all?answertab=votes#tab-top
+(function($) {
+  $.fn.inputFilter = function(inputFilter) {
+    return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+      if (inputFilter(this.value)) {
+        this.oldValue = this.value;
+        this.oldSelectionStart = this.selectionStart;
+        this.oldSelectionEnd = this.selectionEnd;
+      } else if (this.hasOwnProperty("oldValue")) {
+        this.value = this.oldValue;
+        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+      }
+    });
+  };
+}(jQuery));
+
+
+$(this.document).ready(function() {
+    var max = 100 - "{{ actual_adavance }}"; // Porcentaje máximo del avance
+    $("#percentage").inputFilter(function(value) {
+        return /^\d*$/.test(value) && (value === "" || parseInt(value) <= max); 
+    });
+});
+
+$("#percentage").bind('keyup mouseup', function () {
+    progress_bar = $('#new_progress');
+    progress_bar.css({width: this.value+"%"});
+    progress_bar.empty();
+    progress_bar.append(this.value+'%');
+});
+</script>
