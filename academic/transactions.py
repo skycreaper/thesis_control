@@ -154,7 +154,7 @@ def UpdateTeacher(user_id, data, photo):
 def RegisterAdvance(data):
     thesis = Thesis.objects.get(pk=data["thesis"])
     actual_advance = sum(advance.percentage for advance in Advance.objects.filter(thesis=thesis))
-    if actual_advance + data["percentage"] <= 100:  
+    if actual_advance + int(data["percentage"]) <= 100:  
         advance = Advance(
             thesis=thesis,
             description=data["description"],
