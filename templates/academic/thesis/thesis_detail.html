@@ -68,12 +68,7 @@
 
     <!-- Contacts Content Header -->
     <div class="page-header">
-        <div class="text-right">
-            <button title="Voler a lista de tesis" class="btn btn-outline-primary btn-sm" type="button"
-                onclick="location.href='{% url 'thesis_list' %}'">
-                <i class="icon wb-arrow-left" aria-hidden="true"></i>Volver
-            </button>
-        </div>
+        {% include "academic/thesis/return_button.html" %}
         <h1 class="page-title">{{ thesis.name }}</h1>
     </div>
 

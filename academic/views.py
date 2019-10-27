@@ -31,6 +31,14 @@ def index(request):
 class Thesis(LoginRequiredMixin, ListView):
     model = ThesisModel
     template_name = "thesis_list.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        for thesis in context['object_list']:
+            advances = AdvanceModel.objects.filter(thesis=thesis)
+            total_percentage = sum(advance.percentage for advance in advances)
+            thesis.acumulate_percentage = total_percentage
+        return context
 
     @login_required
     def register(request):
@@ -74,9 +82,6 @@ class Thesis(LoginRequiredMixin, ListView):
             response['Content-Disposition'] = 'filename=some_file.pdf'
             return response
         pdf.closed
-        
-        
-        
 
 ### CommentThesis ####
 class ComentThesis(LoginRequiredMixin, ListView):

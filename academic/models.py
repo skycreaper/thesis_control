@@ -90,6 +90,7 @@ class Thesis(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, null=False)
     state = models.ForeignKey(ThesisState, on_delete=models.CASCADE, null=False)                # para workflow
     publication_date = models.DateTimeField('date publicated')
+    acumulate_percentage = 0
 
 class CommentsThread(models.Model):
     comment = models.CharField("comment", max_length=200)
@@ -105,7 +106,7 @@ class Document(models.Model):
 class Advance(models.Model):
     thesis = models.ForeignKey(Thesis, on_delete=models.CASCADE)
     description = models.TextField(max_length=1024*2)
-    percentage = models.CharField(max_length=2)           # calculado auto
+    percentage = models.IntegerField()
     period = models.CharField(max_length=200)             # periodo
     observation = models.TextField(max_length=1024*2)
     # Porcentajes por revisar
