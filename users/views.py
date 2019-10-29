@@ -31,7 +31,7 @@ def login(request):
                 return redirect('home')
         else:
             print("login errors: ", form.errors)
-    return render(request, "base_login.html", {'form':form})
+    return render(request, "registration/login.html", {'form':form})
 
 
 def logout(request):
