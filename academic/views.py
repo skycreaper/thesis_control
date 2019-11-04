@@ -157,6 +157,7 @@ class Advance(LoginRequiredMixin, ListView):
             return redirect("thesis_list")
         return redirect("thesis_list")
 
+    @login_required
     def advance_by_thesis(request, thesis):
         template_name = "academic/thesis/advance/advance_by_thesis.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis)
