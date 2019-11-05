@@ -114,3 +114,12 @@ class Advance(models.Model):
     # porcentage_execute = models.CharField(max_length=200)
     # state = models.CharField(max_length=2)                   # para workflow
     creation_date = models.DateTimeField("creation date", auto_now_add=True)
+
+class Period(models.Model):
+    year = models.CharField(max_length=4)
+    tremester = models.CharField(max_length=2)
+    active = models.BooleanField()
+
+    def __str__(self):
+        return self.year+"-"+self.tremester
+    
