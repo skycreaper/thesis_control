@@ -178,6 +178,7 @@ class Advance(LoginRequiredMixin, ListView):
 class Student(LoginRequiredMixin, ListView):
     template_name = "student_list.html"
     queryset = StudentModel.objects.select_related('personal_information')
+    paginate_by = 6
 
     # Student register
     @login_required
@@ -234,7 +235,7 @@ class Student(LoginRequiredMixin, ListView):
 class TeacherView(LoginRequiredMixin, ListView):
     template_name = "teacher_list.html"
     queryset = Teacher.objects.select_related('personal_information')
-    paginate_by = 10
+    paginate_by = 5
 
      # Student register
     @login_required

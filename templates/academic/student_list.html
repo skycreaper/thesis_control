@@ -168,12 +168,29 @@
           {% endfor %}
         </tbody>
       </table>
-
-      <ul data-plugin="paginator" data-total="50" data-skin="pagination-gap"></ul>
-    </div>
+      
+      {% if is_paginated %}
+        <!--Previous-->
+        <ul class="pagination pagination-gap" data-skin="pagination-gap">
+          {% if page_obj.has_previous %}
+            <li class="pagination-prev page-item"><a class="page-link" href="/academic/student/?page={{ page_obj.previous_page_number }}" aria-label="Prev"><span class="icon wb-chevron-left-mini"></span></a></li>
+          {% endif %}
+          <!--Current page-->
+          {% for i in paginator.page_range %}
+            {% if page_obj.number == i %}
+              <li class="pagination-items page-item active" data-value="{{ i }}"><a class="page-link" href="javascript:void(0)">{{ i }}</a></li>
+            {% else %}
+              <li class="pagination-items page-item" data-value="{{ i }}"><a class="page-link" href="/academic/student/?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+          <!--Next-->
+          {% if page_obj.has_next %}
+            <li class="pagination-next page-item"><a class="page-link" href="/academic/student/?page={{ page_obj.next_page_number }}" aria-label="Next"><span class="icon wb-chevron-right-mini"></span></a></li>
+          {% endif %}
+        </ul>
+      {% endif %}
   </div>
 </div>
-
 <!-- End Page -->
 
 
