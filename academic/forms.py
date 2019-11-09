@@ -4,23 +4,33 @@ from django import forms
 from .models import Student, Gender, Nationality, CivilState, Thesis, Teacher, InvestigationLine, Advance, CommentsThread, Document, Period
 
 class StudentCreationForm(forms.ModelForm):
-    gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial={'field1': Gender.pk},
+    gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial=Gender.pk,
                        widget=forms.Select(attrs={'class':'form-control', 'id':'id_gender'})
                     )
 
     nationality = forms.ModelChoiceField(queryset=Nationality.objects.all(), initial={'field1': Nationality.pk},
                        widget=forms.Select(attrs={'class':'form-control', 'id':'id_nationality'})
                     )
-    
+
     civil_state = forms.ModelChoiceField(queryset=CivilState.objects.all(), initial={'field1': CivilState.pk},
                        widget=forms.Select(attrs={'class':'form-control', 'id':'id_civilState'})
                     )
 
-    photo = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
+    photo = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input', 'id': 'id_photo'}), required=False)
     
+    def __init__(self, *args, **kwargs):
+        super(StudentCreationForm, self).__init__(*args, **kwargs)
+        try:
+            self.fields['gender'].initial = self.instance.personal_information.gender.pk
+            self.fields['nationality'].initial = self.instance.personal_information.nationality.pk
+            self.fields['civil_state'].initial = self.instance.personal_information.civil_state.pk
+            self.fields['photo'].initial = self.instance.personal_information.photo
+        except:
+            print(None)
+
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state', 'photo')
+        fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state')
 
 class TeacherCreationForm(forms.ModelForm):
     gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial={'field1': Gender.pk},
@@ -35,11 +45,20 @@ class TeacherCreationForm(forms.ModelForm):
                        widget=forms.Select(attrs={'class':'form-control', 'id':'id_civilState'})
                     )
 
-    photo = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input'}))
+    photo = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input'}), required=False)
 
+    def __init__(self, *args, **kwargs):
+        super(TeacherCreationForm, self).__init__(*args, **kwargs)
+        try:
+            self.fields['gender'].initial = self.instance.personal_information.gender.pk
+            self.fields['nationality'].initial = self.instance.personal_information.nationality.pk
+            self.fields['civil_state'].initial = self.instance.personal_information.civil_state.pk
+            self.fields['photo'].initial = self.instance.personal_information.photo
+        except:
+            print(None)
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state', 'photo')
+        fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state')
 
 class ThesisCreationForm(forms.ModelForm):
     director = forms.ModelChoiceField(queryset=Teacher.objects.all(), initial={'field1': Teacher.pk},

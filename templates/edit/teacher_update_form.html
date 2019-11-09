@@ -188,11 +188,15 @@
           <label for="id_photo" class="col-sm-2 col-form-label">Foto del Profesor</label>
           <div class="col-sm-7">
             <div class="custom-file">
-              {{ form.photo }}
+              <input class="custom-file-input" type="file" name="photo" accept="image/*" id="id_photo">
               <label class="custom-file-label" for="id_photo">Suba una nueva foto</label>
             </div>
             <br><br>
-            <img id="teacher_photo" style="width:180px; height:200px;" class="img-fluid" src="#" alt="Imagen de perfil" />
+            {% if teacher.personal_information.photo %}
+              <img id="teacher_photo" style="width:180px; height:200px;" class="img-fluid" src="{{ teacher.personal_information.photo.url }}" alt="Imagen de perfil" />
+            {% else %}
+              <img id="teacher_photo" style="width:180px; height:200px;" class="img-fluid" src="#" alt="Imagen de perfil" />
+            {% endif %}
           </div>
         </div>
         

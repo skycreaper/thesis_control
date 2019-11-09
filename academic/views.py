@@ -212,7 +212,11 @@ class Student(LoginRequiredMixin, ListView):
             form = StudentCreationForm(request.POST, request.FILES, instance=student)
             try: 
                 if form.is_valid():
-                    result = UpdateStudent(user, form.data, request.FILES['photo'])
+                    photo = student.personal_information.photo
+                    if 'photo' in request.FILES:
+                        photo = request.FILES['photo']
+
+                    result = UpdateStudent(user, form.data, photo)
                     if  result:    
                         return redirect('student_list')
             except Exception as e:
@@ -253,7 +257,11 @@ class TeacherView(LoginRequiredMixin, ListView):
             form = TeacherCreationForm(request.POST, request.FILES, instance=teacher)
             try: 
                 if form.is_valid():
-                    result = UpdateTeacher(user, form.data, request.FILES['photo'])
+                    photo = teacher.personal_information.photo
+                    if 'photo' in request.FILES:
+                        photo = request.FILES['photo']
+
+                    result = UpdateTeacher(user, form.data, photo)
                     if  result:    
                         return redirect('teacher_list')
             except Exception as e:
