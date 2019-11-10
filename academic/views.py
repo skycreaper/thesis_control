@@ -31,7 +31,16 @@ def index(request):
 class Thesis(LoginRequiredMixin, ListView):
     model = ThesisModel
     template_name = "thesis_list.html"
-    
+    login_url = LOGIN_URL
+
+    def get_queryset(self):
+        query = self.request.GET.get('search_text')
+        if query: # Query tiene un valor
+            object_list = self.model.objects.filter(name__icontains=query)
+        elif not query or query is None: # Query es vació o no existe
+            object_list = self.model.objects.all()
+        return object_list
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         for thesis in context['object_list']:
