@@ -168,6 +168,27 @@
                   {% endfor %}
                 </tbody>
               </table>
+              <br>
+              {% if is_paginated %}
+              <!--Previous-->
+              <ul class="pagination pagination-gap" data-skin="pagination-gap">
+                {% if page_obj.has_previous %}
+                  <li class="pagination-prev page-item"><a class="page-link" href="/academic/thesis/?page={{ page_obj.previous_page_number }}" aria-label="Prev"><span class="icon wb-chevron-left-mini"></span></a></li>
+                {% endif %}
+                <!--Current page-->
+                {% for i in paginator.page_range %}
+                  {% if page_obj.number == i %}
+                    <li class="pagination-items page-item active" data-value="{{ i }}"><a class="page-link" href="javascript:void(0)">{{ i }}</a></li>
+                  {% else %}
+                    <li class="pagination-items page-item" data-value="{{ i }}"><a class="page-link" href="/academic/thesis/?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                <!--Next-->
+                {% if page_obj.has_next %}
+                  <li class="pagination-next page-item"><a class="page-link" href="/academic/thesis/?page={{ page_obj.next_page_number }}" aria-label="Next"><span class="icon wb-chevron-right-mini"></span></a></li>
+                {% endif %}
+              </ul>
+            {% endif %}
               {% else %}
               <p class="h4 lead">No se encontraron tesis con el nombre <strong>{{ request.GET.search_text }}</strong></p>
               {% endif %}

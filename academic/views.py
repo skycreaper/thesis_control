@@ -32,6 +32,7 @@ def index(request):
 class Thesis(LoginRequiredMixin, ListView):
     model = ThesisModel
     template_name = "thesis_list.html"
+    paginate_by = 1
     login_url = LOGIN_URL
 
     def get_queryset(self):
