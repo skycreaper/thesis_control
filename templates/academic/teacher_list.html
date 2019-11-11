@@ -103,7 +103,7 @@
         <form>
           <div class="input-search input-search-dark">
             <i class="input-search-icon wb-search" aria-hidden="true"></i>
-            <input type="text" class="form-control" name="" placeholder="Buscar...">
+            <input type="text" class="form-control" name="search_text" value="{{ request.GET.search_text }}" placeholder="Buscar...">
           </div>
         </form>
       </div>
@@ -111,11 +111,8 @@
 
     <!-- Contacts Content -->
     <div id="contactsContent" class="page-content page-content-table" data-plugin="selectable">
-
-
-
-      <button style="float:right;margin-right:2.5em;margin-top:2em;" type="button" class="btn btn-primary">Exportar a
-        excel</button>
+    {% if object_list %}
+      <button style="float:right;margin-right:2.5em;margin-top:2em;" type="button" class="btn btn-primary">Exportar a excel</button>
 
       <!-- Contacts -->
       <table class="table is-indent" data-plugin="animateList" data-animate="fade" data-child="tr"
@@ -189,6 +186,12 @@
             <li class="pagination-next page-item"><a class="page-link" href="/academic/teacher/?page={{ page_obj.next_page_number }}" aria-label="Next"><span class="icon wb-chevron-right-mini"></span></a></li>
           {% endif %}
         </ul>
+      {% endif %}
+      {% else %}
+      <div class="container">
+        <p class="h4 lead">No se encontraron profesores con el nombre <strong>{{ request.GET.search_text }}</strong></p>
+        <hr>
+      </div>
       {% endif %}
     </div>
   </div>

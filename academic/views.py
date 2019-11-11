@@ -1,3 +1,4 @@
+from itertools import chain
 from django.conf import settings
 from django.shortcuts import HttpResponse, render, get_object_or_404, redirect
 from django.utils import timezone
@@ -49,7 +50,7 @@ class Thesis(LoginRequiredMixin, ListView):
             thesis.acumulate_percentage = total_percentage
         return context
 
-    @login_required
+    @login_required(login_url=LOGIN_URL)
     def register(request):
         template_name = 'academic/thesis_form.html'
         form = ThesisCreationForm(request.POST or None)
@@ -95,8 +96,9 @@ class Thesis(LoginRequiredMixin, ListView):
 ### CommentThesis ####
 class ComentThesis(LoginRequiredMixin, ListView):
     template_name="academic/comments/list_comments.html"
+    login_url=LOGIN_URL
 
-    @login_required
+    @login_required(login_url=LOGIN_URL)
     def register(request, thesis_pk):
         template_name="academic/thesis_commentary.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis_pk)
@@ -113,6 +115,7 @@ class ComentThesis(LoginRequiredMixin, ListView):
 class ThesisDetail(LoginRequiredMixin, DetailView):
     model = ThesisModel
     template_name="academic/thesis/thesis_detail.html"
+    login_url=LOGIN_URL
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -150,7 +153,7 @@ class AdvanceList(ListView):
 class Advance(LoginRequiredMixin, ListView):
     model = AdvanceModel 
 
-    @login_required
+    @login_required(login_url=LOGIN_URL)
     def register_modal(request, thesis):
         template_name="academic/advance_form.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis)
@@ -160,13 +163,13 @@ class Advance(LoginRequiredMixin, ListView):
         return render(request, template_name, context)
 
     @csrf_protect
-    @login_required
+    @login_required(login_url=LOGIN_URL)
     def register(request):
         if RegisterAdvance(request.POST):
             return redirect("thesis_list")
         return redirect("thesis_list")
 
-    @login_required
+    @login_required(login_url=LOGIN_URL)
     def advance_by_thesis(request, thesis):
         template_name = "academic/thesis/advance/advance_by_thesis.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis)
@@ -186,11 +189,19 @@ class Advance(LoginRequiredMixin, ListView):
 ###### Student ######
 class Student(LoginRequiredMixin, ListView):
     template_name = "student_list.html"
-    queryset = StudentModel.objects.select_related('personal_information')
     paginate_by = 6
+    login_url=LOGIN_URL
+
+    def get_queryset(self):
+        search_text = self.request.GET.get('search_text')
+        if search_text: # search_text tiene un valor
+            object_list = [StudentModel.objects.filter(user__first_name__icontains=value) | StudentModel.objects.filter(user__last_name__icontains=value) for value in search_text.split(" ")][0]
+        elif not search_text or search_text is None: # search_text es un texto vació o no existe
+            object_list = StudentModel.objects.select_related('personal_information')
+        return object_list
 
     # Student register
-    @login_required
+    @login_required(login_url=LOGIN_URL)
     def register(request):
         template_name = 'student_form.html'
         form = StudentCreationForm(request.POST or None, request.FILES)
@@ -202,7 +213,7 @@ class Student(LoginRequiredMixin, ListView):
 
     #Student disable
     @csrf_protect
-    @login_required
+    @login_required(login_url=LOGIN_URL)
     def disabledStudent(request):
         if request.method == "POST":
             customUser = get_object_or_404(
@@ -214,7 +225,7 @@ class Student(LoginRequiredMixin, ListView):
 
     #Student edit
     @csrf_protect
-    @login_required
+    @login_required(login_url=LOGIN_URL)
     def edit(request, user):
         template = 'edit/student_update_form.html'
         student = get_object_or_404(StudentModel, user=user)
@@ -243,11 +254,19 @@ class Student(LoginRequiredMixin, ListView):
 ###### Teacher ######
 class TeacherView(LoginRequiredMixin, ListView):
     template_name = "teacher_list.html"
-    queryset = Teacher.objects.select_related('personal_information')
     paginate_by = 5
+    login_url=LOGIN_URL
+
+    def get_queryset(self):
+        search_text = self.request.GET.get('search_text')
+        if search_text: # search_text tiene un valor
+            object_list = [Teacher.objects.filter(user__first_name__icontains=value) | Teacher.objects.filter(user__last_name__icontains=value) for value in search_text.split(" ")][0]
+        elif not search_text or search_text is None: # search_text es un texto vació o no existe
+            object_list = Teacher.objects.select_related('personal_information')
+        return object_list
 
      # Student register
-    @login_required
+    @login_required(login_url=LOGIN_URL)
     def register(request):
         template_name = 'teacher_form.html'
         form = TeacherCreationForm(request.POST or None, request.FILES)
@@ -259,7 +278,7 @@ class TeacherView(LoginRequiredMixin, ListView):
 
     #Teacher edit
     @csrf_protect
-    @login_required
+    @login_required(login_url=LOGIN_URL)
     def edit(request, user):
         template = 'edit/teacher_update_form.html'
         teacher = get_object_or_404(Teacher, user=user)
