@@ -31,20 +31,21 @@
     <li class="nav-item dropdown">
       <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false" data-animation="scale-up"
         role="button">
-        {{ request.user.first_name }} {{ request.user.last_name }} ({{ request.user.email }})
+        {{ request.user.first_name }} {{ request.user.last_name }}
         {% if request.user.student or request.user.teacher %}
           {% if request.user.student %}
             <span class="avatar avatar-online">
-              {% if request.user.student.photo %}
+              {% if request.user.student.personal_information.photo %}
                 <img src="{{ request.user.student.personal_information.photo.url }}" alt="...">
               {% else %}
+                {{ request.user.pk }}
                 <img src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
               {% endif %}
               <i></i>
             </span>  
           {% else %}  
             <span class="avatar avatar-online">
-              {% if request.user.teacher.photo %}
+              {% if request.user.teacher.personal_information.photo %}
                 <img src="{{ request.user.teacher.personal_information.photo.url }}" alt="...">
               {% else %}
                 <img src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
@@ -62,9 +63,9 @@
         
       </a>
       <div class="dropdown-menu" role="menu">
-        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-user"
+        <a class="dropdown-item" href="{% url 'update_profile' pk=request.user.pk %}" role="menuitem"><i class="icon wb-user"
             aria-hidden="true"></i>Perfil</a>
-        <a class="dropdown-item" href="javascript:void(0)" role="menuitem"><i class="icon wb-settings"
+        <a class="dropdown-item" href="{% url 'update_profile' pk=request.user.pk %}" role="menuitem"><i class="icon wb-settings"
             aria-hidden="true"></i> Opciones</a>
         <div class="dropdown-divider" role="presentation"></div>
         <a class="dropdown-item" href="{% url 'logout' %}" role="menuitem"><i class="icon wb-power"

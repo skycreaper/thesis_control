@@ -1,0 +1,316 @@
+{% extends 'base_home.html' %}
+
+{% block title %}Actualizar Información de Perfil{% endblock %}
+
+{% load static %}
+
+{% block extra_head %}
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="bootstrap admin template">
+<meta name="author" content="">
+
+<link rel="apple-touch-icon" href="{% static 'unal/assets/images/apple-touch-icon.png' %}">
+<link rel="shortcut icon" href="{% static 'unal/assets/images/favicon.ico' %}">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="{% static 'unal/global/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/css/bootstrap-extend.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/css/site.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/css/styles.css' %}">
+<!--new in thesis list-->
+
+
+<!-- Plugins -->
+<link rel="stylesheet" href="{% static 'unal/global/vendor/animsition/animsition.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/asscrollable/asScrollable.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/switchery/switchery.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/intro-js/introjs.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/slidepanel/slidePanel.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/flag-icon-css/flag-icon.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/examples/css/apps/contacts.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/tablesaw/tablesaw.css' %}">
+
+
+<!-- Fonts -->
+<link rel="stylesheet" href="{% static 'unal/global/fonts/web-icons/web-icons.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/fonts/brand-icons/brand-icons.min.css' %}">
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+<!--[if lt IE 9]>
+  <script src="{% static 'unal/global/vendor/html5shiv/html5shiv.min.js' %}"></script>
+  <![endif]-->
+
+<!--[if lt IE 10]>
+  <script src="{% static 'unal/global/vendor/media-match/media.match.min.js' %}"></script>
+  <script src="{% static 'unal/global/vendor/respond/respond.min.js' %}"></script>
+  <![endif]-->
+
+<!-- Scripts -->
+<script src="{% static 'unal/global/vendor/breakpoints/breakpoints.js' %}"></script>
+<script>
+  Breakpoints();
+</script>
+{% endblock %}
+
+{% block class_doby %}class="animsition app-contacts page-aside-left"{% endblock %}
+
+{% block content %}
+
+<!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
+
+  {% include "header.html" %}
+
+  <div class="navbar-container container-fluid">
+    <!-- Navbar Collapse -->
+    {% include "navbar.html" %}
+    <!-- End Navbar Collapse -->
+
+    <!-- Site Navbar Seach -->
+    <div class="collapse navbar-search-overlap" id="site-navbar-search">
+      <form role="search">
+        <div class="form-group">
+          <div class="input-search">
+            <i class="input-search-icon wb-search" aria-hidden="true"></i>
+            <input type="text" class="form-control" name="site-search" placeholder="Search...">
+            <button type="button" class="input-search-close icon wb-close" data-target="#site-navbar-search"
+              data-toggle="collapse" aria-label="Close"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Site Navbar Seach -->
+  </div>
+</nav>
+{% include "menu.html" %}
+
+<!-- Page -->
+
+<div class="page bg-white">
+
+  <!-- Contacts Content -->
+  <div class="page-main">
+
+    <!-- Contacts Content Header -->
+    <div class="page-header">
+      <h1 class="page-title">Actualizar perfil</h1>
+      <div class="page-header-actions">
+      </div>
+    </div>
+
+    <!-- Contacts Content -->
+    <div id="contactsContent" class="page-content page-content-table" data-plugin="selectable">
+        
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group ">
+        <label for="id_first_name" class="col-sm-4 col-form-label">Nombes Completos:</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="first_name" maxlength="30" id="id_first_name"
+              placeholder="Nombres" value="{{ user.first_name }}">
+          </div>
+        </div>
+        <div class="form-group ">
+          <label for="id_last_name" class="col-sm-4 col-form-label">Apellidos Completos:</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="last_name" maxlength="150" id="id_last_name"
+              placeholder="Apellidos" value="{{ user.last_name }}">
+          </div>
+        </div>
+        <!--Email-->
+        <div class="form-group ">
+        <label for="id_email" class="col-sm-6 col-form-label">Correo Electrónico Institucional</label>
+          <div class="col-sm-10">
+            <input type="email" class="form-control" name="email" maxlength="254" required="" id="id_email"
+              placeholder="Email" value="{{ user.email }}">
+          </div>
+        </div>
+        <!-- Genero -->
+        <label for="id_gender" class="col-sm-2 col-form-label">Genero:</label>
+        <div class="form-group ">
+          <div class="col-sm-10">
+            {{ form.gender }}
+          </div>
+        </div>
+        <!-- Estado civil -->
+        <label for="id_civilState" class="col-sm-2 col-form-label">Estado civil:</label>
+        <div class="form-group ">
+          <div class="col-sm-10">
+            {{ form.civil_state }}
+          </div>
+        </div>
+        <!-- Estado civil -->
+        <label for="id_nationality" class="col-sm-2 col-form-label">Nacionalidad:</label>
+        <div class="form-group ">
+          <div class="col-sm-10">
+            {{ form.nationality }}
+          </div>
+        </div>
+        {% if user.student %}
+            <!--Teléfono-->
+            <div class="form-group ">
+                <label for="id_mobile" class="col-sm-2 col-form-label">Teléfono:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="mobile" maxlength="10" id="id_mobile"
+                    placeholder="Teléfono" value="{{ user.student.personal_information.mobile }}">
+                </div>
+            </div>
+            <!--Dirección-->
+            <div class="form-group ">
+                <label for="id_address" class="col-sm-2 col-form-label">Dirección:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="address" maxlength="200" required="" id="id_address"
+                    placeholder="Dirección" value="{{ user.student.personal_information.address }}">
+                </div>
+            </div>
+            <!--Fecha de nacimiento-->
+            <div class="form-group ">
+                <label for="id_birth_date" class="col-sm-6 col-form-label">Fecha de nacimiento:</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="birth_date" id="id_birth_date"
+                    placeholder="Fecha de Nacimiento" value="{{ user.student.personal_information.birth_date|date:"Y-m-d"}}">
+                </div>
+            </div>
+            <!--CvLAC-->
+            <div class="form-group ">
+                <div class="col-sm-10">
+                    <label for="id_cvlac" class="col-sm-6 col-form-label">CvLAC:</label>
+                    <input type="text" class="form-control" name="cvlac" maxlength="200" id="id_cvlac"
+                    placeholder="CVLAC" value="{{ user.student.institutional_information.cvlac }}">
+                </div>
+            </div>
+        {% else %}
+            <!--Teléfono-->
+            <div class="form-group ">
+                <label for="id_mobile" class="col-sm-2 col-form-label">Teléfono:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="mobile" maxlength="10" id="id_mobile"
+                    placeholder="Teléfono" value="{{ user.teacher.personal_information.mobile }}">
+                </div>
+            </div>
+            <!--Dirección-->
+            <div class="form-group ">
+                <label for="id_address" class="col-sm-2 col-form-label">Dirección: </label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="address" maxlength="200" required="" id="id_address"
+                    placeholder="Dirección" value="{{ user.teacher.personal_information.address }}">
+                </div>
+            </div>
+            <!--Fecha de nacimiento-->
+            <div class="form-group ">
+                <label for="id_birth_date" class="col-sm-6 col-form-label">Fecha de nacimiento: </label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="birth_date" id="id_birth_date"
+                    placeholder="Fecha de Nacimiento" value="{{ user.teacher.personal_information.birth_date|date:"Y-m-d"}}">
+                </div>
+            </div>
+            <!--CvLAC-->
+            <div class="form-group ">
+                <div class="col-sm-10">
+                    <label for="id_cvlac" class="col-sm-6 col-form-label">CvLAC: </label>
+                    <input type="text" class="form-control" name="cvlac" maxlength="200" id="id_cvlac"
+                    placeholder="CVLAC" value="{{ user.teacher.institutional_information.cvlac }}">
+                </div>
+            </div>
+        {% endif %}
+        <div class="form-group ">
+          <div class="col-sm-7 text-center">
+            <input type="submit" class="btn btn-success" value="Actualizar" />
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- End Page -->
+
+
+<!-- Footer -->
+{% include "footer.html" %}
+
+<!-- Core  -->
+<script src="{% static 'unal/global/vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
+<script src="{% static 'unal/global/vendor/jquery/jquery.js' %}"></script>
+<script src="{% static 'unal/global/vendor/popper-js/umd/popper.min.js' %}"></script>
+<script src="{% static 'unal/global/vendor/bootstrap/bootstrap.js' %}"></script>
+<script src="{% static 'unal/global/vendor/animsition/animsition.js' %}"></script>
+<script src="{% static 'unal/global/vendor/mousewheel/jquery.mousewheel.js' %}"></script>
+<script src="{% static 'unal/global/vendor/asscrollbar/jquery-asScrollbar.js' %}"></script>
+<script src="{% static 'unal/global/vendor/asscrollable/jquery-asScrollable.js' %}"></script>
+<script src="{% static 'unal/global/vendor/ashoverscroll/jquery-asHoverScroll.js' %}"></script>
+
+<!-- Plugins -->
+<script src="{% static 'unal/global/vendor/switchery/switchery.js' %}"></script>
+<script src="{% static 'unal/global/vendor/intro-js/intro.js' %}"></script>
+<script src="{% static 'unal/global/vendor/screenfull/screenfull.js' %}"></script>
+<script src="{% static 'unal/global/vendor/slidepanel/jquery-slidePanel.js' %}"></script>
+<script src="{% static 'unal/global/vendor/aspaginator/jquery-asPaginator.min.js' %}"></script>
+<script src="{% static 'unal/global/vendor/jquery-placeholder/jquery.placeholder.js' %}"></script>
+<script src="{% static 'unal/global/vendor/bootbox/bootbox.js' %}"></script>
+
+
+<!-- Scripts -->
+<script src="{% static 'unal/global/js/Component.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin.js' %}"></script>
+<script src="{% static 'unal/global/js/Base.js' %}"></script>
+<script src="{% static 'unal/global/js/Config.js' %}"></script>
+
+<script src="{% static 'unal/assets/js/Section/Menubar.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/GridMenu.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/Sidebar.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/PageAside.js' %}"></script>
+<script src="{% static 'unal/assets/js/Plugin/menu.js' %}"></script>
+
+<script src="{% static 'unal/global/js/config/colors.js' %}"></script>
+<script src="{% static 'unal/assets/js/config/tour.js' %}"></script>
+<script>Config.set('assets', "{% static 'unal/assets' %}");</script>
+
+<!-- Page -->
+<script src="{% static 'unal/assets/js/Site.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/asscrollable.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/slidepanel.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/switchery.js' %}"></script>
+
+<script src="{% static 'unal/global/js/Plugin/sticky-header.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/action-btn.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/asselectable.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/editlist.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/aspaginator.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/animate-list.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/jquery-placeholder.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/material.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/selectable.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/bootbox.js' %}"></script>
+<script src="{% static 'unal/assets/js/BaseApp.js' %}"></script>
+<script src="{% static 'unal/assets/js/App/Contacts.js' %}"></script>
+
+<script src="{% static 'unal/assets/examples/js/apps/contacts.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+<script>
+  function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    
+    reader.onload = function(e) {
+      $('#student_photo').attr('src', e.target.result);
+    }
+    
+    reader.readAsDataURL(input.files[0]);
+  }
+  }
+
+  $("#id_photo").change(function() {
+    readURL(this);
+  });
+</script>
+
+{% endblock %}
