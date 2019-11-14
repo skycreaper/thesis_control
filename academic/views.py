@@ -1,4 +1,5 @@
-from itertools import chain
+import os
+from django.db.models import Q
 from django.conf import settings
 from django.shortcuts import HttpResponse, render, get_object_or_404, redirect
 from django.utils import timezone
@@ -8,7 +9,6 @@ from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-import os
 
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
@@ -34,13 +34,24 @@ class Thesis(LoginRequiredMixin, ListView):
     template_name = "thesis_list.html"
     paginate_by = 1
     login_url = LOGIN_URL
-
+    
     def get_queryset(self):
         query = self.request.GET.get('search_text')
-        if query: # Query tiene un valor
-            object_list = self.model.objects.filter(name__icontains=query)
-        elif not query or query is None: # Query es vació o no existe
-            object_list = self.model.objects.all()
+        if hasattr(self.request.user, 'student'):
+            if query: # Query tiene un valor
+                object_list = self.model.objects.filter(name__icontains=query, student=self.request.user.student)
+            elif not query or query is None: # Query es vació o no existe
+                object_list = self.model.objects.filter(student=self.request.user.student)
+        elif hasattr(self.request.user, 'teacher'): 
+            if query: # Query tiene un valor
+                object_list = self.model.objects.filter(Q(name__icontains=query), Q(director=self.request.user.teacher) | Q(co_director=self.request.user.teacher))
+            elif not query or query is None: # Query es vació o no existe
+                object_list = self.model.objects.filter(Q(director=self.request.user.teacher) | Q(co_director=self.request.user.teacher))
+        else:
+            if query: # Query tiene un valor
+                object_list = self.model.objects.filter(name__icontains=query)
+            elif not query or query is None: # Query es vació o no existe
+                object_list = self.model.objects.all()
         return object_list
 
     def get_context_data(self, **kwargs):
