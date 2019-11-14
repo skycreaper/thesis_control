@@ -39,4 +39,6 @@ urlpatterns = [
     path('teacher/edit/<int:user>/', TeacherView.edit, name='teacher_edit'),
     path('teacher/disable/', TeacherDisable.disabledTeacher, name='teacher_disable'),
 
+    #Excel
+    path('export_excel/<str:data>', export, name='export_to_excel'),
 ]

@@ -110,7 +110,7 @@
     <!-- Contacts Content -->
     <div id="contactsContent" class="page-content page-content-table" data-plugin="selectable">
       {% if object_list %}
-      <button style="float:right;margin-right:2.5em;margin-top:2em;" type="button" class="btn btn-primary">Exportar a excel</button>
+      <a style="float:right;margin-right:2.5em;margin-top:2em;" class="btn btn-primary" href="{% url 'export_to_excel' data='student' %}">Exportar a excel</a>
 
       <!-- Contacts -->
       <table class="table is-indent" data-plugin="animateList" data-animate="fade" data-child="tr"

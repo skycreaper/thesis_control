@@ -1,4 +1,7 @@
 import os
+import io
+import xlwt
+
 from django.db.models import Q
 from django.conf import settings
 from django.shortcuts import HttpResponse, render, get_object_or_404, redirect
@@ -326,3 +329,72 @@ class TeacherDisable(LoginRequiredMixin):
             customUser.save()
             return HttpResponse("ok",content_type='text/plain')
         return redirect('teacher_list')
+
+def write_to_excel(weather_data=None, town=None):
+        output = io.StringIO()
+        workbook = xlsxwriter.Workbook(output)
+    
+        # Here we will adding the code to add data
+        worksheet_s = workbook.add_worksheet("Estudiantes")
+
+        worksheet_s.write('A1', 'Hello..') 
+        worksheet_s.write('B1', 'Geeks') 
+        worksheet_s.write('C1', 'For') 
+        worksheet_s.write('D1', 'Geeks') 
+
+        workbook.close()
+        xlsx_data = output.getvalue()
+        # xlsx_data contains the Excel file
+        return xlsx_data
+
+def export(request, data):
+    response = HttpResponse(content_type='application/ms-excel')
+
+    if data == 'student':
+        response['Content-Disposition'] = 'attachment; filename="estudiantes.xls"'
+        rows = StudentModel.objects.all().values_list('user__first_name', 'user__last_name','user__email', 
+            'personal_information__gender__name', 
+            'personal_information__birth_date', 'personal_information__civil_state__name', 'personal_information__nationality__name', 
+            'personal_information__address','personal_information__mobile',
+            'personal_information__health_information__grupo_sanguineo', 'personal_information__health_information__rh', 
+            'personal_information__health_information__eps', 'institutional_information__cvlac')
+    else:
+        response['Content-Disposition'] = 'attachment; filename="profesores.xls"'
+        rows = Teacher.objects.all().values_list('user__first_name', 'user__last_name','user__email', 
+            'personal_information__gender__name', 
+            'personal_information__birth_date', 'personal_information__civil_state__name', 'personal_information__nationality__name', 
+            'personal_information__address','personal_information__mobile',
+            'personal_information__health_information__grupo_sanguineo', 'personal_information__health_information__rh', 
+            'personal_information__health_information__eps', 'institutional_information__cvlac')
+         
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Nombres', 'Apellidos', 'Correo electrónico', 'Genero', 'Fecha de nacimiento', 'Estado civil',
+    'Nacionalidad', 'Dirección', 'Teléfono', 'Grupo sanguíneo', 'RH', 'EPS', 'CVLAC']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+    font_style.num_format_str = 'dd/mm/yyyy'
+    
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            print(type(row))
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+
+    return response
+    
+    

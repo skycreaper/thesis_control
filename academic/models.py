@@ -121,4 +121,3 @@ class Period(models.Model):
 
     def __str__(self):
         return self.year+"-"+self.tremester
-    
