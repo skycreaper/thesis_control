@@ -3,6 +3,7 @@
 {% block title %}Listar Profesores{% endblock %}
 
 {% load static %}
+{% load permission_tags %}
 
 {% block extra_head %}
 <meta charset="utf-8">
@@ -155,11 +156,13 @@
             </td>
             <td class="cell-300"> {{ teacher.personal_information.mobile }} </td>
             <td class="cell-300"> {{ teacher.user.email }} </td>
+            {% if user|has_role:'admin' %}
             <td class="cell-300">
               <a class="btn btn-warning" href="{% url 'teacher_edit' user=teacher.user.id %}">Editar</a>
               <button class="btn btn-danger btn-disable" value="{{ teacher.user.id }}"
                 id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button>
             </td>
+            {% endif %}
             <td class="suf-cell"></td>
           </tr>
           {% endif %}
