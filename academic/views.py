@@ -126,21 +126,21 @@ class ThesisDetail(LoginRequiredMixin, DetailView):
 class ThesisCreation(CreateView):
     model = ThesisModel
     fields = [
-        'name', 'description', 'period', 'direct', 'student', 'porcentage',
-        'state', 'create_date'
+        'name', 'description', 'director', 'co_director','student', 'investigation_line',
+        'state', 'publication_date'
     ]
     success_url = reverse_lazy('thesis_list')
 
 
-class ThesisUpdate(UpdateView):
+class ThesisUpdate(LoginRequiredMixin, UpdateView):
     model = ThesisModel
-    fields = [
-        'name', 'description', 'period', 'direct', 'student', 'porcentage',
-        'state'
-    ]
-    success_url = reverse_lazy('thesis_list')
+    template_name = "academic/thesis/thesis_update.html"
+    form_class = ThesisCreationForm
+    login_url=LOGIN_URL
 
-
+    def get_success_url(self):
+        return reverse_lazy('thesis_detail', kwargs={'pk': self.kwargs["pk"]})
+    
 class ThesisDelete(DeleteView):
     model = Thesis
     success_url = reverse_lazy('thesis_list')
@@ -305,7 +305,8 @@ class TeacherView(LoginRequiredMixin, ListView):
         }
         return render(request, template, context)
     
-class TeacherDisable():
+class TeacherDisable(LoginRequiredMixin):
+    login_url=LOGIN_URL
     @csrf_protect
     def disabledTeacher(request):
         if request.method == "POST":

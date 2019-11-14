@@ -1,6 +1,6 @@
 {% extends 'base_home.html' %}
 
-{% block title %}Tesis detalle{% endblock %}
+{% block title %}Actualizar Tesis{% endblock %}
 
 {% load static %}
 
@@ -37,96 +37,146 @@
 <link rel="stylesheet" href="{% static 'unal/global/fonts/web-icons/web-icons.min.css' %}">
 <link rel="stylesheet" href="{% static 'unal/global/fonts/brand-icons/brand-icons.min.css' %}">
 <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+<!--[if lt IE 9]>
+  <script src="{% static 'unal/global/vendor/html5shiv/html5shiv.min.js' %}"></script>
+  <![endif]-->
+
+<!--[if lt IE 10]>
+  <script src="{% static 'unal/global/vendor/media-match/media.match.min.js' %}"></script>
+  <script src="{% static 'unal/global/vendor/respond/respond.min.js' %}"></script>
+  <![endif]-->
+
 <!-- Scripts -->
 <script src="{% static 'unal/global/vendor/breakpoints/breakpoints.js' %}"></script>
 <script>
-  Breakpoints();
+    Breakpoints();
 </script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
+
 {% endblock %}
 
 {% block class_doby %}class="animsition app-contacts page-aside-left"{% endblock %}
 
 {% block content %}
 
+<!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
 <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
 
-  {% include "header.html" %}
+    {% include "header.html" %}
 
-  <div class="navbar-container container-fluid">
-    <!-- Navbar Collapse -->
-    {% include "navbar.html" %}
-    <!-- End Navbar Collapse -->
-  </div>
+    <div class="navbar-container container-fluid">
+        <!-- Navbar Collapse -->
+        {% include "navbar.html" %}
+        <!-- End Navbar Collapse -->
+
+        <!-- Site Navbar Seach -->
+        <div class="collapse navbar-search-overlap" id="site-navbar-search">
+            <form role="search">
+                <div class="form-group">
+                    <div class="input-search">
+                        <i class="input-search-icon wb-search" aria-hidden="true"></i>
+                        <input type="text" class="form-control" name="site-search" placeholder="Search...">
+                        <button type="button" class="input-search-close icon wb-close" data-target="#site-navbar-search"
+                            data-toggle="collapse" aria-label="Close"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- End Site Navbar Seach -->
+    </div>
 </nav>
 {% include "menu.html" %}
 
 <!-- Page -->
+
 <div class="page bg-white">
 
-  <!-- Contacts Content -->
-  <div class="page-main">
-    <!-- Contacts Content Header -->
-    <div class="page-header">
-      {% include "academic/thesis/return_button.html" %}
-      <div class="text-right">
-        <button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'thesis_update' pk=thesis.pk%}'">
-          <i class="icon wb-edit"></i>Actualizar información
-        </button>
-      </div>
-      <h1 class="page-title">{{ thesis.name }}</h1>
-    </div>
-          
-    <div class="page-content container-fluid">
-        <div class="col-8">
-            <div class="form-group">
-                <label class="font-weight-bold">Estudiante:</label>
-                <label>{{ thesis.student }}</label>
-            </div>
-            <div class="form-group">
-                <label class="font-weight-bold">Director:</label>
-                <label>{{ thesis.director }}</label>
-            </div>
-            <div class="form-group">
-                <label class="font-weight-bold">Co-Director:</label>
-                <label>{{ thesis.co_director }}</label>
-            </div>
-            <div class="form-group">
-                <label class="font-weight-bold">Línea de investigación:</label>
-                <label>{{ thesis.investigation_line }}</label>
-            </div>
-            <div class="form-group">
-                <label class="font-weight-bold">Fecha de publicación:</label>
-                {{ thesis.publication_date|date:"d-m-Y" }}
-            </div>
-            <div class="form-group">
-                <h4>Descripción de la tesis</h4>
-                <p class="form-text text-muted">{{ thesis.description }}</p>
-            </div>
-        </div>
-        <!--Lista de avances-->
-        <div>
-        <h3>Lista de avances</h3>
-        <hr>
-            {% include 'academic/thesis/advance/advance_by_thesis.html' %}
-        </div>
-    </div>
+    <!-- Contacts Content -->
+    <div class="page-main">
 
-  </div>
+        <!-- Contacts Content Header -->
+        <div class="page-header">
+            <h1 class="page-title">Actualizar Tesis</h1>
+            <div class="page-header-actions">
+            </div>
+        </div>
+
+        <!-- Contacts Content -->
+        <div id="contactsContent" class="page-content page-content-table">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.errors }}
+                <div class="form-group ">
+                    <div class="col-sm-7">
+                        <label for="id_name" class="col-sm-6 col-form-label">Nombre de la tesis: </label>
+                        <input type="text" class="form-control" name="name" maxlength="150" id="id_name"
+                            placeholder="Nombre de la tesis" value="{{ thesis.name }}">
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <div class="col-sm-7">
+                        <label for="id_description" class="col-sm-6 col-form-label">Descripción: </label>
+                        <textarea name="description" class="form-control"
+                            placeholder="Ingrese la descripcion de la tesis" id="id_description" cols="35"
+                            rows="6">{{ thesis.description }}</textarea>
+                    </div>
+                </div>
+                
+                <div class="form-group ">
+                    <div class="col-sm-7">
+                        <label for="id_director" class="col-sm-6 col-form-label">Director: </label>
+                        {{ form.director }}
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <div class="col-sm-7">
+                        <label for="id_co_director" class="col-sm-6 col-form-label">Co-Director: </label>
+                        {{ form.co_director }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-7">
+                        <label for="id_student" class="col-sm-6 col-form-label">Estudiante: </label>
+                        {{ form.student }}
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <div class="col-sm-7">
+                        <label for="id_investigation_line" class="col-sm-6 col-form-label">Linea de investigación: </label>
+                        {{ form.investigation_line }}
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <div class="col-sm-7">
+                        <label for="id_publication_date" class="col-sm-6 col-form-label">Fecha de publicación: </label>
+                        <input type="date" class="form-control" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"
+                            name="publication_date" id="id_publication_date" placeholder="Fecha de publicación" value="{{ thesis.publication_date | date:"Y-m-d" }}">
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    <div class="col-sm-7 text-center">
+                        <input type="submit" class="btn btn-success" value="Actualizar" />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
 </div>
+
+
 <!-- End Page -->
-
-<!-- Modal -->
-<div id="popup" class="modal fade" role="dialog">
-</div>
-
-<!-- Site Action -->
-<div class="site-action" data-plugin="actionBtn">
-  <button type="button" class="site-action-toggle btn-raised btn btn-success btn-floating"
-    onclick="location.href='{% url "thesis_new" %}'">
-    <i class="front-icon wb-plus animation-scale-up" aria-hidden="true"></i>
-  </button>
-</div>
-<!-- End Site Action -->
 
 
 <!-- Footer -->
@@ -135,6 +185,7 @@
 <!-- Core  -->
 <script src="{% static 'unal/global/vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
 <script src="{% static 'unal/global/vendor/jquery/jquery.js' %}"></script>
+<!--<script src="{% static 'node_modules/chosen/main.js' %}"></script>-->
 <script src="{% static 'unal/global/vendor/popper-js/umd/popper.min.js' %}"></script>
 <script src="{% static 'unal/global/vendor/bootstrap/bootstrap.js' %}"></script>
 <script src="{% static 'unal/global/vendor/animsition/animsition.js' %}"></script>
@@ -187,7 +238,12 @@
 <script src="{% static 'unal/global/js/Plugin/bootbox.js' %}"></script>
 <script src="{% static 'unal/assets/js/BaseApp.js' %}"></script>
 <script src="{% static 'unal/assets/js/App/Contacts.js' %}"></script>
-
 <script src="{% static 'unal/assets/examples/js/apps/contacts.js' %}"></script>
-{% endblock %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
 
+<script>
+    $(document).ready(function() {
+        $('.selector').select2();
+    });
+</script>
+{% endblock %}
