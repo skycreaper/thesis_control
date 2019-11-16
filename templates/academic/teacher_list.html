@@ -203,6 +203,7 @@
 
 
 <!-- Site Action -->
+{% if user|has_role:'admin' %}
 <form> {% csrf_token %}
   <div class="site-action" data-plugin="actionBtn">
     <button type="button" class="site-action-toggle btn-raised btn btn-success btn-floating"
@@ -220,6 +221,7 @@
     </div>
   </div>
 </form>
+{% endif %}
 <!-- End Site Action -->
 
 <!-- Footer -->

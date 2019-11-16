@@ -188,7 +188,6 @@ class Advance(LoginRequiredMixin, ListView):
     def advance_by_thesis(request, thesis):
         template_name = "academic/thesis/advance/advance_by_thesis.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis)
-        print("petiton:", thesis)
         context = {'advance_list': advance_list}
         return render(request, template_name, context) 
         
@@ -390,7 +389,6 @@ def export(request, data):
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
-            print(type(row))
             ws.write(row_num, col_num, row[col_num], font_style)
 
     wb.save(response)

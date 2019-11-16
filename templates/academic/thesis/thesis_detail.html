@@ -68,34 +68,39 @@
     <!-- Contacts Content Header -->
     <div class="page-header">
       {% include "academic/thesis/return_button.html" %}
-      <div class="text-right">
-        <button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'thesis_update' pk=thesis.pk%}'">
-          <i class="icon wb-edit"></i>Actualizar información
-        </button>
+      <div class="row">
+        <div class="col-md-10">
+          <h1 class="page-title">{{ thesis.name }}</h1>
+        </div>
+        <div class="text-right">
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'thesis_update' pk=thesis.pk%}'">
+            <i class="icon wb-edit"></i>Actualizar
+          </button>
+        </div>
       </div>
-      <h1 class="page-title">{{ thesis.name }}</h1>
+      <hr>
     </div>
           
     <div class="page-content container-fluid">
         <div class="col-10">
             <div class="form-group">
-                <label class="font-weight-bold">Estudiante:</label>
+                <label class="col-sm-3">Estudiante:</label>
                 <label>{{ thesis.student }}</label>
             </div>
             <div class="form-group">
-                <label class="font-weight-bold">Director:</label>
+                <label class="col-sm-3">Director:</label>
                 <label>{{ thesis.director }}</label>
             </div>
             <div class="form-group">
-                <label class="font-weight-bold">Co-Director:</label>
+                <label class="col-sm-3">Co-Director:</label>
                 <label>{{ thesis.co_director }}</label>
             </div>
             <div class="form-group">
-                <label class="font-weight-bold">Línea de investigación:</label>
+                <label class="col-sm-3">Línea de investigación:</label>
                 <label>{{ thesis.investigation_line }}</label>
             </div>
             <div class="form-group">
-                <label class="font-weight-bold">Fecha de publicación:</label>
+                <label class="col-sm-3">Fecha de publicación:</label>
                 {{ thesis.publication_date|date:"d-m-Y" }}
             </div>
             <div class="form-group">
