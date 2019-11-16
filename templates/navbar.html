@@ -63,10 +63,10 @@
         
       </a>
       <div class="dropdown-menu" role="menu">
-        <a class="dropdown-item" href="{% url 'update_profile' pk=request.user.pk %}" role="menuitem"><i class="icon wb-user"
+        <a class="dropdown-item" href="{% url 'profile' pk=request.user.pk %}" role="menuitem"><i class="icon wb-user"
             aria-hidden="true"></i>Perfil</a>
         <a class="dropdown-item" href="{% url 'update_profile' pk=request.user.pk %}" role="menuitem"><i class="icon wb-settings"
-            aria-hidden="true"></i> Opciones</a>
+            aria-hidden="true"></i>Configuración</a>
         <div class="dropdown-divider" role="presentation"></div>
         <a class="dropdown-item" href="{% url 'logout' %}" role="menuitem"><i class="icon wb-power"
             aria-hidden="true"></i> Cerrar Sesión</a>

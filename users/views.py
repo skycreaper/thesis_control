@@ -1,12 +1,13 @@
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
-from django.shortcuts import HttpResponse, render, get_object_or_404, redirect
+from django.shortcuts import HttpResponse, render, get_object_or_404, redirect, HttpResponseRedirect
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import login as do_login
 from django.contrib.auth import logout as do_logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -24,18 +25,25 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = CustomUserChangeForm
     template_name = 'users/edit_profile.html'
-    success_url = reverse_lazy('home')
 
+    def form_valid(self, form):
+        return HttpResponseRedirect(self.get_success_url())
+        
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
+
         if hasattr(self.object, 'student'):
             if UpdateStudent(kwargs["pk"], request.POST, self.object.student.personal_information.photo) is None:
-                print("error al actualizar")
                 return self.render_to_response(self.get_context_data(form=form))
         else:
             if UpdateTeacher(kwargs["pk"], request.POST, self.object.teacher.personal_information.photo) is None:
                 return self.render_to_response(self.get_context_data(form=form))
-        return super().post(request, *args, **kwargs)
+
+        super().post(request, *args, **kwargs)
+        return self.form_valid(self.get_form())
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.kwargs["pk"]})
 
     def get_form(self, form=None):
         if hasattr(self.object, 'student'):
@@ -53,6 +61,11 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
                     'nationality': self.object.teacher.personal_information.nationality.pk
                 })
         return form
+
+class ProfileDetail(LoginRequiredMixin, DetailView):
+    login_url = 'login'
+    model = CustomUser
+    template_name = "users/profile.html"
 
 def login(request):
     form = AuthenticationForm
