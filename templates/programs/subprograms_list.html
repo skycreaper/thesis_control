@@ -1,0 +1,261 @@
+{% extends 'base_home.html' %}
+{% block title %}Listar Programas{% endblock %}
+
+{% load permission_tags %}
+{% load static %}
+
+{% block extra_head %}
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="bootstrap admin template">
+<meta name="author" content="">
+
+<link rel="apple-touch-icon" href="{% static 'unal/assets/images/apple-touch-icon.png' %}">
+<link rel="shortcut icon" href="{% static 'unal/assets/images/favicon.ico' %}">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="{% static 'unal/global/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/css/bootstrap-extend.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/css/site.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/css/styles.css' %}">
+<!--new in thesis list-->
+
+<!-- Plugins -->
+<link rel="stylesheet" href="{% static 'unal/global/vendor/animsition/animsition.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/asscrollable/asScrollable.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/switchery/switchery.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/intro-js/introjs.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/slidepanel/slidePanel.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/flag-icon-css/flag-icon.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/examples/css/apps/contacts.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/vendor/tablesaw/tablesaw.css' %}">
+
+<!-- Fonts -->
+<link rel="stylesheet" href="{% static 'unal/global/fonts/web-icons/web-icons.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/fonts/brand-icons/brand-icons.min.css' %}">
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+<!--[if lt IE 9]>
+  <script src="{% static 'unal/global/vendor/html5shiv/html5shiv.min.js' %}"></script>
+  <![endif]-->
+
+<!--[if lt IE 10]>
+  <script src="{% static 'unal/global/vendor/media-match/media.match.min.js' %}"></script>
+  <script src="{% static 'unal/global/vendor/respond/respond.min.js' %}"></script>
+  <![endif]-->
+
+<!-- Scripts -->
+<script src="{% static 'unal/global/vendor/breakpoints/breakpoints.js' %}"></script>
+<script>
+  Breakpoints();
+</script>
+{% endblock %}
+
+{% block class_doby %}class="animsition app-contacts page-aside-left"{% endblock %}
+
+{% block content %}
+
+<!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
+
+  {% include "header.html" %}
+
+  <div class="navbar-container container-fluid">
+    <!-- Navbar Collapse -->
+    {% include "navbar.html" %}
+    <!-- End Navbar Collapse -->
+
+    <!-- Site Navbar Seach -->
+    <div class="collapse navbar-search-overlap" id="site-navbar-search">
+      <form role="search">
+        <div class="form-group">
+          <div class="input-search">
+            <i class="input-search-icon wb-search" aria-hidden="true"></i>
+            <input type="text" class="form-control" name="site-search" placeholder="Search...">
+            <button type="button" class="input-search-close icon wb-close" data-target="#site-navbar-search"
+              data-toggle="collapse" aria-label="Close"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Site Navbar Seach -->
+  </div>
+</nav>
+{% include "menu.html" %}
+
+<!-- Page -->
+
+<div class="page bg-white">
+
+  <!-- Contacts Content -->
+  <div class="page-main">
+
+    <!-- Contacts Content Header -->
+    <div class="page-header">
+      <h1 class="page-title">Lista de Programas</h1>
+      <div class="page-header-actions">
+        <form>
+          <div class="input-search input-search-dark">
+            <i class="input-search-icon wb-search" aria-hidden="true"></i>
+            <input type="text" class="form-control" name="search_text" value="{{ request.GET.search_text }}" placeholder="Buscar...">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Contacts Content -->
+    <div id="contactsContent" class="page-content page-content-table" data-plugin="selectable">
+      {% if object_list %}
+        <table class="table is-indent" data-plugin="animateList" data-animate="fade" data-child="tr" data-selectable="selectable">
+            <thead>
+            <tr>
+                <th class="pre-cell"></th>
+                <th class="cell-30" scope="col"></th>
+                <th class="cell-300" scope="col">Nombre</th>
+                <th class="cell-300" scope="col">Descripción</th>
+                <th class="cell-300" scope="col">Fecha de inicio</th>
+                <th class="cell-300" scope="col">Fecha de finalización</th>
+                <th class="cell-300" scope="col">Opciones</th>
+                <th class="suf-cell"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for program in object_list %}
+            <tr>
+                <td class="pre-cell"></td>
+                <td class="cell-30"></td>
+                <td class="cell-300">{{ program.name }}</td>
+                {% if program.description %}
+                    <td class="cell-300">{{ program.description }}</td>
+                {% else %}
+                    <td class="cell-300"></td>
+                {% endif %}
+                <td class="cell-300">{{ program.start_date }}</td>
+                <td class="cell-300">{{ program.end_date }}</td>
+                <td class="cell-300">
+                    <a class="btn btn-warning" href="{% url 'program_edit' pk=program.pk %}">Editar</a>
+                    {% comment %} <button class="btn btn-danger btn-disable" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button> {% endcomment %}
+                </td>
+                <td class="suf-cell"></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+      
+        {% if is_paginated %}
+            <!--Previous-->
+            <ul class="pagination pagination-gap" data-skin="pagination-gap">
+            {% if page_obj.has_previous %}
+                <li class="pagination-prev page-item"><a class="page-link" href="/programs/program_list?page={{ page_obj.previous_page_number }}" aria-label="Prev"><span class="icon wb-chevron-left-mini"></span></a></li>
+            {% endif %}
+            <!--Current page-->
+            {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                <li class="pagination-items page-item active" data-value="{{ i }}"><a class="page-link" href="javascript:void(0)">{{ i }}</a></li>
+                {% else %}
+                <li class="pagination-items page-item" data-value="{{ i }}"><a class="page-link" href="/programs/program_list?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            <!--Next-->
+            {% if page_obj.has_next %}
+                <li class="pagination-next page-item"><a class="page-link" href="/programs/program_list?page={{ page_obj.next_page_number }}" aria-label="Next"><span class="icon wb-chevron-right-mini"></span></a></li>
+            {% endif %}
+            </ul>
+        {% endif %}
+      {% else %}
+      <div class="container">
+        <p class="h4 lead">No existen programas registrados <strong>{{ request.GET.search_text }}</strong></p>
+        <hr>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<!-- End Page -->
+
+
+<!-- Site Action -->
+<form>{% csrf_token %}
+  <div class="site-action" data-plugin="actionBtn">
+    <button type="button" class="site-action-toggle btn-raised btn btn-success btn-floating"
+      onclick="location.href='{% url "program_add" %}'">
+      <i class="front-icon wb-plus animation-scale-up" aria-hidden="true"></i>
+      <i class="back-icon wb-close animation-scale-up" aria-hidden="true"></i>
+    </button>
+    <div class="site-action-buttons">
+      <button type="button" data-action="trash" class="btn-raised btn btn-success btn-floating animation-slide-bottom">
+        <i class="icon wb-trash" aria-hidden="true"></i>
+      </button>
+      <button type="button" data-action="folder" class="btn-raised btn btn-success btn-floating animation-slide-bottom">
+        <i class="icon wb-folder" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</form>
+<!-- End Site Action -->
+
+<!-- Footer -->
+{% include "footer.html" %}
+
+<!-- Core  -->
+<script src="{% static 'unal/global/vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
+<script src="{% static 'unal/global/vendor/jquery/jquery.js' %}"></script>
+<script src="{% static 'unal/global/vendor/popper-js/umd/popper.min.js' %}"></script>
+<script src="{% static 'unal/global/vendor/bootstrap/bootstrap.js' %}"></script>
+<script src="{% static 'unal/global/vendor/animsition/animsition.js' %}"></script>
+<script src="{% static 'unal/global/vendor/mousewheel/jquery.mousewheel.js' %}"></script>
+<script src="{% static 'unal/global/vendor/asscrollbar/jquery-asScrollbar.js' %}"></script>
+<script src="{% static 'unal/global/vendor/asscrollable/jquery-asScrollable.js' %}"></script>
+<script src="{% static 'unal/global/vendor/ashoverscroll/jquery-asHoverScroll.js' %}"></script>
+
+<!-- Plugins -->
+<script src="{% static 'unal/global/vendor/switchery/switchery.js' %}"></script>
+<script src="{% static 'unal/global/vendor/intro-js/intro.js' %}"></script>
+<script src="{% static 'unal/global/vendor/screenfull/screenfull.js' %}"></script>
+<script src="{% static 'unal/global/vendor/slidepanel/jquery-slidePanel.js' %}"></script>
+<script src="{% static 'unal/global/vendor/aspaginator/jquery-asPaginator.min.js' %}"></script>
+<script src="{% static 'unal/global/vendor/jquery-placeholder/jquery.placeholder.js' %}"></script>
+<script src="{% static 'unal/global/vendor/bootbox/bootbox.js' %}"></script>
+
+<!-- Scripts -->
+<script src="{% static 'unal/global/js/Component.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin.js' %}"></script>
+<script src="{% static 'unal/global/js/Base.js' %}"></script>
+<script src="{% static 'unal/global/js/Config.js' %}"></script>
+
+<script src="{% static 'unal/assets/js/Section/Menubar.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/GridMenu.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/Sidebar.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/PageAside.js' %}"></script>
+<script src="{% static 'unal/assets/js/Plugin/menu.js' %}"></script>
+
+<script src="{% static 'unal/global/js/config/colors.js' %}"></script>
+<script src="{% static 'unal/assets/js/config/tour.js' %}"></script>
+<script>Config.set('assets', "{% static 'unal/assets' %}");</script>
+
+<!-- Page -->
+<script src="{% static 'unal/assets/js/Site.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/asscrollable.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/slidepanel.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/switchery.js' %}"></script>
+
+<script src="{% static 'unal/global/js/Plugin/sticky-header.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/action-btn.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/asselectable.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/editlist.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/aspaginator.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/animate-list.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/jquery-placeholder.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/material.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/selectable.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/bootbox.js' %}"></script>
+<script src="{% static 'unal/assets/js/BaseApp.js' %}"></script>
+<script src="{% static 'unal/assets/js/App/Contacts.js' %}"></script>
+
+<script src="{% static 'unal/assets/examples/js/apps/contacts.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+{% endblock %}

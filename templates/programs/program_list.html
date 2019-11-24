@@ -125,22 +125,22 @@
             </thead>
             <tbody>
             {% for program in object_list %}
-            <tr>
-                <td class="pre-cell"></td>
-                <td class="cell-30"></td>
-                <td class="cell-300">{{ program.name }}</td>
-                {% if program.description %}
-                    <td class="cell-300">{{ program.description }}</td>
-                {% else %}
-                    <td class="cell-300"></td>
-                {% endif %}
-                <td class="cell-300">{{ program.start_date }}</td>
-                <td class="cell-300">{{ program.end_date }}</td>
-                <td class="cell-300">
-                    <a class="btn btn-warning" href="{% url 'program_edit' pk=program.pk %}">Editar</a>
-                    {% comment %} <button class="btn btn-danger btn-disable" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button> {% endcomment %}
-                </td>
-                <td class="suf-cell"></td>
+            <tr onclick="location.href='{% url 'program_detail' pk=program.pk %}'">
+              <td class="pre-cell"></td>
+              <td class="cell-30"></td>
+              <td class="cell-300">{{ program.name }}</td>
+              {% if program.description %}
+                  <td class="cell-300">{{ program.description }}</td>
+              {% else %}
+                  <td class="cell-300"></td>
+              {% endif %}
+              <td class="cell-300">{{ program.start_date }}</td>
+              <td class="cell-300">{{ program.end_date }}</td>
+              <td class="cell-300">
+                  <a class="btn btn-warning" href="{% url 'program_edit' pk=program.pk %}">Editar</a>
+                  {% comment %} <button class="btn btn-danger btn-disable" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button> {% endcomment %}
+              </td>
+              <td class="suf-cell"></td>
             </tr>
             {% endfor %}
             </tbody>
