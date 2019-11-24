@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # apps personal
     'academic.apps.AcademicConfig',
     'home.apps.HomeConfig',
+    'programs.apps.ProgramsConfig',
     #'users.apps.UsersConfig',
     'users',
     'rolepermissions'

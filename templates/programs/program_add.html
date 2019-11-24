@@ -1,0 +1,147 @@
+{% extends 'base_home.html'%}
+{% block title %} Registar Programa {% endblock %}
+
+{% load static %}
+
+{% block extra_head %} 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="bootstrap admin template">
+<meta name="author" content="">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="{% static 'unal/global/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/css/bootstrap-extend.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/css/site.min.css' %}">
+
+<!-- Plugins -->
+<link rel="stylesheet" href="{% static 'unal/global/vendor/animsition/animsition.css' %}">
+
+<!-- Fonts -->
+<link rel="stylesheet" href="{% static 'unal/global/fonts/web-icons/web-icons.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/fonts/brand-icons/brand-icons.min.css' %}">
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+<!-- Scripts -->
+<script src="{% static 'unal/global/vendor/breakpoints/breakpoints.js' %}"></script>
+<script>
+  Breakpoints();
+</script>
+{% endblock %}
+
+{% block class_doby %}class="animsition app-contacts page-aside-left"{% endblock %}
+
+{% block content %}
+
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
+
+  {% include "header.html" %}
+
+  <div class="navbar-container container-fluid">
+    <!-- Navbar Collapse -->
+    {% include "navbar.html" %}
+    <!-- End Navbar Collapse -->
+
+    <!-- Site Navbar Seach -->
+    <div class="collapse navbar-search-overlap" id="site-navbar-search">
+      <form role="search">
+        <div class="form-group">
+          <div class="input-search">
+            <i class="input-search-icon wb-search" aria-hidden="true"></i>
+            <input type="text" class="form-control" name="site-search" placeholder="Search...">
+            <button type="button" class="input-search-close icon wb-close" data-target="#site-navbar-search"
+              data-toggle="collapse" aria-label="Close"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Site Navbar Seach -->
+  </div>
+</nav>
+{% include "menu.html" %}
+
+<div class="page bg-white">
+    <div class="page-main">
+
+        <!--Header-->
+        <div class="page-header">
+            <h1 class="page-title">Registrar Nuevo Programa</h1>
+            <div class="page-header-actions"> 
+                <button title="Voler a lista de programas" class="btn btn-outline-primary btn-sm" type="button"
+                    onclick="location.href='{% url 'program_list' %}'">
+                    <i class="icon wb-arrow-left" aria-hidden="true"></i>Volver
+                </button>
+            </div>
+        </div>
+
+        <!--Body-->
+        <div id="contactsContent" class="page-content">
+            <form method="post">
+            {% csrf_token %}
+                <!--Name-->
+                <div class="form-group">
+                    <h4 for="id_name" class="example-title">Nombre del programa:</h4>
+                    <input type="text" class="form-control" name="name" maxlength="250" id="id_name" required placeholder="Nombre del programa">
+                </div>
+                <!--Description-->
+                <div class="form-group">
+                    <h4 for="id_name" class="example-title">Descripción programa:</h4>
+                    <textarea class="form-control" rows="3" name="description" placeholder="Escribe un texto que describa del programa"></textarea>
+                </div>
+                <!--Start date-->
+                <div class="form-group">
+                    <h4 for="id_start_date" class="example-title">Fecha de inicio:</h4>
+                    <div class="input-group">
+                        <input type="date" class="form-control col-md-4"required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="start_date" id="id_start_date">
+                        <span class="input-group-addon"><i class="icon wb-calendar" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+                <!--End date-->
+                <div class="form-group">
+                    <h4 for="id_end_date" class="example-title">Fecha de finalización:</h4>
+                    <div class="input-group">
+                        <input type="date" class="form-control col-md-4"required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="end_date" id="id_end_date">
+                        <span class="input-group-addon"><i class="icon wb-calendar" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+                <!--Btn guardar-->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success col-md-2">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}
+<!-- Core  -->
+<script src="{% static 'unal/global/vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
+<script src="{% static 'unal/global/vendor/jquery/jquery.js' %}"></script>
+<script src="{% static 'unal/global/vendor/popper-js/umd/popper.min.js' %}"></script>
+<script src="{% static 'unal/global/vendor/bootstrap/bootstrap.js' %}"></script>
+<script src="{% static 'unal/global/vendor/animsition/animsition.js' %}"></script>
+<script src="{% static 'unal/global/vendor/asscrollbar/jquery-asScrollbar.js' %}"></script>
+<script src="{% static 'unal/global/vendor/asscrollable/jquery-asScrollable.js' %}"></script>
+<script src="{% static 'unal/global/vendor/ashoverscroll/jquery-asHoverScroll.js' %}"></script>
+
+<!-- Scripts -->
+<script src="{% static 'unal/global/js/Component.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin.js' %}"></script>
+<script src="{% static 'unal/global/js/Base.js' %}"></script>
+<script src="{% static 'unal/global/js/Config.js' %}"></script>
+
+ <script src="{% static 'unal/assets/js/Section/Menubar.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/GridMenu.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/Sidebar.js' %}"></script>
+<script src="{% static 'unal/assets/js/Plugin/menu.js' %}"></script>
+
+<!-- Page -->
+<script src="{% static 'unal/assets/js/Site.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/slidepanel.js' %}"></script>
+
+<script src="{% static 'unal/assets/js/BaseApp.js' %}"></script>
+<script src="{% static 'unal/assets/js/App/Contacts.js' %}"></script>
+
+<script src="{% static 'unal/assets/examples/js/apps/contacts.js' %}"></script>
+{% endblock content %}

@@ -35,6 +35,8 @@ urlpatterns = [
     path('home', include('home.urls')),
     # academic
     path('academic/', include('academic.urls')),
+    #programs
+    path('programs/', include('programs.urls')),
 ]
 
 if settings.DEBUG:
