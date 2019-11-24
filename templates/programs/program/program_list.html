@@ -137,8 +137,12 @@
               <td class="cell-300">{{ program.start_date }}</td>
               <td class="cell-300">{{ program.end_date }}</td>
               <td class="cell-300">
-                  <a class="btn btn-warning" href="{% url 'program_edit' pk=program.pk %}">Editar</a>
-                  {% comment %} <button class="btn btn-danger btn-disable" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button> {% endcomment %}
+                  <button type="button" class="btn btn-floating btn-warning btn-sm" 
+                    onclick="location.href='{% url 'program_edit' pk=program.pk %}'"
+                    data-toggle="tooltip" data-placement="top" title="Actualizar información"
+                    data-template='<div class="tooltip bs-tooltip-bottom tooltip-warning" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                        <i class="icon wb-edit" aria-hidden="true"></i>
+                  </button>
               </td>
               <td class="suf-cell"></td>
             </tr>

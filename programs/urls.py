@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls import url, include
 
-from .views import ProgramList, ProgramCreation, ProgramUpdate, ProgramDetail, SubProgramList, SubProgramList, SubprogramCreation
+from .views import ProgramList, ProgramCreation, ProgramUpdate, ProgramDetail, SubProgramList, SubProgramList, SubprogramCreation, SubProgramUpdate
 
 urlpatterns = [
     path('program_list', ProgramList.as_view(), name='program_list'),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('subprogram_by_program_list/<int:pk>', SubProgramList.as_view(), name='subprogram_by_program'),
     path('sub_program_list', SubProgramList.as_view(), name='sub_program_list'),
     path('subprogram_add/<int:program>', SubprogramCreation.as_view(), name='subprogram_add'),
+    path('subprogram_update/<int:pk>', SubProgramUpdate.as_view(), name='subprogram_update'),
 ]

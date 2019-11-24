@@ -61,5 +61,11 @@ class SubprogramCreation(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('program_detail', kwargs={'pk': self.kwargs["program"]})
 
+class SubProgramUpdate(LoginRequiredMixin, UpdateView):
+    model = SubProgram
+    template_name = "programs/subprogram/subprogram_update.html"
+    fields = ['name', 'description', 'start_date', 'end_date']
+    login_url = LOGIN_URL
+    success_url = reverse_lazy('sub_program_list')
 
 
