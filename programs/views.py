@@ -9,27 +9,27 @@ LOGIN_URL = '/login'
 
 class ProgramList(LoginRequiredMixin, ListView):
     model = Program
-    template_name= "programs/program_list.html"
+    template_name= "programs/program/program_list.html"
     paginate_by = 10
     login_url = LOGIN_URL
 
 class ProgramCreation(LoginRequiredMixin, CreateView):
     model = Program
-    template_name = "programs/program_add.html"
+    template_name = "programs/program/program_add.html"
     login_url = LOGIN_URL
     fields = ['name', 'start_date', 'end_date']
     success_url = reverse_lazy('program_list')
 
 class ProgramUpdate(LoginRequiredMixin, UpdateView):
     model = Program
-    template_name = "programs/program_update.html"
+    template_name = "programs/program/program_update.html"
     login_url = LOGIN_URL
     fields = ['name', 'description', 'start_date', 'end_date']
     success_url = reverse_lazy('program_list')
 
 class ProgramDetail(LoginRequiredMixin, DetailView):
     model = Program
-    template_name = "programs/program_detail.html"
+    template_name = "programs/program/program_detail.html"
     login_url = LOGIN_URL
 
     def get_context_data(self, **kwargs):
@@ -39,13 +39,13 @@ class ProgramDetail(LoginRequiredMixin, DetailView):
 
 class SubProgramList(LoginRequiredMixin, ListView):
     model = SubProgram
-    template_name = "programs/subprograms_list.html"
+    template_name = "programs/subprogram/subprograms_list.html"
     paginate_by = 10
     login_url = LOGIN_URL
 
 class SubprogramCreation(LoginRequiredMixin, CreateView):
     model = SubProgram
-    template_name = "programs/subprogram_add.html"
+    template_name = "programs/subprogram/subprogram_add.html"
     fields = ['name', 'description', 'start_date', 'end_date']
     login_url = LOGIN_URL
 
@@ -59,7 +59,6 @@ class SubprogramCreation(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        print(self.kwargs)
         return reverse_lazy('program_detail', kwargs={'pk': self.kwargs["program"]})
 
 
