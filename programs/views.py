@@ -24,7 +24,8 @@ class ProgramUpdate(LoginRequiredMixin, UpdateView):
     model = Program
     template_name = "programs/program_update.html"
     login_url = LOGIN_URL
-    fields = ['name', 'start_date', 'end_date']
+    fields = ['name', 'description', 'start_date', 'end_date']
+    success_url = reverse_lazy('program_list')
 
 class SubProgramList(LoginRequiredMixin, ListView):
     model = SubProgram
