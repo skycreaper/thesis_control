@@ -128,10 +128,10 @@
             <tr>
                 <td class="pre-cell"></td>
                 <td class="cell-30"></td>
-                <td class="cell-300">{{ subprogram.name }}</td>
-                <td class="cell-300">{{ subprogram.start_date }}</td>
-                <td class="cell-300">{{ subprogram.end_date }}</td>
-                <td class="cell-300">{{ subprogram.program.name }}</td>
+                <td class="cell-300" onclick="location.href='{% url 'subprogram_detail' pk=subprogram.pk %}'">{{ subprogram.name }}</td>
+                <td class="cell-300" onclick="location.href='{% url 'subprogram_detail' pk=subprogram.pk %}'">{{ subprogram.start_date }}</td>
+                <td class="cell-300" onclick="location.href='{% url 'subprogram_detail' pk=subprogram.pk %}'">{{ subprogram.end_date }}</td>
+                <td class="cell-300" onclick="location.href='{% url 'subprogram_detail' pk=subprogram.pk %}'">{{ subprogram.program.name }}</td>
                 <td class="cell-300">
                   <button type="button" class="btn btn-floating btn-warning btn-sm" 
                     onclick="location.href='{% url 'subprogram_update' pk=subprogram.pk %}'"

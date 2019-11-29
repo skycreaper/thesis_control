@@ -1,0 +1,160 @@
+{% extends 'base_home.html'%}
+{% block title %} Registar SubPrograma {% endblock %}
+
+{% load static %}
+
+{% block extra_head %} 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+<meta name="description" content="bootstrap admin template">
+<meta name="author" content="">
+
+<!-- Stylesheets -->
+<link rel="stylesheet" href="{% static 'unal/global/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/css/bootstrap-extend.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/assets/css/site.min.css' %}">
+
+<!-- Plugins -->
+<link rel="stylesheet" href="{% static 'unal/global/vendor/animsition/animsition.css' %}">
+
+<!-- Fonts -->
+<link rel="stylesheet" href="{% static 'unal/global/fonts/web-icons/web-icons.min.css' %}">
+<link rel="stylesheet" href="{% static 'unal/global/fonts/brand-icons/brand-icons.min.css' %}">
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+<!-- Scripts -->
+<script src="{% static 'unal/global/vendor/breakpoints/breakpoints.js' %}"></script>
+<script>
+  Breakpoints();
+</script>
+{% endblock %}
+
+{% block class_doby %}class="animsition app-contacts page-aside-left"{% endblock %}
+
+{% block content %}
+
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" role="navigation">
+
+  {% include "header.html" %}
+
+  <div class="navbar-container container-fluid">
+    <!-- Navbar Collapse -->
+    {% include "navbar.html" %}
+    <!-- End Navbar Collapse -->
+
+    <!-- Site Navbar Seach -->
+    <div class="collapse navbar-search-overlap" id="site-navbar-search">
+      <form role="search">
+        <div class="form-group">
+          <div class="input-search">
+            <i class="input-search-icon wb-search" aria-hidden="true"></i>
+            <input type="text" class="form-control" name="site-search" placeholder="Search...">
+            <button type="button" class="input-search-close icon wb-close" data-target="#site-navbar-search"
+              data-toggle="collapse" aria-label="Close"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- End Site Navbar Seach -->
+  </div>
+</nav>
+{% include "menu.html" %}
+
+<div class="page bg-white">
+    <div class="page-main">
+
+        <!--Header-->
+        <div class="page-header">
+            <h1 class="page-title">{{ subprogram.name }}</h1>
+            <hr>
+            <div class="page-header-actions"> 
+                <button title="Voler a lista de subprogramas" class="btn btn-outline-primary btn-sm" type="button"
+                    onclick="location.href='{% url 'sub_program_list' %}'">
+                    <i class="icon wb-arrow-left" aria-hidden="true"></i>Volver
+                </button>
+            </div>
+        </div>
+
+        <!--Body-->
+        <div class="page-content">
+            <div class="row col-12">
+                <div class="col-8">
+                    <!--Description-->
+                    <div class="form-group">
+                        <h4 for="id_name" class="example-title">Descripción SubPrograma:</h4>
+                        <p>{{ subprogram.description }}</p>
+                    </div>
+                    <!--Start date-->
+                    <div class="form-group">
+                        <h4 for="id_start_date" class="example-title">Fecha de inicio:</h4>
+                        <div class="input-group">
+                            <span class="input-group-addon" style="margin-right:10px;"><i class="icon wb-calendar" aria-hidden="true"></i></span> 
+                            <p>{{ subprogram.start_date | date:"Y-m-d" }}</p>
+                        </div>
+                    </div>
+                    <!--End date-->
+                    <div class="form-group">
+                        <h4 for="id_end_date" class="example-title">Fecha de finalización:</h4>
+                        <div class="input-group">
+                            <span class="input-group-addon" style="margin-right:10px;"><i class="icon wb-calendar" aria-hidden="true"></i></span> 
+                            <p>{{ subprogram.end_date | date:"Y-m-d" }}</p>
+                        </div>
+                    </div>
+                    <!--Btn guardar-->
+                    <div class="text-left">
+                        <button type="submit"onclick="location.href='{% url 'subprogram_update' pk=subprogram.pk %}'" 
+                            class="btn btn-outline-success col-md-4">Actualizar Información</button>
+                    </div>
+                </div>
+                <!--Program info-->
+                <div class="col-4">
+                    <div class="panel" style="border: 1px solid #94b43b;">
+                        <div class="panel-heading" style="border-bottom: 1px solid #94b43b; background-color: #94b43b;">
+                            <h4 class="panel-title">Información del programa</h4>
+                        </div>
+                        <div class="panel-body">
+                            <br>
+                            <h5>Nombre del programa</h5> {{ subprogram.program.name }}
+                            <h5>Descripción del programa</h5>{{ subprogram.program.description }}
+                            <h5>Fecha de inicio</h5>{{ subprogram.program.start_date }}
+                            <h5>Fecha de finalización</h5>{{ subprogram.program.end_date }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "footer.html" %}
+<!-- Core  -->
+<script src="{% static 'unal/global/vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
+<script src="{% static 'unal/global/vendor/jquery/jquery.js' %}"></script>
+<script src="{% static 'unal/global/vendor/popper-js/umd/popper.min.js' %}"></script>
+<script src="{% static 'unal/global/vendor/bootstrap/bootstrap.js' %}"></script>
+<script src="{% static 'unal/global/vendor/animsition/animsition.js' %}"></script>
+<script src="{% static 'unal/global/vendor/asscrollbar/jquery-asScrollbar.js' %}"></script>
+<script src="{% static 'unal/global/vendor/asscrollable/jquery-asScrollable.js' %}"></script>
+<script src="{% static 'unal/global/vendor/ashoverscroll/jquery-asHoverScroll.js' %}"></script>
+
+<!-- Scripts -->
+<script src="{% static 'unal/global/js/Component.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin.js' %}"></script>
+<script src="{% static 'unal/global/js/Base.js' %}"></script>
+<script src="{% static 'unal/global/js/Config.js' %}"></script>
+
+ <script src="{% static 'unal/assets/js/Section/Menubar.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/GridMenu.js' %}"></script>
+<script src="{% static 'unal/assets/js/Section/Sidebar.js' %}"></script>
+<script src="{% static 'unal/assets/js/Plugin/menu.js' %}"></script>
+
+<!-- Page -->
+<script src="{% static 'unal/assets/js/Site.js' %}"></script>
+<script src="{% static 'unal/global/js/Plugin/slidepanel.js' %}"></script>
+
+<script src="{% static 'unal/assets/js/BaseApp.js' %}"></script>
+<script src="{% static 'unal/assets/js/App/Contacts.js' %}"></script>
+
+<script src="{% static 'unal/assets/examples/js/apps/contacts.js' %}"></script>
+{% endblock content %}

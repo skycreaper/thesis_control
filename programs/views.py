@@ -69,3 +69,7 @@ class SubProgramUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('sub_program_list')
 
 
+class SubProgramDetail(LoginRequiredMixin, DetailView):
+    model = SubProgram
+    template_name = "programs/subprogram/subprogram_detail.html"
+    login_url = LOGIN_URL
