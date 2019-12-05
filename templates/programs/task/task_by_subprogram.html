@@ -1,0 +1,41 @@
+
+<div class="col-12 panel">
+    <div class="panel-heading">
+        <h3 class="panel-title"><i class="panel-title-icon icon wb-paperclip" aria-hidden="true"></i>Tareas asociadas
+            <span class="float-right">
+                <button type="button" class="btn btn-floating btn-success btn-sm"
+                    onclick="location.href='{% url 'subprogramtask_add' subprogram=subprogram.pk %}'"
+                    data-toggle="tooltip" data-placement="top" title="Agregar tarea"
+                    data-template='<div class="tooltip bs-tooltip-bottom tooltip-success" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                        <i class="icon wb-plus" aria-hidden="true"></i>
+                </button>
+            </span>
+        </h3>
+    </div>
+
+    <div class="panel-body h-300 scrollable is-enabled scrollable-vertical" data-plugin="scrollable">
+        <div data-role="container" class="scrollable-container">
+            <div data-role="content" class="scrollable-content">
+                <ul class="list-group list-group-dividered list-group-full">
+                    {% for t in task %}
+                    <li class="list-group-item list-group-item-action">
+                        <div class="media">
+                            <div class="media-body" onclick="location.href='{% url 'subprogramtask_detail' pk=t.pk %}'" style="cursor: pointer;">
+                                <div class=" col-2 float-right">Avance:
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar progress-bar-indicating active" role="progressbar"
+                                            style="width: {{ t.acumulate_percentage }}%;">{{ t.acumulate_percentage }}%
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="mt-0 mb-5">{{ t.name }}</h4>
+                                <p>{{ t.commentary }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    <div class="scrollable-bar scrollable-bar-vertical scrollable-bar-hide" draggable="false"><div class="scrollable-bar-handle" style="height: 165.682px;"></div></div></div>
+</div>

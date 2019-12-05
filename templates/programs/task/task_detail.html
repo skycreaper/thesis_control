@@ -1,5 +1,5 @@
 {% extends 'base_home.html'%}
-{% block title %} Registar SubPrograma {% endblock %}
+{% block title %} {{ subprogramtask.name }} {% endblock %}
 
 {% load static %}
 
@@ -66,14 +66,9 @@
 
         <!--Header-->
         <div class="page-header">
-            <h1 class="page-title">{{ subprogram.name }}</h1>
+            <h1 class="page-title">Tarea: {{ subprogramtask.name }}</h1>
             <hr>
-            <div class="page-header-actions"> 
-                <button title="Voler a lista de subprogramas" class="btn btn-outline-primary btn-sm" type="button"
-                    onclick="location.href='{% url 'sub_program_list' %}'">
-                    <i class="icon wb-arrow-left" aria-hidden="true"></i>Volver
-                </button>
-            </div>
+            <div class="page-header-actions"></div>
         </div>
 
         <!--Body-->
@@ -82,54 +77,40 @@
                 <div class="col-8">
                     <!--Description-->
                     <div class="form-group">
-                        <h4 for="id_name" class="example-title">Descripción SubPrograma:</h4>
-                        <p>{{ subprogram.description }}</p>
-                    </div>
-                    <!--Start date-->
-                    <div class="form-group">
-                        <h4 for="id_start_date" class="example-title">Fecha de inicio:</h4>
-                        <div class="input-group">
-                            <span class="input-group-addon" style="margin-right:10px;"><i class="icon wb-calendar" aria-hidden="true"></i></span> 
-                            <p>{{ subprogram.start_date | date:"Y-m-d" }}</p>
-                        </div>
-                    </div>
-                    <!--End date-->
-                    <div class="form-group">
-                        <h4 for="id_end_date" class="example-title">Fecha de finalización:</h4>
-                        <div class="input-group">
-                            <span class="input-group-addon" style="margin-right:10px;"><i class="icon wb-calendar" aria-hidden="true"></i></span> 
-                            <p>{{ subprogram.end_date | date:"Y-m-d" }}</p>
-                        </div>
-                    </div>
-                    <!--Btn actualizar-->
-                    <div class="text-left">
-                        <button type="submit"onclick="location.href='{% url 'subprogram_update' pk=subprogram.pk %}'" 
-                            class="btn btn-outline-success col-md-4">Actualizar Información</button>
+                        <h4 for="id_name" class="example-title">Comentario:</h4>
+                        <p>{{ subprogramtask.commentary }}</p>
                     </div>
                 </div>
-                <!--Program info-->
+                <!--subprograma info-->
                 <div class="col-4">
                     <div class="panel" style="border: 1px solid #94b43b;">
                         <div class="panel-heading" style="border-bottom: 1px solid #94b43b; background-color: #94b43b;">
-                            <h4 class="panel-title">Información del programa</h4>
+                            <h4 class="panel-title">Información del subprograma</h4>
                         </div>
                         <div class="panel-body">
                             <br>
-                            <h5>Nombre del programa</h5> {{ subprogram.program.name }}
-                            <h5>Descripción del programa</h5>{{ subprogram.program.description }}
-                            <h5>Fecha de inicio</h5>{{ subprogram.program.start_date }}
-                            <h5>Fecha de finalización</h5>{{ subprogram.program.end_date }}
+                            <h5>Nombre del programa</h5> {{ subprogramtask.sub_program.name }}
+                            <h5>Descripción del programa</h5>{{ subprogramtask.sub_program.description }}
+                            <h5>Fecha de inicio</h5>{{ subprogramtask.sub_program.start_date }}
+                            <h5>Fecha de finalización</h5>{{ subprogramtask.sub_program.end_date }}
                         </div>
                     </div>
                 </div>
             </div>
             <!--Lista de Tareas-->
+            <h3>Lista de avances</h3>
+            <hr>
             <div class="row">
-                {% include 'programs/task/task_by_subprogram.html' %}
+                {% include 'programs/advance/advance_by_task.html' %}
+            </div>
+            <div class="text-center">
+              <button class="btn btn-success">Agregar avance</button>
             </div>
         </div>
     </div>
 </div>
+
+{% include "footer.html" %}
 <!-- Core  -->
 <script src="{% static 'unal/global/vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
 <script src="{% static 'unal/global/vendor/jquery/jquery.js' %}"></script>

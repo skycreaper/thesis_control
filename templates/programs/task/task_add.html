@@ -1,5 +1,5 @@
 {% extends 'base_home.html'%}
-{% block title %} Registar SubPrograma {% endblock %}
+{% block title %} Registar Tarea {% endblock %}
 
 {% load static %}
 
@@ -66,11 +66,10 @@
 
         <!--Header-->
         <div class="page-header">
-            <h1 class="page-title">{{ subprogram.name }}</h1>
-            <hr>
+            <h1 class="page-title">Registrar una nueva tarea</h1>
             <div class="page-header-actions"> 
-                <button title="Voler a lista de subprogramas" class="btn btn-outline-primary btn-sm" type="button"
-                    onclick="location.href='{% url 'sub_program_list' %}'">
+                <button title="Voler a lista de programas" class="btn btn-outline-primary btn-sm" type="button"
+                    onclick="location.href='{% url 'subprogram_detail' pk=subprogram.pk %}'">
                     <i class="icon wb-arrow-left" aria-hidden="true"></i>Volver
                 </button>
             </div>
@@ -80,56 +79,46 @@
         <div class="page-content">
             <div class="row col-12">
                 <div class="col-8">
-                    <!--Description-->
-                    <div class="form-group">
-                        <h4 for="id_name" class="example-title">Descripción SubPrograma:</h4>
-                        <p>{{ subprogram.description }}</p>
-                    </div>
-                    <!--Start date-->
-                    <div class="form-group">
-                        <h4 for="id_start_date" class="example-title">Fecha de inicio:</h4>
-                        <div class="input-group">
-                            <span class="input-group-addon" style="margin-right:10px;"><i class="icon wb-calendar" aria-hidden="true"></i></span> 
-                            <p>{{ subprogram.start_date | date:"Y-m-d" }}</p>
+                    <!--Form-->
+                    <form method="post">
+                    {% csrf_token %}
+                        <!--Name-->
+                        <div class="form-group">
+                            <h4 class="example-title">Nombre:</h4>
+                            <input type="text" class="form-control" name="name" maxlength="250" id="id_name" required placeholder="Nombre de la tarea">
                         </div>
-                    </div>
-                    <!--End date-->
-                    <div class="form-group">
-                        <h4 for="id_end_date" class="example-title">Fecha de finalización:</h4>
-                        <div class="input-group">
-                            <span class="input-group-addon" style="margin-right:10px;"><i class="icon wb-calendar" aria-hidden="true"></i></span> 
-                            <p>{{ subprogram.end_date | date:"Y-m-d" }}</p>
+                        <!--Description-->
+                        <div class="form-group">
+                            <h4 class="example-title">Comentario:</h4>
+                            <textarea class="form-control" rows="3" name="commentary" placeholder="Comentarios para la tarea"></textarea>
                         </div>
-                    </div>
-                    <!--Btn actualizar-->
-                    <div class="text-left">
-                        <button type="submit"onclick="location.href='{% url 'subprogram_update' pk=subprogram.pk %}'" 
-                            class="btn btn-outline-success col-md-4">Actualizar Información</button>
-                    </div>
+                        <!--Btn guardar-->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success col-md-3">Asociar tarea</button>
+                        </div>
+                    </form>
                 </div>
-                <!--Program info-->
+                <!--subprograma info-->
                 <div class="col-4">
                     <div class="panel" style="border: 1px solid #94b43b;">
                         <div class="panel-heading" style="border-bottom: 1px solid #94b43b; background-color: #94b43b;">
-                            <h4 class="panel-title">Información del programa</h4>
+                            <h4 class="panel-title">Información del subprograma</h4>
                         </div>
                         <div class="panel-body">
                             <br>
-                            <h5>Nombre del programa</h5> {{ subprogram.program.name }}
-                            <h5>Descripción del programa</h5>{{ subprogram.program.description }}
-                            <h5>Fecha de inicio</h5>{{ subprogram.program.start_date }}
-                            <h5>Fecha de finalización</h5>{{ subprogram.program.end_date }}
+                            <h5>Nombre del subprograma</h5> {{ subprogram.name }}
+                            <h5>Descripción del subprograma</h5>{{ subprogram.description }}
+                            <h5>Fecha de inicio</h5>{{ subprogram.start_date }}
+                            <h5>Fecha de finalización</h5>{{ subprogram.end_date }}
                         </div>
                     </div>
                 </div>
-            </div>
-            <!--Lista de Tareas-->
-            <div class="row">
-                {% include 'programs/task/task_by_subprogram.html' %}
             </div>
         </div>
     </div>
 </div>
+
+{% include "footer.html" %}
 <!-- Core  -->
 <script src="{% static 'unal/global/vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
 <script src="{% static 'unal/global/vendor/jquery/jquery.js' %}"></script>

@@ -125,17 +125,17 @@
             </thead>
             <tbody>
             {% for program in object_list %}
-            <tr onclick="location.href='{% url 'program_detail' pk=program.pk %}'">
+            <tr>
               <td class="pre-cell"></td>
               <td class="cell-30"></td>
-              <td class="cell-300">{{ program.name }}</td>
+              <td class="cell-300" onclick="location.href='{% url 'program_detail' pk=program.pk %}'">{{ program.name }}</td>
               {% if program.description %}
-                  <td class="cell-300">{{ program.description }}</td>
+                  <td class="cell-300" onclick="location.href='{% url 'program_detail' pk=program.pk %}'">{{ program.description }}</td>
               {% else %}
-                  <td class="cell-300"></td>
+                  <td class="cell-300" onclick="location.href='{% url 'program_detail' pk=program.pk %}'"></td>
               {% endif %}
-              <td class="cell-300">{{ program.start_date }}</td>
-              <td class="cell-300">{{ program.end_date }}</td>
+              <td class="cell-300" onclick="location.href='{% url 'program_detail' pk=program.pk %}'">{{ program.start_date }}</td>
+              <td class="cell-300" onclick="location.href='{% url 'program_detail' pk=program.pk %}'">{{ program.end_date }}</td>
               <td class="cell-300">
                   <button type="button" class="btn btn-floating btn-warning btn-sm" 
                     onclick="location.href='{% url 'program_edit' pk=program.pk %}'"

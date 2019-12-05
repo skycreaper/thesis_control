@@ -78,16 +78,16 @@
         <!--Body-->
         <div class="page-content">
             <div class="form-group">
-                <label class="form-text">Descripción:</label>
-                <p class="form-text text-muted">{{ program.description }}</p>
+                <h4 class="example-title">Descripción:</h4>
+                <p>{{ program.description }}</p>
             </div>
             <div class="form-group row">
-                <label class="col-form-label col-md-6">Fecha de inicio:</label>
-                <label class="col-form-label col-md-6">Fecha de finalización:</label>
+                <h4 class="col-form-label col-md-6 example-title">Fecha de inicio:</h4>
+                <h4 class="col-form-label col-md-6 example-title">Fecha de finalización:</h4>
             </div>
             <div class="form-group row">
-                <label class="col-md-6 text-muted">{{ program.start_date }}</label>
-                <label class="col-md-6 text-muted">{{ program.end_date }}</label>
+                <p class="col-md-6">{{ program.start_date }}</p>
+                <p class="col-md-6">{{ program.end_date }}</p>
             </div>
             <!--Lista de subprogramas-->
             <div class="row">
@@ -96,8 +96,6 @@
         </div>
     </div>
 </div>
-
-{% include "footer.html" %}
 <!-- Core  -->
 <script src="{% static 'unal/global/vendor/babel-external-helpers/babel-external-helpers.js' %}"></script>
 <script src="{% static 'unal/global/vendor/jquery/jquery.js' %}"></script>

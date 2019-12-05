@@ -17,12 +17,20 @@
             <div data-role="content" class="scrollable-content">
                 <ul class="list-group list-group-dividered list-group-full">
                     {% for subprogram in subprograms %}
-                    <li class="list-group-item">
+                    <li class="list-group-item list-group-item-action">
                         <div class="media">
-                            <div class="media-body">
+                            <div class="media-body" onclick="location.href='{% url 'subprogram_detail' pk=subprogram.pk %}'" style="cursor: pointer;">
                                 <small class="float-right">{{ subprogram.start_date }} - {{ subprogram.end_date }}</small>
-                                <h5 class="mt-0 mb-5">{{ subprogram.name }}</h5>
-                                <small>{{ subprogram.description }}</small>
+                                <h4 class="mt-0 mb-5 ">{{ subprogram.name }}</h4>
+                                <p>{{ subprogram.description }}</p>
+
+                                <h5>Avance<span class="float-right">{{ subprogram.acumulate_percentage }}%</span></h5>
+                                <div class="progress progress-sm">
+                                    <div class="progress-bar progress-bar-indicating active" role="progressbar"
+                                        style="width: {{ subprogram.acumulate_percentage }}%;">
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </li>

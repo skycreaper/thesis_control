@@ -6,6 +6,7 @@ class Program(models.Model):
     description = models.CharField(max_length=500, null=True, blank=True)
     start_date = models.DateField(auto_now=False, auto_now_add=False)
     end_date = models.DateField(auto_now=False, auto_now_add=False)
+    acumulate_percentage = 0
 
 class SubProgram(models.Model):
     name = models.CharField(max_length=200)
@@ -13,14 +14,18 @@ class SubProgram(models.Model):
     program = models.ForeignKey(Program, on_delete=models.CASCADE)
     start_date = models.DateField(auto_now=False, auto_now_add=False)
     end_date = models.DateField(auto_now=False, auto_now_add=False)
+    acumulate_percentage = 0
 
-class ProgramTask(models.Model):
+class SubProgramTask(models.Model):
     name = models.CharField(max_length=200)
-    comentary = models.CharField(max_length=500, null=True, blank=True)
+    commentary = models.CharField(max_length=500, null=True, blank=True)
     sub_program = models.ForeignKey(SubProgram, on_delete=models.CASCADE)
     acumulate_percentage = 0
 
 class TaskAdvance(models.Model):
-    comentary = models.TextField(max_length=1024*2)
-    task_file = models.FileField("file", upload_to="task_documents", max_length=100)
+    commentary = models.TextField(max_length=1024*2)
+    advance_file = models.FileField("file", upload_to="task_documents", max_length=100)
     percentage = models.IntegerField()
+    completed = models.BooleanField(default=False, blank=True)
+    task = models.ForeignKey(SubProgramTask, on_delete=models.CASCADE)
+    upload_date = models.DateField(auto_now=True)

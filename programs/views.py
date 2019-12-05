@@ -1,9 +1,15 @@
+import os 
+import zipfile
+
+from django.conf import settings
 from django.urls import reverse_lazy
+from django.http import HttpResponse, FileResponse
 from django.shortcuts import render
+from django.utils.text import slugify
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Program, SubProgram, ProgramTask, TaskAdvance
+from .models import Program, SubProgram, SubProgramTask, TaskAdvance
 
 LOGIN_URL = '/login'
 
@@ -35,6 +41,13 @@ class ProgramDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['subprograms'] = SubProgram.objects.filter(program=kwargs['object'])
+        acum = 0
+        for s in data['subprograms']:
+            tasks = SubProgramTask.objects.filter(sub_program=s)
+            for t in tasks:
+                advances = TaskAdvance.objects.filter(task=t)
+                acum += sum(advance.percentage for advance in advances)
+        s.acumulate_percentage = int(acum / len(tasks))
         return data
 
 class SubProgramList(LoginRequiredMixin, ListView):
@@ -73,3 +86,57 @@ class SubProgramDetail(LoginRequiredMixin, DetailView):
     model = SubProgram
     template_name = "programs/subprogram/subprogram_detail.html"
     login_url = LOGIN_URL
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['task'] = SubProgramTask.objects.filter(sub_program=kwargs['object'])
+        for t in data['task']:
+            advances = TaskAdvance.objects.filter(task=t)
+            t.acumulate_percentage = sum(advance.percentage for advance in advances)
+        return data
+
+class SubProgramTaskDetail(LoginRequiredMixin, DetailView):
+    model = SubProgramTask
+    template_name = "programs/task/task_detail.html"
+    login_url = LOGIN_URL
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['advances'] = TaskAdvance.objects.filter(task=kwargs['object']).order_by('id')
+        return data
+
+class SubProgramTaskAdd(LoginRequiredMixin, CreateView):
+    model = SubProgramTask
+    template_name = "programs/task/task_add.html"
+    login_url = LOGIN_URL
+    fields = ['name', 'commentary']
+    
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['subprogram'] = SubProgram.objects.get(pk=self.kwargs['subprogram'])
+        return data
+
+    def form_valid(self, form):
+        form.instance.sub_program = SubProgram.objects.get(pk=self.kwargs['subprogram'])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('subprogram_detail', kwargs={'pk': self.kwargs["subprogram"]})
+
+class TaskAdvanceDetail(LoginRequiredMixin, DetailView):
+    model = TaskAdvance
+    template_name = "programs/advance/advance_detail.html"
+    login_url = LOGIN_URL
+
+    def download_item(request, document_path):
+        file_name, file_extension = os.path.splitext(document_path)
+        filepath = os.path.join(settings.MEDIA_ROOT)
+        file_extension = file_extension[1:] # removes dot
+        
+        with open(filepath+'/'+document_path, 'rb') as file:
+            response = HttpResponse(file, content_type='file/%s' % file_extension)
+            response["Content-Disposition"] = "attachment;filename=%s.%s" % (file_name.split('/')[1], file_extension)
+            return response
+        
+        file.closed    
+        

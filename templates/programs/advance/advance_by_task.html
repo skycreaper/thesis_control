@@ -1,0 +1,22 @@
+{% for advance in  advances %}
+<div class="col-3 card card-shadow">
+    <div class="card-img-top cover overlay overlay-hover">
+        <div class="text-center">
+            <i class="cover-image overlay-figure overlay-scale icon wb-folder" aria-hidden="true" style="font-size: 64px;"></i>            
+        </div>
+    </div>
+    <div class="card-block">
+        <h3 class="card-title">Avance Nº {{ forloop.counter }}</h3>
+        <p class="card-text">
+            <span class="badge badge-round badge-primary float-right">{{ advance.upload_date }}</span>
+        </p>
+        <br>
+        <p class="card-text">{{ advance.commentary }}</p>
+        <p class="card-text">Porcentaje de la tarea: {{ advance.percentage }}%</p>
+    </div>
+    <div class="card-block clearfix text-center">
+        <a class="btn btn-outline btn-info card-link" href="{% url 'task_advance_download' document_path=advance.advance_file %}">Descargar</a>
+        <div class="card-actions float-right"></div>
+    </div>
+</div>
+{% endfor %}
