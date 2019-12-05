@@ -140,3 +140,24 @@ class TaskAdvanceDetail(LoginRequiredMixin, DetailView):
         
         file.closed    
         
+class TaskAdvanceAdd(LoginRequiredMixin, CreateView):
+    model = TaskAdvance
+    template_name = "programs/advance/advance_add.html"
+    login_url = LOGIN_URL
+    fields = ['commentary', 'advance_file', 'percentage', 'completed' ]
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['task'] = SubProgramTask.objects.get(pk=self.kwargs['task'])
+        advances = TaskAdvance.objects.filter(task=data['task'])
+        data['task'].acumulate_percentage = sum(advance.percentage for advance in advances)
+        return data
+
+    def form_valid(self, form):
+        print("formulario valido!!")
+        form.instance.task = SubProgramTask.objects.get(pk=self.kwargs['task'])
+        print(form.instance)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('subprogramtask_detail', kwargs={'pk': self.kwargs['task']})

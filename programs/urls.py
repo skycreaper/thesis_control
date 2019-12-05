@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls import url, include
 
-from .views import ProgramList, ProgramCreation, ProgramUpdate, ProgramDetail, SubProgramList, SubProgramList, SubprogramCreation, SubProgramUpdate, SubProgramDetail, SubProgramTaskDetail, SubProgramTaskAdd, TaskAdvanceDetail
+from .views import ProgramList, ProgramCreation, ProgramUpdate, ProgramDetail, SubProgramList, SubProgramList, SubprogramCreation, SubProgramUpdate, SubProgramDetail, SubProgramTaskDetail, SubProgramTaskAdd, TaskAdvanceDetail, TaskAdvanceAdd
 
 urlpatterns = [
     path('program_list', ProgramList.as_view(), name='program_list'),
@@ -16,4 +16,5 @@ urlpatterns = [
     path('subprogramtask_detail/<int:pk>', SubProgramTaskDetail.as_view(), name='subprogramtask_detail'),
     path('subprogramtask_add/<int:subprogram>', SubProgramTaskAdd.as_view(), name='subprogramtask_add'),
     path('taskadvance_detail/download/<path:document_path>', TaskAdvanceDetail.download_item, name='task_advance_download'),
+    path('taskadvance_add/<int:task>', TaskAdvanceAdd.as_view(), name='task_advance_add'),
 ]

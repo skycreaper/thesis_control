@@ -104,7 +104,7 @@
                 {% include 'programs/advance/advance_by_task.html' %}
             </div>
             <div class="text-center">
-              <button class="btn btn-success">Agregar avance</button>
+              <button class="btn btn-success" onclick="location.href='{% url "task_advance_add" task=subprogramtask.pk %}'">Agregar avance</button>
             </div>
         </div>
     </div>

@@ -28,4 +28,4 @@ class TaskAdvance(models.Model):
     percentage = models.IntegerField()
     completed = models.BooleanField(default=False, blank=True)
     task = models.ForeignKey(SubProgramTask, on_delete=models.CASCADE)
-    upload_date = models.DateField(auto_now=True)
+    upload_date = models.DateField(auto_now=True, blank=True)
