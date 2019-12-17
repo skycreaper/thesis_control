@@ -23,6 +23,10 @@
 <link rel="stylesheet" href="{% static 'unal/global/fonts/brand-icons/brand-icons.min.css' %}">
 <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
 
+<!-- Thesis control -->
+<link rel="stylesheet" href="{% static 'thesis_control/assets/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'thesis_control/assets/css/custom.css' %}">
+
 <!-- Scripts -->
 <script src="{% static 'unal/global/vendor/breakpoints/breakpoints.js' %}"></script>
 <script>
@@ -82,12 +86,12 @@
                     </div>
                 </div>
                 <!--subprograma info-->
-                <div class="col-4">
-                    <div class="panel" style="border: 1px solid #94b43b;">
-                        <div class="panel-heading" style="border-bottom: 1px solid #94b43b; background-color: #94b43b;">
+                <div class="col-4 panel-hover">
+                    <div class="panel">
+                        <div class="panel-heading" id="panel-heading">
                             <h4 class="panel-title">Información del subprograma</h4>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" id="panel-body" onclick="location.href='{% url "subprogram_detail" pk=subprogramtask.sub_program.pk %}'">
                             <br>
                             <h5>Nombre del programa</h5> {{ subprogramtask.sub_program.name }}
                             <h5>Descripción del programa</h5>{{ subprogramtask.sub_program.description }}
@@ -140,4 +144,7 @@
 <script src="{% static 'unal/assets/js/App/Contacts.js' %}"></script>
 
 <script src="{% static 'unal/assets/examples/js/apps/contacts.js' %}"></script>
+
+<!--Thesis control-->
+<script src="{% static 'thesis_control/assets/js/task_detail.js' %}"></script>
 {% endblock content %}

@@ -1,0 +1,13 @@
+.panel-hover:hover {
+    color: #94b43f;
+    cursor: pointer;
+}
+
+.panel {
+    border: 1px solid #94b43b;
+}
+
+.panel-heading {
+    border-bottom: 1px solid #94b43b; 
+    background-color: #94b43b;
+}

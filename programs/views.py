@@ -99,6 +99,12 @@ class SubProgramDetail(LoginRequiredMixin, DetailView):
             t.acumulate_percentage = sum(advance.percentage for advance in advances)
         return data
 
+class SubProgramTaskList(LoginRequiredMixin, ListView):
+    model = SubProgramTask
+    template_name = "programs/task/task_list.html"
+    paginate_by = 10
+    login_url = LOGIN_URL
+
 class SubProgramTaskDetail(LoginRequiredMixin, DetailView):
     model = SubProgramTask
     template_name = "programs/task/task_detail.html"
