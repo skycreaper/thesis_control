@@ -47,8 +47,12 @@ class ProgramDetail(LoginRequiredMixin, DetailView):
             for t in tasks:
                 advances = TaskAdvance.objects.filter(task=t)
                 acum += sum(advance.percentage for advance in advances)
-        s.acumulate_percentage = int(acum / len(tasks))
-        return data
+        try:
+            s.acumulate_percentage = int(acum / len(tasks))
+        except Exception:
+            s.acumulate_percentage = 0
+        finally:
+            return data
 
 class SubProgramList(LoginRequiredMixin, ListView):
     model = SubProgram

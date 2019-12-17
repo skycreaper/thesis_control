@@ -10,7 +10,7 @@ class Program(models.Model):
 
 class SubProgram(models.Model):
     name = models.CharField(max_length=200)
-    description = models.CharField(max_length=500, null=True, blank=True)
+    description = models.CharField(max_length=500, blank=True, default='')
     program = models.ForeignKey(Program, on_delete=models.CASCADE)
     start_date = models.DateField(auto_now=False, auto_now_add=False)
     end_date = models.DateField(auto_now=False, auto_now_add=False)
@@ -18,7 +18,7 @@ class SubProgram(models.Model):
 
 class SubProgramTask(models.Model):
     name = models.CharField(max_length=200)
-    commentary = models.CharField(max_length=500, null=True, blank=True)
+    commentary = models.CharField(max_length=500, blank=True, default='')
     sub_program = models.ForeignKey(SubProgram, on_delete=models.CASCADE)
     acumulate_percentage = 0
 
