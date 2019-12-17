@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  python:
+    build: .
+    container_name: thesis_control
+    ports:
+      - "${PYTHON_PORT}:8000"
+    networks:
+      - thesis_control_network
+    depends_on:
+      - postgres
+    volumes:
+      - .:/usr/src/app
+    command: sh -c 'python manage.py makemigrations; python manage.py migrate; python manage.py runserver 0.0.0.0:8000'
+
+  postgres:
+    container_name: ${POSTGRES_HOST}
+    image: postgres:10-alpine
+    ports:
+      - "${DB_PORT}:5432"
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks: 
+      - thesis_control_network
+
+volumes:
+  postgres_data:
+networks:
+  thesis_control_network:
+    external: true
+    
