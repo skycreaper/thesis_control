@@ -103,7 +103,7 @@ DATABASES = {
         },
         'USER': 'thesis_dev',
         'PASSWORD': '',
-        'HOST': '127.0.0.1',
+        'HOST': 'postgres',
         'PORT': '5432',
     }
 }

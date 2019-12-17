@@ -23,7 +23,7 @@ class ProgramCreation(LoginRequiredMixin, CreateView):
     model = Program
     template_name = "programs/program/program_add.html"
     login_url = LOGIN_URL
-    fields = ['name', 'start_date', 'end_date']
+    fields = ['name', 'description', 'start_date', 'end_date']
     success_url = reverse_lazy('program_list')
 
 class ProgramUpdate(LoginRequiredMixin, UpdateView):
