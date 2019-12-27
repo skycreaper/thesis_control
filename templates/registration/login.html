@@ -33,20 +33,17 @@
       <h3 class="font-size-24">Autenticarse</h3>
       <p>Ingrese sus credenciales para acceder</p>
 
-
-      
-
-      <form method="post">
+      <form method="post" autocomplete="off">
         {% csrf_token %}
         <div class="form-group">
-          {{ form.username.label_tag }}
-          <label class="sr-only" for="id_username">{{ form.username.label_tag }}</label>
+          Correo electrónico:
+          <label class="sr-only" for="id_username">Correo electrónico</label>
           <input type="text" class="form-control" id="id_username" name="username" placeholder="" autofocus=""
             required="">
         </div>
         <div class="form-group">
-          {{ form.password.label_tag }}
-          <label class="sr-only" for="inputPassword">{{ form.password.label_tag }}</label>
+          Contraseña:
+          <label class="sr-only" for="inputPassword">Contraseña</label>
           <input type="password" class="form-control" id="id_password" name="password" placeholder="" required="">
         </div>
         <div class="form-group clearfix">

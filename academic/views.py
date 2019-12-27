@@ -12,13 +12,19 @@ from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import PasswordChangeForm
 
 from rolepermissions.decorators import has_role_decorator
 from rolepermissions.roles import get_user_roles, assign_role
 
-from .models import Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel, Teacher, ThesisState, CommentsThread, Document
-
-from .forms import StudentCreationForm, TeacherCreationForm, ThesisCreationForm, AdvanceCreationForm, CommentaryThesisForm, DocumentForm
+from .models import (
+    Thesis as ThesisModel, Advance as AdvanceModel, Student as StudentModel,
+    Teacher, ThesisState, CommentsThread, Document
+)
+from .forms import (
+    StudentCreationForm, TeacherCreationForm, ThesisCreationForm, AdvanceCreationForm,
+    CommentaryThesisForm, DocumentForm
+)
 from .transactions import RegisterStudentTransaction, UpdateStudent, RegisterAdvance, RegisterTeacherTransaction, UpdateTeacher
 
 from users.models import CustomUser
@@ -26,6 +32,7 @@ from users.models import CustomUser
 student_rol = 'student'
 teacher_rol = 'teacher'
 LOGIN_URL = '/login'
+
 
 def index(request):
     return HttpResponse("Academica index.")
@@ -37,23 +44,27 @@ class Thesis(LoginRequiredMixin, ListView):
     template_name = "thesis_list.html"
     paginate_by = 1
     login_url = LOGIN_URL
-    
+
     def get_queryset(self):
         query = self.request.GET.get('search_text')
         if hasattr(self.request.user, 'student'):
-            if query: # Query tiene un valor
-                object_list = self.model.objects.filter(name__icontains=query, student=self.request.user.student)
-            elif not query or query is None: # Query es vació o no existe
-                object_list = self.model.objects.filter(student=self.request.user.student)
-        elif hasattr(self.request.user, 'teacher'): 
-            if query: # Query tiene un valor
-                object_list = self.model.objects.filter(Q(name__icontains=query), Q(director=self.request.user.teacher) | Q(co_director=self.request.user.teacher))
-            elif not query or query is None: # Query es vació o no existe
-                object_list = self.model.objects.filter(Q(director=self.request.user.teacher) | Q(co_director=self.request.user.teacher))
+            if query:  # Query tiene un valor
+                object_list = self.model.objects.filter(
+                    name__icontains=query, student=self.request.user.student)
+            elif not query or query is None:  # Query es vació o no existe
+                object_list = self.model.objects.filter(
+                    student=self.request.user.student)
+        elif hasattr(self.request.user, 'teacher'):
+            if query:  # Query tiene un valor
+                object_list = self.model.objects.filter(Q(name__icontains=query), Q(
+                    director=self.request.user.teacher) | Q(co_director=self.request.user.teacher))
+            elif not query or query is None:  # Query es vació o no existe
+                object_list = self.model.objects.filter(
+                    Q(director=self.request.user.teacher) | Q(co_director=self.request.user.teacher))
         else:
-            if query: # Query tiene un valor
+            if query:  # Query tiene un valor
                 object_list = self.model.objects.filter(name__icontains=query)
-            elif not query or query is None: # Query es vació o no existe
+            elif not query or query is None:  # Query es vació o no existe
                 object_list = self.model.objects.all()
         return object_list
 
@@ -76,10 +87,10 @@ class Thesis(LoginRequiredMixin, ListView):
             return redirect('thesis_list')
         context = {'form': form}
         return render(request, template_name, context)
-    
+
     @login_required(login_url=LOGIN_URL)
     def upload_document(request, thesis_pk):
-        template_name="academic/document_thesis/upload.html"
+        template_name = "academic/document_thesis/upload.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis_pk)
         form = DocumentForm(request.POST, request.FILES)
         if request.method == "POST":
@@ -92,30 +103,32 @@ class Thesis(LoginRequiredMixin, ListView):
         return render(request, template_name, context)
 
     @login_required(login_url=LOGIN_URL)
-    def documents_list(request, thesis_pk): 
-        template_name="academic/document_thesis/list_by_thesis.html"
+    def documents_list(request, thesis_pk):
+        template_name = "academic/document_thesis/list_by_thesis.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis_pk)
         documents_list = Document.objects.filter(thesis=thesis)
-        data = {"thesis":thesis, "documents_list": documents_list}
+        data = {"thesis": thesis, "documents_list": documents_list}
         return render(request, template_name, data)
 
     @login_required(login_url=LOGIN_URL)
     def document_viewer(request, document_path):
         filepath = os.path.join(settings.MEDIA_ROOT)
         with open(filepath+'/'+document_path, 'rb') as pdf:
-            response = HttpResponse(pdf.read(),content_type='application/pdf')
+            response = HttpResponse(pdf.read(), content_type='application/pdf')
             response['Content-Disposition'] = 'filename=some_file.pdf'
             return response
         pdf.closed
 
 ### CommentThesis ####
+
+
 class ComentThesis(LoginRequiredMixin, ListView):
-    template_name="academic/comments/list_comments.html"
-    login_url=LOGIN_URL
+    template_name = "academic/comments/list_comments.html"
+    login_url = LOGIN_URL
 
     @login_required(login_url=LOGIN_URL)
     def register(request, thesis_pk):
-        template_name="academic/thesis_commentary.html"
+        template_name = "academic/thesis_commentary.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis_pk)
         form = CommentaryThesisForm(request.POST)
         if request.method == "POST":
@@ -124,23 +137,27 @@ class ComentThesis(LoginRequiredMixin, ListView):
                 comment.thesis = thesis
                 comment.author = CustomUser.objects.get(pk=request.user.pk)
                 comment.save()
-        context = {"form": form, "thesis": thesis, "comments": CommentsThread.objects.filter(thesis=thesis)}
+        context = {"form": form, "thesis": thesis,
+                   "comments": CommentsThread.objects.filter(thesis=thesis)}
         return render(request, template_name, context)
-    
+
+
 class ThesisDetail(LoginRequiredMixin, DetailView):
     model = ThesisModel
-    template_name="academic/thesis/thesis_detail.html"
-    login_url=LOGIN_URL
+    template_name = "academic/thesis/thesis_detail.html"
+    login_url = LOGIN_URL
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['advance_list'] = AdvanceModel.objects.filter(thesis=self.kwargs['pk'])
+        context['advance_list'] = AdvanceModel.objects.filter(
+            thesis=self.kwargs['pk'])
         return context
+
 
 class ThesisCreation(CreateView):
     model = ThesisModel
     fields = [
-        'name', 'description', 'director', 'co_director','student', 'investigation_line',
+        'name', 'description', 'director', 'co_director', 'student', 'investigation_line',
         'state', 'publication_date'
     ]
     success_url = reverse_lazy('thesis_list')
@@ -150,11 +167,12 @@ class ThesisUpdate(LoginRequiredMixin, UpdateView):
     model = ThesisModel
     template_name = "academic/thesis/thesis_update.html"
     form_class = ThesisCreationForm
-    login_url=LOGIN_URL
+    login_url = LOGIN_URL
 
     def get_success_url(self):
         return reverse_lazy('thesis_detail', kwargs={'pk': self.kwargs["pk"]})
-    
+
+
 class ThesisDelete(DeleteView):
     model = Thesis
     success_url = reverse_lazy('thesis_list')
@@ -164,17 +182,20 @@ class ThesisDelete(DeleteView):
 class AdvanceList(ListView):
     model = AdvanceModel
     queryset = AdvanceModel.objects.select_related('thesis')
-    
+
+
 class Advance(LoginRequiredMixin, ListView):
-    model = AdvanceModel 
+    model = AdvanceModel
 
     @login_required(login_url=LOGIN_URL)
     def register_modal(request, thesis):
-        template_name="academic/advance_form.html"
+        template_name = "academic/advance_form.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis)
         form = AdvanceCreationForm(request.POST)
-        actual_advance = sum(advance.percentage for advance in AdvanceModel.objects.filter(thesis=thesis))
-        context = {'form': form, "thesis": thesis, 'actual_adavance': actual_advance}
+        actual_advance = sum(
+            advance.percentage for advance in AdvanceModel.objects.filter(thesis=thesis))
+        context = {'form': form, "thesis": thesis,
+                   'actual_adavance': actual_advance}
         return render(request, template_name, context)
 
     @csrf_protect
@@ -189,8 +210,8 @@ class Advance(LoginRequiredMixin, ListView):
         template_name = "academic/thesis/advance/advance_by_thesis.html"
         thesis = get_object_or_404(ThesisModel, pk=thesis)
         context = {'advance_list': advance_list}
-        return render(request, template_name, context) 
-        
+        return render(request, template_name, context)
+
 # class AdvanceDetail(DetailView):
 #     model = Advance
 #     queryset = StudentModel.objects.select_related('personal_information')
@@ -201,17 +222,21 @@ class Advance(LoginRequiredMixin, ListView):
 #     fields = ['name', 'start_date', 'end_date', 'picture']
 
 ###### Student ######
+
+
 class Student(LoginRequiredMixin, ListView):
     template_name = "student_list.html"
     paginate_by = 6
-    login_url=LOGIN_URL
+    login_url = LOGIN_URL
 
     def get_queryset(self):
         search_text = self.request.GET.get('search_text')
-        if search_text: # search_text tiene un valor
-            object_list = [StudentModel.objects.filter(user__first_name__icontains=value) | StudentModel.objects.filter(user__last_name__icontains=value) for value in search_text.split(" ")][0]
-        elif not search_text or search_text is None: # search_text es un texto vació o no existe
-            object_list = StudentModel.objects.select_related('personal_information')
+        if search_text:  # search_text tiene un valor
+            object_list = [StudentModel.objects.filter(user__first_name__icontains=value) | StudentModel.objects.filter(
+                user__last_name__icontains=value) for value in search_text.split(" ")][0]
+        elif not search_text or search_text is None:  # search_text es un texto vació o no existe
+            object_list = StudentModel.objects.select_related(
+                'personal_information')
         return object_list
 
     # Student register
@@ -225,7 +250,7 @@ class Student(LoginRequiredMixin, ListView):
         context = {'form': form}
         return render(request, template_name, context)
 
-    #Student disable
+    # Student disable
     @csrf_protect
     @login_required(login_url=LOGIN_URL)
     def disabledStudent(request):
@@ -237,22 +262,23 @@ class Student(LoginRequiredMixin, ListView):
             return HttpResponse("ok", content_type='text/plain')
         return redirect('student_list')
 
-    #Student edit
+    # Student edit
     @csrf_protect
     @login_required(login_url=LOGIN_URL)
     def edit(request, user):
         template = 'edit/student_update_form.html'
         student = get_object_or_404(StudentModel, user=user)
         if request.method == "POST":
-            form = StudentCreationForm(request.POST, request.FILES, instance=student)
-            try: 
+            form = StudentCreationForm(
+                request.POST, request.FILES, instance=student)
+            try:
                 if form.is_valid():
                     photo = student.personal_information.photo
                     if 'photo' in request.FILES:
                         photo = request.FILES['photo']
 
                     result = UpdateStudent(user, form.data, photo)
-                    if  result:    
+                    if result:
                         return redirect('student_list')
             except Exception as e:
                 print("error in StudentEdit(): {}".format(e))
@@ -265,21 +291,39 @@ class Student(LoginRequiredMixin, ListView):
         }
         return render(request, template, context)
 
+    @csrf_protect
+    @login_required(login_url=LOGIN_URL)
+    def update_password(request, user):
+        template_name = 'academic/update_password_form.html'
+        user = get_object_or_404(CustomUser, id=user)
+        if request.method == 'POST':
+            form = PasswordChangeForm(data=request.POST, user=user)
+
+            if form.is_valid():
+                form.save()
+                return redirect('student_list')
+        else:
+            form = PasswordChangeForm(user=user)
+        context = {'form': form}
+        return render(request, template_name, context)
+
 ###### Teacher ######
 class TeacherView(LoginRequiredMixin, ListView):
     template_name = "teacher_list.html"
     paginate_by = 5
-    login_url=LOGIN_URL
+    login_url = LOGIN_URL
 
     def get_queryset(self):
         search_text = self.request.GET.get('search_text')
-        if search_text: # search_text tiene un valor
-            object_list = [Teacher.objects.filter(user__first_name__icontains=value) | Teacher.objects.filter(user__last_name__icontains=value) for value in search_text.split(" ")][0]
-        elif not search_text or search_text is None: # search_text es un texto vació o no existe
-            object_list = Teacher.objects.select_related('personal_information')
+        if search_text:  # search_text tiene un valor
+            object_list = [Teacher.objects.filter(user__first_name__icontains=value) | Teacher.objects.filter(
+                user__last_name__icontains=value) for value in search_text.split(" ")][0]
+        elif not search_text or search_text is None:  # search_text es un texto vació o no existe
+            object_list = Teacher.objects.select_related(
+                'personal_information')
         return object_list
 
-     # Student register
+     # Teacher register
     @login_required(login_url=LOGIN_URL)
     def register(request):
         template_name = 'teacher_form.html'
@@ -290,22 +334,23 @@ class TeacherView(LoginRequiredMixin, ListView):
         context = {'form': form}
         return render(request, template_name, context)
 
-    #Teacher edit
+    # Teacher edit
     @csrf_protect
     @login_required(login_url=LOGIN_URL)
     def edit(request, user):
         template = 'edit/teacher_update_form.html'
         teacher = get_object_or_404(Teacher, user=user)
         if request.method == "POST":
-            form = TeacherCreationForm(request.POST, request.FILES, instance=teacher)
-            try: 
+            form = TeacherCreationForm(
+                request.POST, request.FILES, instance=teacher)
+            try:
                 if form.is_valid():
                     photo = teacher.personal_information.photo
                     if 'photo' in request.FILES:
                         photo = request.FILES['photo']
 
                     result = UpdateTeacher(user, form.data, photo)
-                    if  result:    
+                    if result:
                         return redirect('teacher_list')
             except Exception as e:
                 print("error in TeacherEdit(): {}".format(e))
@@ -317,58 +362,76 @@ class TeacherView(LoginRequiredMixin, ListView):
             'teacher': teacher
         }
         return render(request, template, context)
-    
+
+    @csrf_protect
+    @login_required(login_url=LOGIN_URL)
+    def update_password(request, user):
+        template_name = 'academic/update_password_form.html'
+        user = get_object_or_404(CustomUser, id=user)
+        if request.method == 'POST':
+            form = PasswordChangeForm(data=request.POST, user=user)
+
+            if form.is_valid():
+                form.save()
+                return redirect('teacher_list')
+        else:
+            form = PasswordChangeForm(user=user)
+        context = {'form': form}
+        return render(request, template_name, context)
+
 class TeacherDisable(LoginRequiredMixin):
-    login_url=LOGIN_URL
+    login_url = LOGIN_URL
     @csrf_protect
     def disabledTeacher(request):
         if request.method == "POST":
-            customUser = get_object_or_404(CustomUser, pk=request.POST.get("user"))
+            customUser = get_object_or_404(
+                CustomUser, pk=request.POST.get("user"))
             customUser.is_active = False
             customUser.save()
-            return HttpResponse("ok",content_type='text/plain')
+            return HttpResponse("ok", content_type='text/plain')
         return redirect('teacher_list')
 
+
 def write_to_excel(weather_data=None, town=None):
-        output = io.StringIO()
-        workbook = xlsxwriter.Workbook(output)
-    
-        # Here we will adding the code to add data
-        worksheet_s = workbook.add_worksheet("Estudiantes")
+    output = io.StringIO()
+    workbook = xlsxwriter.Workbook(output)
 
-        worksheet_s.write('A1', 'Hello..') 
-        worksheet_s.write('B1', 'Geeks') 
-        worksheet_s.write('C1', 'For') 
-        worksheet_s.write('D1', 'Geeks') 
+    # Here we will adding the code to add data
+    worksheet_s = workbook.add_worksheet("Estudiantes")
 
-        workbook.close()
-        xlsx_data = output.getvalue()
-        # xlsx_data contains the Excel file
-        return xlsx_data
+    worksheet_s.write('A1', 'Hello..')
+    worksheet_s.write('B1', 'Geeks')
+    worksheet_s.write('C1', 'For')
+    worksheet_s.write('D1', 'Geeks')
+
+    workbook.close()
+    xlsx_data = output.getvalue()
+    # xlsx_data contains the Excel file
+    return xlsx_data
+
 
 def export(request, data):
     response = HttpResponse(content_type='application/ms-excel')
 
     if data == 'student':
         response['Content-Disposition'] = 'attachment; filename="estudiantes.xls"'
-        rows = StudentModel.objects.all().values_list('user__first_name', 'user__last_name','user__email', 
-            'personal_information__gender__name', 
-            'personal_information__birth_date', 'personal_information__civil_state__name', 'personal_information__nationality__name', 
-            'personal_information__address','personal_information__mobile',
-            'personal_information__health_information__grupo_sanguineo', 'personal_information__health_information__rh', 
-            'personal_information__health_information__eps', 'institutional_information__cvlac')
+        rows = StudentModel.objects.all().values_list('user__first_name', 'user__last_name', 'user__email',
+                                                      'personal_information__gender__name',
+                                                      'personal_information__birth_date', 'personal_information__civil_state__name', 'personal_information__nationality__name',
+                                                      'personal_information__address', 'personal_information__mobile',
+                                                      'personal_information__health_information__grupo_sanguineo', 'personal_information__health_information__rh',
+                                                      'personal_information__health_information__eps', 'institutional_information__cvlac')
     else:
         response['Content-Disposition'] = 'attachment; filename="profesores.xls"'
-        rows = Teacher.objects.all().values_list('user__first_name', 'user__last_name','user__email', 
-            'personal_information__gender__name', 
-            'personal_information__birth_date', 'personal_information__civil_state__name', 'personal_information__nationality__name', 
-            'personal_information__address','personal_information__mobile',
-            'personal_information__health_information__grupo_sanguineo', 'personal_information__health_information__rh', 
-            'personal_information__health_information__eps', 'institutional_information__cvlac')
-         
+        rows = Teacher.objects.all().values_list('user__first_name', 'user__last_name', 'user__email',
+                                                 'personal_information__gender__name',
+                                                 'personal_information__birth_date', 'personal_information__civil_state__name', 'personal_information__nationality__name',
+                                                 'personal_information__address', 'personal_information__mobile',
+                                                 'personal_information__health_information__grupo_sanguineo', 'personal_information__health_information__rh',
+                                                 'personal_information__health_information__eps', 'institutional_information__cvlac')
 
     wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Users Data') # this will make a sheet named Users Data
+    ws = wb.add_sheet('Users Data')  # this will make a sheet named Users Data
 
     # Sheet header, first row
     row_num = 0
@@ -377,15 +440,16 @@ def export(request, data):
     font_style.font.bold = True
 
     columns = ['Nombres', 'Apellidos', 'Correo electrónico', 'Genero', 'Fecha de nacimiento', 'Estado civil',
-    'Nacionalidad', 'Dirección', 'Teléfono', 'Grupo sanguíneo', 'RH', 'EPS', 'CVLAC']
+               'Nacionalidad', 'Dirección', 'Teléfono', 'Grupo sanguíneo', 'RH', 'EPS', 'CVLAC']
 
     for col_num in range(len(columns)):
-        ws.write(row_num, col_num, columns[col_num], font_style) # at 0 row 0 column 
+        # at 0 row 0 column
+        ws.write(row_num, col_num, columns[col_num], font_style)
 
     # Sheet body, remaining rows
     font_style = xlwt.XFStyle()
     font_style.num_format_str = 'dd/mm/yyyy'
-    
+
     for row in rows:
         row_num += 1
         for col_num in range(len(row)):
@@ -394,5 +458,3 @@ def export(request, data):
     wb.save(response)
 
     return response
-    
-    

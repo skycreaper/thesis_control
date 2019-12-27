@@ -158,9 +158,30 @@
             <td class="cell-300"> {{ teacher.user.email }} </td>
             {% if user|has_role:'admin' %}
             <td class="cell-300">
-              <a class="btn btn-warning" href="{% url 'teacher_edit' user=teacher.user.id %}">Editar</a>
-              <button class="btn btn-danger btn-disable" value="{{ teacher.user.id }}"
-                id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button>
+              <button type="button" class="btn btn-floating btn-warning btn-sm"
+                onclick="location.href='{% url 'teacher_edit' user=teacher.user.id %}'"
+                data-toggle="tooltip" data-placement="top" title="Actualizar información"
+                data-template='<div class="tooltip bs-tooltip-bottom tooltip-warning" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                    <i class="icon wb-edit" aria-hidden="true"></i>
+              </button>
+              
+              <button type="button" class="btn btn-floating btn-danger btn-disable btn-sm"
+                    value="{{ teacher.user.id }}" id="btn-disable"
+                    data-toggle="tooltip" data-placement="top" title="Deshabiliar"
+                    data-template='<div class="tooltip bs-tooltip-bottom tooltip-danger" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                        <i class="icon wb-trash" aria-hidden="true"></i>
+              </button>
+
+              {% comment %} <button class="btn btn-danger btn-disable" value="{{ teacher.user.id }}"
+                id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button> {% endcomment %}
+
+                <button type="button" class="btn btn-floating btn-info btn-sm" id="btn-change-password"
+                    onclick="location.href='{% url 'teacher_update_password' user=teacher.user.id %}'"
+                    data-toggle="tooltip" data-placement="bottom" title="Actualizar contraseña"
+                    data-template='<div class="tooltip bs-tooltip-bottom tooltip-info" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                        <i class="icon wb-settings" aria-hidden="true"></i>
+                </button>
+                
             </td>
             {% endif %}
             <td class="suf-cell"></td>
@@ -307,8 +328,8 @@
     var teacher_id = $(this).val()
     var csrftoken = getCookie('csrftoken');
     Swal.fire({
-      title: '¿Continuar?',
-      text: "You won't be able to revert this!",
+      title: '¿Deshabilitar al profesor?',
+      text: "No podras revertir esto",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -327,7 +348,7 @@
             'X-CSRFToken': csrftoken
           },
           success: function (data) {
-            Swal.fire('Disabled!', 'The teacher has been disabled', 'success').then(function () {
+            Swal.fire('Correcto', 'Profesor deshabilitado correctamente', 'success').then(function () {
               window.location.reload();
             });
           }

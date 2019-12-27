@@ -157,8 +157,33 @@
             
               <td class="cell-300">{{ student.user.email }}</td>
             <td class="cell-300">
-                <a class="btn btn-warning" href="{% url 'student_edit' user=student.user.id %}">Editar</a>
-                <button class="btn btn-danger btn-disable" value="{{ student.user.id }}" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button>
+
+                <button type="button" class="btn btn-floating btn-warning btn-sm"
+                    onclick="location.href='{% url 'student_edit' user=student.user.id %}'"
+                    data-toggle="tooltip" data-placement="top" title="Actualizar información"
+                    data-template='<div class="tooltip bs-tooltip-bottom tooltip-warning" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                        <i class="icon wb-edit" aria-hidden="true"></i>
+                </button>
+
+                <button type="button" class="btn btn-floating btn-danger btn-disable btn-sm"
+                    value="{{ student.user.id }}" id="btn-disable"
+                    data-toggle="tooltip" data-placement="top" title="Deshabiliar"
+                    data-template='<div class="tooltip bs-tooltip-bottom tooltip-danger" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                        <i class="icon wb-trash" aria-hidden="true"></i>
+                </button>
+                
+                {% if user|has_role:'admin' %}
+                <button type="button" class="btn btn-floating btn-info btn-sm" id="btn-change-password"
+                    onclick="location.href='{% url 'student_update_password' user=student.user.id %}'"
+                    data-toggle="tooltip" data-placement="bottom" title="Actualizar contraseña"
+                    data-template='<div class="tooltip bs-tooltip-bottom tooltip-info" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                        <i class="icon wb-settings" aria-hidden="true"></i>
+                </button>
+                {% endif %}
+                {% comment %} <a class="btn btn-warning" href="{% url 'student_edit' user=student.user.id %}">
+                  <i class="icon wb-edit" aria-hidden="true"></i>
+                </a> {% endcomment %}
+                {% comment %} <button class="btn btn-danger btn-disable" value="{{ student.user.id }}" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button> {% endcomment %}
             </td>
             <td class="suf-cell"></td>
           </tr>

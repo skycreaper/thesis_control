@@ -32,12 +32,14 @@ urlpatterns = [
     path('student/new/', Student.register, name='student_new'),
     path('student/edit/<int:user>/', Student.edit, name='student_edit'),
     path('student/disable/', Student.disabledStudent, name='student_disable'),
+    path('student/update_password/<int:user>', Student.update_password, name='student_update_password'),
 
     #Teacher
     path('teacher/', TeacherView.as_view(), name='teacher_list'),
     path('teacher/new/', TeacherView.register, name='teacher_new'),
     path('teacher/edit/<int:user>/', TeacherView.edit, name='teacher_edit'),
     path('teacher/disable/', TeacherDisable.disabledTeacher, name='teacher_disable'),
+    path('teacher/update_password/<int:user>', TeacherView.update_password, name='teacher_update_password'),
 
     #Excel
     path('export_excel/<str:data>', export, name='export_to_excel'),
