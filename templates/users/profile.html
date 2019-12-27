@@ -122,8 +122,11 @@
       <hr>
       <div class="page-header-actions">
         <button type="button" class="btn btn-outline-primary btn-sm" onclick="location.href='{% url 'update_profile' pk=user.pk %}'">
-            <i class="icon wb-edit"></i>Editar
-          </button>
+          <i class="icon wb-edit"></i>Editar
+        </button>
+        <button type="button" class="btn btn-outline-warning btn-sm" onclick="location.href='{% url 'update_password' %}'">
+          <i class="icon wb-settings"></i>Actualizar contraseña
+        </button>
       </div>
     </div>
 

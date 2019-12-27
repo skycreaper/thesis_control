@@ -3,13 +3,17 @@ from django.views import generic
 from django.contrib import messages
 from django.shortcuts import HttpResponse, render, get_object_or_404, redirect, HttpResponseRedirect
 
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import login as do_login
-from django.contrib.auth import logout as do_logout
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import (
+    login as do_login, logout as do_logout,
+    authenticate, update_session_auth_hash
+)
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.decorators import login_required
+
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.csrf import csrf_protect
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import CustomUser
@@ -61,6 +65,22 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
                     'nationality': self.object.teacher.personal_information.nationality.pk
                 })
         return form
+
+    @csrf_protect
+    @login_required(login_url=login_url) 
+    def update_password(request):
+        template_name = 'academic/update_password_form.html'
+        if request.method == 'POST':
+            form = PasswordChangeForm(data=request.POST, user=request.user)
+
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request, form.user)
+                return redirect('home')
+        else:
+            form = PasswordChangeForm(user=request.user)
+        context = {'form': form}
+        return render(request, template_name, context)
 
 class ProfileDetail(LoginRequiredMixin, DetailView):
     login_url = 'login'
