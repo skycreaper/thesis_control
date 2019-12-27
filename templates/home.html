@@ -92,42 +92,14 @@
   <div class="page-content container-fluid">
     <div class="row" data-plugin="matchHeight" data-by-row="true">
       <div class="col-xxl-7 col-lg-7">
-        <!-- Widget Linearea Color -->
-        <div class="card card-shadow card-responsive" id="widgetLineareaColor">
-          <div class="card-block p-0">
-            <div class="pt-30 p-30" style="height:calc(100% - 250px);">
-              <div class="row">
-                <div class="col-7">
-                  <p class="font-size-20 blue-grey-700">Eneergy Predictions</p>
-                  <p>Quisque volutpat condimentum velit. Class aptent taciti</p>
-                  <div class="counter counter-md text-left">
-                    <div class="counter-number-group">
-                      <span class="counter-icon red-600"><i class="icon wb-triangle-up" aria-hidden="true"></i></span>
-                      <span class="counter-number red-600">2,250</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-5">
-                  <div class="float-right clearfix">
-                    <ul class="list-unstyled">
-                      <li class="mb-5 text-truncate">
-                        <i class="icon wb-medium-point red-600 mr-5" aria-hidden="true"></i> Diretary intake
-                      </li>
-                      <li class="mb-5 text-truncate">
-                        <i class="icon wb-medium-point orange-600 mr-5" aria-hidden="true"></i> Motion
-                      </li>
-                      <li class="mb-5 text-truncate">
-                        <i class="icon wb-medium-point green-600 mr-5" aria-hidden="true"></i> Other
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="ct-chart h-250"></div>
-          </div>
+        <h4>Inicio</h4>
+        {% if messages %}
+        <div class="alert alert-success">
+          {% for message in messages %}
+            <strong>Correcto!</strong> {{message}}
+          {% endfor %}
         </div>
-        <!-- End Widget Linearea Color -->
+        {% endif %}
       </div>
     </div>
   </div>

@@ -5,8 +5,10 @@ import xlwt
 from django.db.models import Q
 from django.conf import settings
 from django.shortcuts import HttpResponse, render, get_object_or_404, redirect
+from django.contrib import messages
 from django.utils import timezone
 from django.urls import reverse, reverse_lazy
+
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import (CreateView, UpdateView, DeleteView)
 from django.views.decorators.csrf import csrf_protect
@@ -296,15 +298,20 @@ class Student(LoginRequiredMixin, ListView):
     def update_password(request, user):
         template_name = 'academic/update_password_form.html'
         user = get_object_or_404(CustomUser, id=user)
+        student = get_object_or_404(StudentModel, user=user)
         if request.method == 'POST':
             form = PasswordChangeForm(data=request.POST, user=user)
 
             if form.is_valid():
                 form.save()
+                messages.success(request, 'Contraseña actualizada correctamente')
                 return redirect('student_list')
+            else:
+                messages.warning(request, 'Corrige los errores')
+                
         else:
             form = PasswordChangeForm(user=user)
-        context = {'form': form}
+        context = {'form': form, 'update_user': student}
         return render(request, template_name, context)
 
 ###### Teacher ######
@@ -368,17 +375,22 @@ class TeacherView(LoginRequiredMixin, ListView):
     def update_password(request, user):
         template_name = 'academic/update_password_form.html'
         user = get_object_or_404(CustomUser, id=user)
+        teacher = get_object_or_404(Teacher, user=user)
         if request.method == 'POST':
             form = PasswordChangeForm(data=request.POST, user=user)
 
             if form.is_valid():
                 form.save()
+                messages.success(request, 'Contraseña actualizada correctamente')
                 return redirect('teacher_list')
+            else:
+                messages.warning(request, 'Corrige los errores')
+
         else:
             form = PasswordChangeForm(user=user)
-        context = {'form': form}
+        context = {'form': form, 'update_user': teacher}
         return render(request, template_name, context)
-
+                
 class TeacherDisable(LoginRequiredMixin):
     login_url = LOGIN_URL
     @csrf_protect

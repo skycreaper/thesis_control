@@ -110,8 +110,17 @@
     <!-- Contacts Content -->
     <div id="contactsContent" class="page-content page-content-table" data-plugin="selectable">
       {% if object_list %}
+      <div>
+      <!-- messages -->
+      {% if messages %}
+        <div class="alert alert-success">
+          {% for message in messages %}
+            <strong>Correcto!</strong> {{message}}
+          {% endfor %}
+        </div>
+      {% endif %}
+      </div>
       <a style="float:right;margin-right:2.5em;margin-top:2em;" class="btn btn-primary" href="{% url 'export_to_excel' data='student' %}">Exportar a excel</a>
-
       <!-- Contacts -->
       <table class="table is-indent" data-plugin="animateList" data-animate="fade" data-child="tr"
         data-selectable="selectable">
@@ -154,36 +163,31 @@
               {{ student.user.first_name }} {{ student.user.last_name }}
             </td>
             <td class="cell-300"> {{ student.personal_information.mobile}} </td>
-            
-              <td class="cell-300">{{ student.user.email }}</td>
+            <td class="cell-300">{{ student.user.email }}</td>
             <td class="cell-300">
 
-                <button type="button" class="btn btn-floating btn-warning btn-sm"
-                    onclick="location.href='{% url 'student_edit' user=student.user.id %}'"
-                    data-toggle="tooltip" data-placement="top" title="Actualizar información"
-                    data-template='<div class="tooltip bs-tooltip-bottom tooltip-warning" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
-                        <i class="icon wb-edit" aria-hidden="true"></i>
-                </button>
+              <button type="button" class="btn btn-floating btn-warning btn-sm"
+                  onclick="location.href='{% url 'student_edit' user=student.user.id %}'"
+                  data-toggle="tooltip" data-placement="top" title="Actualizar información"
+                  data-template='<div class="tooltip bs-tooltip-bottom tooltip-warning" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                      <i class="icon wb-edit" aria-hidden="true"></i>
+              </button>
 
-                <button type="button" class="btn btn-floating btn-danger btn-disable btn-sm"
-                    value="{{ student.user.id }}" id="btn-disable"
-                    data-toggle="tooltip" data-placement="top" title="Deshabiliar"
-                    data-template='<div class="tooltip bs-tooltip-bottom tooltip-danger" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
-                        <i class="icon wb-trash" aria-hidden="true"></i>
-                </button>
-                
-                {% if user|has_role:'admin' %}
-                <button type="button" class="btn btn-floating btn-info btn-sm" id="btn-change-password"
-                    onclick="location.href='{% url 'student_update_password' user=student.user.id %}'"
-                    data-toggle="tooltip" data-placement="bottom" title="Actualizar contraseña"
-                    data-template='<div class="tooltip bs-tooltip-bottom tooltip-info" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
-                        <i class="icon wb-settings" aria-hidden="true"></i>
-                </button>
-                {% endif %}
-                {% comment %} <a class="btn btn-warning" href="{% url 'student_edit' user=student.user.id %}">
-                  <i class="icon wb-edit" aria-hidden="true"></i>
-                </a> {% endcomment %}
-                {% comment %} <button class="btn btn-danger btn-disable" value="{{ student.user.id }}" id="btn-disable">Deshabilitar<span class="glyphicon glyphicon-remove"></span></button> {% endcomment %}
+              <button type="button" class="btn btn-floating btn-danger btn-disable btn-sm"
+                  value="{{ student.user.id }}" id="btn-disable"
+                  data-toggle="tooltip" data-placement="top" title="Deshabiliar"
+                  data-template='<div class="tooltip bs-tooltip-bottom tooltip-danger" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                      <i class="icon wb-trash" aria-hidden="true"></i>
+              </button>
+              
+              {% if user|has_role:'admin' %}
+              <button type="button" class="btn btn-floating btn-info btn-sm" id="btn-change-password"
+                  onclick="location.href='{% url 'student_update_password' user=student.user.id %}'"
+                  data-toggle="tooltip" data-placement="bottom" title="Actualizar contraseña"
+                  data-template='<div class="tooltip bs-tooltip-bottom tooltip-info" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'>
+                      <i class="icon wb-settings" aria-hidden="true"></i>
+              </button>
+              {% endif %}
             </td>
             <td class="suf-cell"></td>
           </tr>

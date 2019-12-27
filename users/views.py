@@ -69,14 +69,17 @@ class UpdateProfile(LoginRequiredMixin, UpdateView):
     @csrf_protect
     @login_required(login_url=login_url) 
     def update_password(request):
-        template_name = 'academic/update_password_form.html'
+        template_name = 'users/update_password.html'
         if request.method == 'POST':
             form = PasswordChangeForm(data=request.POST, user=request.user)
 
             if form.is_valid():
                 form.save()
                 update_session_auth_hash(request, form.user)
+                messages.success(request, 'Contraseña actualizada correctamente')
                 return redirect('home')
+            else: 
+                messages.warning(request, 'Corrige los errores')
         else:
             form = PasswordChangeForm(user=request.user)
         context = {'form': form}
