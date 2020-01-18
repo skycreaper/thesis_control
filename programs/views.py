@@ -41,18 +41,16 @@ class ProgramDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['subprograms'] = SubProgram.objects.filter(program=kwargs['object'])
-        acum = 0
         for s in data['subprograms']:
             tasks = SubProgramTask.objects.filter(sub_program=s)
             for t in tasks:
                 advances = TaskAdvance.objects.filter(task=t)
-                acum += sum(advance.percentage for advance in advances)
-        try:
-            s.acumulate_percentage = int(acum / len(tasks))
-        except Exception:
-            s.acumulate_percentage = 0
-        finally:
-            return data
+                acum = sum(advance.percentage for advance in advances)
+            try:
+                s.acumulate_percentage = int(acum / len(tasks))
+            except Exception:
+                s.acumulate_percentage = 0
+        return data
 
 class SubProgramList(LoginRequiredMixin, ListView):
     model = SubProgram
@@ -148,7 +146,7 @@ class TaskAdvanceDetail(LoginRequiredMixin, DetailView):
             response["Content-Disposition"] = "attachment;filename=%s.%s" % (file_name.split('/')[1], file_extension)
             return response
         
-        file.closed    
+        file.closed
         
 class TaskAdvanceAdd(LoginRequiredMixin, CreateView):
     model = TaskAdvance
@@ -164,9 +162,7 @@ class TaskAdvanceAdd(LoginRequiredMixin, CreateView):
         return data
 
     def form_valid(self, form):
-        print("formulario valido!!")
         form.instance.task = SubProgramTask.objects.get(pk=self.kwargs['task'])
-        print(form.instance)
         return super().form_valid(form)
 
     def get_success_url(self):
