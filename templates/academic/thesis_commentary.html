@@ -106,7 +106,6 @@
         <div class="col-xl-12">
           <div class="panel">
             <div class="panel-body" style="overflow:auto">
-
               <form method="post">
                 {% csrf_token %} 
                 <div class="row"> 
@@ -138,7 +137,7 @@
                   <button type="submit" class="btn btn-primary ">Comentar</button>
                 </div>
               </form>
-              <div class="row">
+              <div class="row col-xl-12">
                 {% include "academic/comments/list_comments.html" with comments=comments %}
               </div>
             </div>

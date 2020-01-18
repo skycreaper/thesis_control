@@ -188,10 +188,10 @@
                   <li class="pagination-next page-item"><a class="page-link" href="/academic/thesis/?page={{ page_obj.next_page_number }}" aria-label="Next"><span class="icon wb-chevron-right-mini"></span></a></li>
                 {% endif %}
               </ul>
-            {% endif %}
-              {% else %}
-              <p class="h4 lead">No se encontraron tesis con el nombre <strong>{{ request.GET.search_text }}</strong></p>
               {% endif %}
+            {% else %}
+            <p class="h4 lead">No se encontraron tesis<strong>{{ request.GET.search_text }}</strong></p>
+            {% endif %}
             </div>
           </div>
         </div>

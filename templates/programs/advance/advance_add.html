@@ -189,7 +189,8 @@
 
 
 $(this.document).ready(function() {
-    var max = 100 - "{{ actual_adavance }}"; // Porcentaje máximo del avance
+    var max = 100 - "{{ task.acumulate_percentage }}"; // Porcentaje máximo del avance
+        console.log(max);
     $("#id_percentage").inputFilter(function(value) {
         return /^\d*$/.test(value) && (value === "" || parseInt(value) <= max); 
     });

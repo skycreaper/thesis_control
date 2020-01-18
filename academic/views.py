@@ -140,7 +140,7 @@ class ComentThesis(LoginRequiredMixin, ListView):
                 comment.author = CustomUser.objects.get(pk=request.user.pk)
                 comment.save()
         context = {"form": form, "thesis": thesis,
-                   "comments": CommentsThread.objects.filter(thesis=thesis)}
+                   "comments": CommentsThread.objects.filter(thesis=thesis).order_by('-submit_date')}
         return render(request, template_name, context)
 
 
@@ -152,7 +152,7 @@ class ThesisDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['advance_list'] = AdvanceModel.objects.filter(
-            thesis=self.kwargs['pk'])
+            thesis=self.kwargs['pk']).order_by('-creation_date')
         return context
 
 
@@ -197,7 +197,7 @@ class Advance(LoginRequiredMixin, ListView):
         actual_advance = sum(
             advance.percentage for advance in AdvanceModel.objects.filter(thesis=thesis))
         context = {'form': form, "thesis": thesis,
-                   'actual_adavance': actual_advance}
+                   'actual_advance': actual_advance}
         return render(request, template_name, context)
 
     @csrf_protect
@@ -238,7 +238,9 @@ class Student(LoginRequiredMixin, ListView):
                 user__last_name__icontains=value) for value in search_text.split(" ")][0]
         elif not search_text or search_text is None:  # search_text es un texto vació o no existe
             object_list = StudentModel.objects.select_related(
-                'personal_information')
+                'personal_information').order_by('user__first_name')
+            for _object in object_list:
+                _object.institutional_information.short_cvlac = _object.institutional_information.cvlac[0:10] + '...'
         return object_list
 
     # Student register
@@ -343,7 +345,9 @@ class TeacherView(LoginRequiredMixin, ListView):
                 user__last_name__icontains=value) for value in search_text.split(" ")][0]
         elif not search_text or search_text is None:  # search_text es un texto vació o no existe
             object_list = Teacher.objects.select_related(
-                'personal_information')
+                'personal_information').order_by('user__first_name')
+            for _object in object_list:
+                _object.institutional_information.short_cvlac = _object.institutional_information.cvlac[0:10] + '...'
         return object_list
 
      # Teacher register
@@ -433,25 +437,6 @@ class TeacherDisable(LoginRequiredMixin):
             customUser.save()
             return HttpResponse("ok", content_type='text/plain')
         return redirect('teacher_list')
-
-
-def write_to_excel(weather_data=None, town=None):
-    output = io.StringIO()
-    workbook = xlsxwriter.Workbook(output)
-
-    # Here we will adding the code to add data
-    worksheet_s = workbook.add_worksheet("Estudiantes")
-
-    worksheet_s.write('A1', 'Hello..')
-    worksheet_s.write('B1', 'Geeks')
-    worksheet_s.write('C1', 'For')
-    worksheet_s.write('D1', 'Geeks')
-
-    workbook.close()
-    xlsx_data = output.getvalue()
-    # xlsx_data contains the Excel file
-    return xlsx_data
-
 
 def export(request, data):
     response = HttpResponse(content_type='application/ms-excel')

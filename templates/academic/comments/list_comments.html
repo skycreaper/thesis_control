@@ -6,10 +6,37 @@
     <div class="col-10">
         <div class="card">
             <div class="card-header">
-                <a class="avatar" href="javascript:void(0)">
-                    <img class="img-fluid" src="{% static 'unal/global/portraits/1.jpg' %}" alt="...">
-                </a>
+
+                {% if request.user.student or request.user.teacher %}
+                {% if request.user.student %}
+                    <span class="avatar">
+                    {% if request.user.student.personal_information.photo %}
+                        <img src="{{ request.user.student.personal_information.photo.url }}" alt="...">
+                    {% else %}
+                        {{ request.user.pk }}
+                        <img src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
+                    {% endif %}
+                    <i></i>
+                    </span>  
+                {% else %}  
+                    <span class="avatar">
+                    {% if request.user.teacher.personal_information.photo %}
+                        <img src="{{ request.user.teacher.personal_information.photo.url }}" alt="...">
+                    {% else %}
+                        <img src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
+                    {% endif %}
+                    <i></i>
+                    </span>  
+                {% endif %}
+                {% else %}
+                <span class="avatar">
+                    <img src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
+                    <i></i>
+                </span>
+                {% endif %}
+
                 <label class="font-weight-bold">{{ comment.author.first_name }} {{ comment.author.last_name }}</label>
+                <label class="float-right">{{comment.submit_date | date:'d/m/Y, h:i a'}}</label>
             </div>
             <div class="card-body">
                 <p class="card-text"><p class="card-text">{{ comment.comment }}</p></p>

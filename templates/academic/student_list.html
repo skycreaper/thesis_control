@@ -110,7 +110,7 @@
     <!-- Contacts Content -->
     <div id="contactsContent" class="page-content page-content-table" data-plugin="selectable">
       {% if object_list %}
-      <div>
+      <td>
       <!-- messages -->
       {% include "academic/messages/messages.html" %}
       <a style="float:right;margin-right:2.5em;margin-top:2em;" class="btn btn-primary" href="{% url 'export_to_excel' data='student' %}">Exportar a excel</a>
@@ -120,14 +120,17 @@
         <thead>
           <tr>
             <th class="pre-cell"></th>
-            <th class="cell-30" scope="col">
+            <!-- <th class="cell-30" scope="col">
               <span class="checkbox-custom checkbox-primary checkbox-lg contacts-select-all">
                 <input type="checkbox" class="contacts-checkbox selectable-all" id="select_all" />
                 <label for="select_all"></label>
               </span>
-            </th>
-            <th class="cell-300" scope="col">Nombre</th>
+            </th> -->
+            <th class="cell-30" scope="col"></th>
+            <th class="cell-300" scope="col">Nombres</th>
+            <th class="cell-300" scope="col">Apellidos</th>
             <th class="cell-300" scope="col">Teléfono</th>
+            <th scope="col">CvLAC</th>
             <th scope="cell-300">Correo electrónico</th>
             <th scope="cell-300">Opciones</th>
             <th class="suf-cell"></th>
@@ -137,15 +140,15 @@
          {% for student in object_list %}
             {% if student.user.is_active %}
           {% comment %} <tr data-url="components/contact-panel.tpl" data-toggle="slidePanel"> {% endcomment %}
-          <tr>
+          
             <td class="pre-cell"></td>
-            <td class="cell-30">
+            <!-- <td class="cell-30">
               <span class="checkbox-custom checkbox-primary checkbox-lg">
                 <input type="checkbox" class="contacts-checkbox selectable-item" id="contacts_1" />
                 <label for="contacts_1"></label>
               </span>
-            </td>
-            <td class="cell-300">
+            </td> -->
+            <td class="cell-30">
               <a class="avatar" href="javascript:void(0)">
                 {% if student.personal_information.photo %}
                   <img class="img-fluid" src="{{ student.personal_information.photo.url }}" alt="...">
@@ -153,9 +156,15 @@
                   <img class="img-fluid" src="{% static 'unal/global/portraits/blank_user.png' %}" alt="...">
                 {% endif %}
               </a>
-              {{ student.user.first_name }} {{ student.user.last_name }}
             </td>
-            <td class="cell-300"> {{ student.personal_information.mobile}} </td>
+            <td class="cell-300">{{ student.user.first_name }}</td>
+            <td class="cell-300">{{ student.user.last_name }}</td>
+            <td class="cell-300">{{ student.personal_information.mobile}}</td>
+            <td class="cell-300">
+              <a href="{{student.institutional_information.cvlac}}" target="_blank">
+                {{ student.institutional_information.short_cvlac }}
+              </a>
+            </td>
             <td class="cell-300">{{ student.user.email }}</td>
             <td class="cell-300">
 
