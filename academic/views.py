@@ -242,13 +242,23 @@ class Student(LoginRequiredMixin, ListView):
         return object_list
 
     # Student register
+    @csrf_protect
     @login_required(login_url=LOGIN_URL)
     def register(request):
         template_name = 'student_form.html'
         form = StudentCreationForm(request.POST or None, request.FILES)
-        if form.is_valid():
-            if RegisterStudentTransaction(form.data, request.FILES['photo']):
-                return redirect('student_list')
+        if request.method == "POST":
+            if form.is_valid():
+                try:
+                    photo = request.FILES['photo']
+                except:
+                    photo = None
+                finally:
+                    if RegisterStudentTransaction(form.data, photo):
+                        messages.success(request, 'Estudiante registrado')
+                        return redirect('student_list')
+            messages.warning(
+                request, 'Parece que hubo un problema, reivsa los errores: ', 'danger')
         context = {'form': form}
         return render(request, template_name, context)
 
@@ -258,7 +268,7 @@ class Student(LoginRequiredMixin, ListView):
     def disabledStudent(request):
         if request.method == "POST":
             customUser = get_object_or_404(
-                CustomUser, pk=request.POST.get("user"))
+            CustomUser, pk=request.POST.get("user"))
             customUser.is_active = False
             customUser.save()
             return HttpResponse("ok", content_type='text/plain')
@@ -273,17 +283,19 @@ class Student(LoginRequiredMixin, ListView):
         if request.method == "POST":
             form = StudentCreationForm(
                 request.POST, request.FILES, instance=student)
-            try:
-                if form.is_valid():
-                    photo = student.personal_information.photo
-                    if 'photo' in request.FILES:
-                        photo = request.FILES['photo']
 
-                    result = UpdateStudent(user, form.data, photo)
-                    if result:
-                        return redirect('student_list')
-            except Exception as e:
-                print("error in StudentEdit(): {}".format(e))
+            if form.is_valid():
+                photo = student.personal_information.photo
+                if 'photo' in request.FILES:
+                    photo = request.FILES['photo']
+
+                result = UpdateStudent(user, form.data, photo)
+                if result:
+                    messages.success(request, 'Estudiante actualizadó')
+                    return redirect('student_list')
+                else:
+                    messages.warning(
+                        request, 'No se pudo actualizar la información', 'danger')
         else:
             form = StudentCreationForm(instance=student)
 
@@ -304,17 +316,21 @@ class Student(LoginRequiredMixin, ListView):
 
             if form.is_valid():
                 form.save()
-                messages.success(request, 'Contraseña actualizada correctamente')
+                messages.success(
+                    request, 'Contraseña actualizada correctamente')
                 return redirect('student_list')
             else:
                 messages.warning(request, 'Corrige los errores')
-                
+
         else:
             form = PasswordChangeForm(user=user)
+
         context = {'form': form, 'update_user': student}
         return render(request, template_name, context)
 
 ###### Teacher ######
+
+
 class TeacherView(LoginRequiredMixin, ListView):
     template_name = "teacher_list.html"
     paginate_by = 5
@@ -331,13 +347,23 @@ class TeacherView(LoginRequiredMixin, ListView):
         return object_list
 
      # Teacher register
+    @csrf_protect
     @login_required(login_url=LOGIN_URL)
     def register(request):
         template_name = 'teacher_form.html'
         form = TeacherCreationForm(request.POST or None, request.FILES)
-        if form.is_valid():
-            if RegisterTeacherTransaction(form.data, request.FILES['photo']):
-                return redirect('teacher_list')
+        if request.method == "POST":
+            if form.is_valid():
+                try:
+                    photo = request.FILES['photo']
+                except:
+                    photo = None
+                finally:
+                    if RegisterTeacherTransaction(form.data, photo):
+                        messages.success(request, 'Profesor registrado')
+                        return redirect('teacher_list')
+            messages.warning(
+                request, 'Parece que hubo un problema, revisa los errores: ', 'danger')
         context = {'form': form}
         return render(request, template_name, context)
 
@@ -350,17 +376,19 @@ class TeacherView(LoginRequiredMixin, ListView):
         if request.method == "POST":
             form = TeacherCreationForm(
                 request.POST, request.FILES, instance=teacher)
-            try:
-                if form.is_valid():
-                    photo = teacher.personal_information.photo
-                    if 'photo' in request.FILES:
-                        photo = request.FILES['photo']
 
-                    result = UpdateTeacher(user, form.data, photo)
-                    if result:
-                        return redirect('teacher_list')
-            except Exception as e:
-                print("error in TeacherEdit(): {}".format(e))
+            if form.is_valid():
+                photo = teacher.personal_information.photo
+                if 'photo' in request.FILES:
+                    photo = request.FILES['photo']
+
+                result = UpdateTeacher(user, form.data, photo)
+                if result:
+                    messages.success(request, 'Profesor actualizadó')
+                    return redirect('teacher_list')
+                else:
+                    messages.warning(
+                        request, 'No se pudo actualizar la información', 'danger')
         else:
             form = TeacherCreationForm(instance=teacher)
 
@@ -381,16 +409,19 @@ class TeacherView(LoginRequiredMixin, ListView):
 
             if form.is_valid():
                 form.save()
-                messages.success(request, 'Contraseña actualizada correctamente')
+                messages.success(
+                    request, 'Contraseña actualizada correctamente')
                 return redirect('teacher_list')
             else:
                 messages.warning(request, 'Corrige los errores')
 
         else:
             form = PasswordChangeForm(user=user)
+
         context = {'form': form, 'update_user': teacher}
         return render(request, template_name, context)
-                
+
+
 class TeacherDisable(LoginRequiredMixin):
     login_url = LOGIN_URL
     @csrf_protect

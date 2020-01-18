@@ -108,36 +108,37 @@
 
       <form method="post" enctype="multipart/form-data" runat="server">
         {% csrf_token %}
+        {% include "academic/messages/messages.html" %}
         <div class="form-group ">
-        <label for="id_first_name" class="col-sm-4 col-form-label">Nombes Completos: </label>
+        <label for="id_first_name" class="col-sm-4 col-form-label">Nombes Completos:</label>
           <div class="col-sm-7">
-            <input type="text" class="form-control" name="first_name" maxlength="30" id="id_first_name"
+            <input type="text" class="form-control" name="first_name" maxlength="30" id="id_first_name" required
               placeholder="Nombres" value="{{ student.user.first_name }}">
           </div>
         </div>
         <div class="form-group ">
-          <label for="id_last_name" class="col-sm-4 col-form-label">Apellidos Completos: </label>
+          <label for="id_last_name" class="col-sm-4 col-form-label">Apellidos Completos:</label>
           <div class="col-sm-7">
-            <input type="text" class="form-control" name="last_name" maxlength="150" id="id_last_name"
+            <input type="text" class="form-control" name="last_name" maxlength="150" id="id_last_name" required
               placeholder="Apellidos" value="{{ student.user.last_name }}">
           </div>
         </div>
         <!-- Genero -->
-        <label for="id_gender" class="col-sm-2 col-form-label">Genero</label>
+        <label for="id_gender" class="col-sm-2 col-form-label">Genero:</label>
         <div class="form-group ">
           <div class="col-sm-7">
             {{ form.gender }}
           </div>
         </div>
         <!-- Estado civil -->
-        <label for="id_civilState" class="col-sm-2 col-form-label">Estado civil</label>
+        <label for="id_civilState" class="col-sm-2 col-form-label">Estado civil:</label>
         <div class="form-group ">
           <div class="col-sm-7">
             {{ form.civil_state }}
           </div>
         </div>
         <!-- Estado civil -->
-        <label for="id_nationality" class="col-sm-2 col-form-label">Nacionalidad</label>
+        <label for="id_nationality" class="col-sm-2 col-form-label">Nacionalidad:</label>
         <div class="form-group ">
           <div class="col-sm-7">
             {{ form.nationality }}
@@ -145,7 +146,7 @@
         </div>
         <!--Teléfono-->
         <div class="form-group ">
-        <label for="id_mobile" class="col-sm-2 col-form-label">Teléfono: </label>
+        <label for="id_mobile" class="col-sm-2 col-form-label">Teléfono:</label>
           <div class="col-sm-7">
             <input type="text" class="form-control" name="mobile" maxlength="10" id="id_mobile"
               placeholder="Teléfono" value="{{ student.personal_information.mobile }}">
@@ -153,7 +154,7 @@
         </div>
         <!--Email-->
         <div class="form-group ">
-        <label for="id_email" class="col-sm-6 col-form-label">Correo Electrónico Institucional: </label>
+        <label for="id_email" class="col-sm-6 col-form-label">Correo Electrónico Institucional:</label>
           <div class="col-sm-7">
             <input type="email" class="form-control" name="email" maxlength="254" required="" id="id_email"
               placeholder="Email" value="{{ student.user.email }}">
@@ -161,7 +162,7 @@
         </div>
         <!--Dirección-->
         <div class="form-group ">
-          <label for="id_address" class="col-sm-2 col-form-label">Dirección: </label>
+          <label for="id_address" class="col-sm-2 col-form-label">Dirección:</label>
           <div class="col-sm-7">
             <input type="text" class="form-control" name="address" maxlength="200" required="" id="id_address"
               placeholder="Dirección" value="{{ student.personal_information.address }}">
@@ -169,7 +170,7 @@
         </div>
         <!--Fecha de nacimiento-->
         <div class="form-group ">
-          <label for="id_birth_date" class="col-sm-6 col-form-label">Fecha de nacimiento: </label>
+          <label for="id_birth_date" class="col-sm-6 col-form-label">Fecha de nacimiento:</label>
           <div class="col-sm-7">
             <input type="date" class="form-control" required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" name="birth_date" id="id_birth_date"
               placeholder="Fecha de Nacimiento" value="{{ student.personal_information.birth_date|date:"Y-m-d"}}">
@@ -198,11 +199,9 @@
             {% endif %}
           </div>
         </div>
-        <div class="form-group ">
-          <div class="col-sm-7">
+        <div class="form-group">
+          <div class="col-sm-7 text-center">
             <input type="submit" class="btn btn-primary" value="Actualizar" />
-            <p> erros: {{ form.errors }} <p>
-            <p> field_erros: {{ form.non_field_errors }} <p>
           </div>
         </div>
       </form>

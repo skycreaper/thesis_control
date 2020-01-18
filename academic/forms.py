@@ -4,7 +4,7 @@ from django import forms
 from .models import Student, Gender, Nationality, CivilState, Thesis, Teacher, InvestigationLine, Advance, CommentsThread, Document, Period
 
 class StudentCreationForm(forms.ModelForm):
-    gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial=Gender.pk,
+    gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial={'field1': Gender.pk},
                        widget=forms.Select(attrs={'class':'form-control', 'id':'id_gender'})
                     )
 
@@ -26,11 +26,11 @@ class StudentCreationForm(forms.ModelForm):
             self.fields['civil_state'].initial = self.instance.personal_information.civil_state.pk
             self.fields['photo'].initial = self.instance.personal_information.photo
         except:
-            print(None)
+            None
 
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state')
+        fields = ('first_name', 'last_name', 'email','gender', 'nationality', 'civil_state')
 
 class TeacherCreationForm(forms.ModelForm):
     gender = forms.ModelChoiceField(queryset=Gender.objects.all(), initial={'field1': Gender.pk},
@@ -55,7 +55,7 @@ class TeacherCreationForm(forms.ModelForm):
             self.fields['civil_state'].initial = self.instance.personal_information.civil_state.pk
             self.fields['photo'].initial = self.instance.personal_information.photo
         except:
-            print(None)
+            None
     class Meta:
         model = CustomUser
         fields = ('first_name', 'last_name', 'email', 'gender', 'nationality', 'civil_state')

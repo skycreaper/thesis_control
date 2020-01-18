@@ -113,14 +113,8 @@
     <!-- Contacts Content -->
     <div id="contactsContent" class="page-content page-content-table" data-plugin="selectable">
     {% if object_list %}
-    <!-- messages -->
-      {% if messages %}
-      <div class="alert alert-success">
-        {% for message in messages %}
-          <strong>Correcto!</strong> {{message}}
-        {% endfor %}
-      </div>
-    {% endif %}
+      <!-- messages -->
+      {% include "academic/messages/messages.html" %}
       <a style="float:right;margin-right:2.5em;margin-top:2em;" class="btn btn-primary" href="{% url 'export_to_excel' data='teacher' %}">Exportar a excel</a>
 
       <!-- Contacts -->

@@ -108,7 +108,7 @@
 
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.errors }}
+        {% include "academic/messages/messages.html" %}
         <div class="form-group ">
           <div class="col-sm-7">
             <label for="id_first_name" class="col-sm-6 col-form-label">Nombres Completos:</label>
@@ -184,7 +184,7 @@
           <label for="id_photo" class="col-sm-2 col-form-label">Foto del profesor</label>
           <div class="col-sm-7">
             <div class="custom-file">
-              <input class="custom-file-input" type="file" name="photo" accept="image/*" id="id_photo" required>
+              <input class="custom-file-input" type="file" name="photo" accept="image/*" id="id_photo">
               <label class="custom-file-label" for="id_photo">Sube una foto</label>
             </div>
             <br><br>
@@ -199,7 +199,7 @@
           </div>
         </div>
         <div class="form-group ">
-          <div class="col-sm-7">
+          <div class="col-sm-7 text-center">
             <input type="submit" class="btn btn-primary" value="Guardar" />
           </div>
         </div>
